@@ -3,7 +3,7 @@ package com.kor.foodmanager.data.model;
 import java.util.Date;
 
 public class NotificationDto {
-    private int notificationId, eventId;
+    private Long eventId, notificationId;
     private String title, message, type;
     private Boolean isRead;
     private Date date;
@@ -11,7 +11,7 @@ public class NotificationDto {
     public NotificationDto() {
     }
 
-    public NotificationDto(int notificationId, int eventId, String title, String message, String type, Boolean isRead, Date date) {
+    public NotificationDto(Long notificationId, Long eventId, String title, String message, String type, Boolean isRead, Date date) {
         this.notificationId = notificationId;
         this.eventId = eventId;
         this.title = title;
@@ -21,19 +21,19 @@ public class NotificationDto {
         this.date = date;
     }
 
-    public int getNotificationId() {
+    public Long getNotificationId() {
         return notificationId;
     }
 
-    public void setNotificationId(int notificationId) {
+    public void setNotificationId(Long notificationId) {
         this.notificationId = notificationId;
     }
 
-    public int getEventId() {
+    public Long getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(Long eventId) {
         this.eventId = eventId;
     }
 
