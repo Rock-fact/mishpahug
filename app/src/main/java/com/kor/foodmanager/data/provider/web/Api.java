@@ -1,5 +1,6 @@
 package com.kor.foodmanager.data.provider.web;
 
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.NotificationListDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
@@ -32,5 +33,29 @@ public interface Api {
     @GET("/event/calendar/{month}")
     Call<EventListDto> getListForCalendar (@Header("Authorization") String token, @Path("month") int month);
 
+    //User receives the event that he created.
+    @GET("/event/own/{eventId}")
+    Call<EventDto> getMyEvent (@Header("Authorization") String token, @Path("eventId") int eventId);
+
+    //User receives the event to he is subscribed.
+    @GET("/event/subscribed/{eventId}")
+    Call<EventDto> getSubscribedEvent (@Header("Authorization") String token, @Path("eventId") int eventId);
+
+    //User receives list of events at status "in progress" and "pending" which this user created.
+    @GET("/event/currentlist")
+    Call<EventListDto> getMyEventList (@Header("Authorization") String token);
+
+    //User receives list of all events at status "done" that he created.
+    @GET("/event/historylist")
+    Call<EventListDto> getDoneEvents (@Header("Authorization") String token);
+
+    //User receives list of events which user subscribed or will participate.
+    // Events at status "done" in which user participated includes into list only if user didn’t vote them.
+    @GET("/event/participationlist")
+    Call<EventListDto> getParticipationList (@Header("Authorization") String token); //TODO specify EventListDto
+
+    //User receives number of unread notifications
+    @GET("/notification/count")
+    Call<Integer> getUnreadNotificationsCount (@Header("Authorization") String token);
 
 }

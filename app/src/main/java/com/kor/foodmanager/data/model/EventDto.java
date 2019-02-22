@@ -13,3 +13,5 @@ public class EventDto {
     private List<String> food;
     private UserDto owner;
 }
+
+//TODO
