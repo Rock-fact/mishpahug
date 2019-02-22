@@ -7,6 +7,7 @@ import com.kor.foodmanager.buissness.login.validator.IValidator;
 import com.kor.foodmanager.buissness.login.validator.PasswordValidException;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.login.ILoginRepository;
+import com.kor.foodmanager.data.login.LoginException;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 

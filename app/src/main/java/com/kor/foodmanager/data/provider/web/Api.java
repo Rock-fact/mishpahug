@@ -1,5 +1,9 @@
 package com.kor.foodmanager.data.provider.web;
 
+import com.kor.foodmanager.data.model.ErrorDto;
+import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.NotificationListDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 
@@ -8,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface Api {
     //Unauthorized requests
@@ -21,7 +26,16 @@ public interface Api {
     @POST("/user/login")
     Call<UserDto> login(@Header("Authorization") String token);
 
+    //Client receives list of his notifications.
+    @GET ("/notification/list")
+    Call<NotificationListDto> getNotificatonList(@Header("Authorization") String token);
 
+    //Returns Event List for Calendar
+    @GET("/event/calendar/{month}")
+    Call<EventListDto> getListForCalendar (@Header("Authorization") String token, @Path("month") int month);
 
+    //Create new event
+    @POST("/event/creation")
+    Call<ErrorDto> createNewEvent(@Header("Authorization") String token, @Body EventDto event);
 
 }

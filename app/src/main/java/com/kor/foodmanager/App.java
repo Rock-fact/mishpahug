@@ -28,6 +28,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mainComponent = DaggerMainComponent.builder().mainModule(new MainModule(this)).build();
+
     }
 
     public MainComponent mainComponent(){
