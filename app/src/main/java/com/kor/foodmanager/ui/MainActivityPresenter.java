@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
+
+import static com.kor.foodmanager.ui.MainActivity.ADD_EVENT_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
 
@@ -24,11 +26,13 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void startWork() {
-        if(authRepository.getToken()==null){
-            showLoginScreen();
-        }else {
-            showHomeScreen();
-        }
+        // TODO: 22.02.2019 Temporary test changes!
+                router.navigateTo(ADD_EVENT_SCREEN);
+//        if(authRepository.getToken()==null){
+//            showLoginScreen();
+//        }else {
+//            showHomeScreen();
+//        }
     }
 
     public void showLoginScreen(){

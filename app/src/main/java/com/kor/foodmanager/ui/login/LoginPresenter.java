@@ -5,11 +5,12 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.login.ILoginInteractor;
-import com.kor.foodmanager.buissness.login.LoginException;
+import com.kor.foodmanager.data.login.LoginException;
 import com.kor.foodmanager.buissness.login.validator.EmailValidException;
 import com.kor.foodmanager.buissness.login.validator.PasswordValidException;
 import java.io.IOException;
 import javax.inject.Inject;
+
 import ru.terrakok.cicerone.Router;
 import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 
@@ -17,6 +18,7 @@ import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 public class LoginPresenter extends MvpPresenter<ILogin> {
     @Inject ILoginInteractor interactor;
     @Inject Router router;
+
 
     public LoginPresenter(){
         App.get().loginComponent().inject(this);
@@ -45,7 +47,7 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
     }
 
     public void showHomeScreen(){
-        router.navigateTo(HOME_SCREEN);
+        router.replaceScreen(HOME_SCREEN);
     }
 
     @Override

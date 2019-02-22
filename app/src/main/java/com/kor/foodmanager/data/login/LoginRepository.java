@@ -1,7 +1,6 @@
 package com.kor.foodmanager.data.login;
 
 import com.google.gson.Gson;
-import com.kor.foodmanager.buissness.login.LoginException;
 import com.kor.foodmanager.data.model.ErrorDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;

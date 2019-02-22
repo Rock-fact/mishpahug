@@ -2,10 +2,9 @@ package com.kor.foodmanager.buissness.login;
 
 import com.kor.foodmanager.buissness.login.validator.EmailValidException;
 import com.kor.foodmanager.buissness.login.validator.PasswordValidException;
+import com.kor.foodmanager.data.login.LoginException;
 
 import java.io.IOException;
-
-import io.reactivex.Completable;
 
 public interface ILoginInteractor {
     void login(String email, String password) throws LoginException, IOException;

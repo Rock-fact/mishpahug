@@ -87,31 +87,21 @@
                 android:textColor="@color/colorBeige" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputDataLayout"
+        <TextView
+            android:id="@+id/textDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:textColorHint="@color/colorBeige"
+            android:layout_marginEnd="27dp"
+            android:hint="Choose date"
+            android:textColor="@color/colorBeige"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputAddressLayout">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/inputDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Type date"
-                android:inputType="date"
-                android:textColor="@color/colorBeige" />
-        </android.support.design.widget.TextInputLayout>
+        </TextView>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputDescriptionLayout"
@@ -124,7 +114,7 @@
             android:textColorHint="@color/colorBeige"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputDataLayout">
+            app:layout_constraintTop_toBottomOf="@+id/textDate">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/inputDescription"

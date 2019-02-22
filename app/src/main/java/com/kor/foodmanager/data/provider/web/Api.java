@@ -1,5 +1,7 @@
 package com.kor.foodmanager.data.provider.web;
 
+import com.kor.foodmanager.data.model.ErrorDto;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.NotificationListDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
@@ -32,5 +34,8 @@ public interface Api {
     @GET("/event/calendar/{month}")
     Call<EventListDto> getListForCalendar (@Header("Authorization") String token, @Path("month") int month);
 
+    //Create new event
+    @POST("/event/creation")
+    Call<ErrorDto> createNewEvent(@Header("Authorization") String token, @Body EventDto event);
 
 }
