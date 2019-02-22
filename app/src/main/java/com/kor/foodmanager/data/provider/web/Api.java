@@ -10,23 +10,36 @@ import com.kor.foodmanager.data.model.MessageDto;
 import com.kor.foodmanager.data.model.UserDto;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface Api {
     //Unauthorized requests
+    //---------------------------------------------------------------------------------------------
     @GET("/user/staticfields")
     Call<StaticfieldsDto> getStaticFields();
 
+
+    //List of Events in progress  -- TODO WTF?
+    @POST("/event/allprogresslist?page={page}&size={size}")
+    Call<EventListDto> getListOfEventsInProgress(@Path("page") int page, @Path("size") int size);
+
+
     //Authorized requests
+    //---------------------------------------------------------------------------------------------
     @POST("/user/registration")
     Call<StaticfieldsDto> registration(@Header("Authorization") String token);
 
     @POST("/user/login")
     Call<UserDto> login(@Header("Authorization") String token);
+
+    //Update User Profile
+    Call<UserDto> updateUserProfile(@Header("Authorization") String token, @Body UserDto user); //TODO auto parsing?
 
     //Client receives list of his notifications.
     @GET("/notification/list")
@@ -88,5 +101,5 @@ public interface Api {
     Call<MessageDto> notificetionIsRead(@Header("Authorization") String token,
                                              @Path("notificationId") Long notificationId);
 
-    
+
 }
