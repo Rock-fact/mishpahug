@@ -2,11 +2,13 @@ package com.kor.foodmanager.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.home.HomeFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 
@@ -23,8 +25,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     @InjectPresenter MainActivityPresenter presenter;
     private Unbinder unbinder;
 
-
-    @Override
+      @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
