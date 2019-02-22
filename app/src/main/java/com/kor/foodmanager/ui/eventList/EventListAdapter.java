@@ -21,6 +21,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
     private ArrayList<EventDto> events;
     private MyClickListener listener;
 
+    public EventListAdapter() {
+        events = new ArrayList<>();
+    }
+
     public EventListAdapter(ArrayList<EventDto> events){
         this.events=events;
     }
@@ -54,6 +58,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
     public void addEvent(EventDto event){
         events.add(event);
         Log.d("MY_TAG", "addEvent: ");
+        notifyDataSetChanged();
+    }
+
+    public void removeAll(){
+        events.clear();
         notifyDataSetChanged();
     }
 
