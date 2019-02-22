@@ -14,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.UserDto;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EventListFragment extends Fragment implements EventListAdapter.MyClickListener{
     private RecyclerView recyclerView;
@@ -41,9 +44,14 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
 
 
         // To be deleted TODO
-        ArrayList<MyEvent> events = new ArrayList<>();
+        ArrayList<EventDto> events = new ArrayList<>();
         for (int i=0; i<8; i++){
-            MyEvent event = new MyEvent("Name", "Title", "Date");
+            EventDto event = new EventDto();
+            UserDto owner = new UserDto();
+            owner.setFullName("Zuz");
+            event.setOwner(owner);
+            event.setTitle("title");
+            event.setDate(new Date());
             events.add(event);
             Log.d("MY_TAG", "EventListAdapter: "+event.toString());
             Log.d("MY_TAG", "EventListAdapter: "+events.size());

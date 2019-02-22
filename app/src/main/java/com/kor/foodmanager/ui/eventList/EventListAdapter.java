@@ -12,15 +12,16 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 
 import java.util.ArrayList;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyViewHolder>  {
 
-    private ArrayList<MyEvent> events;
+    private ArrayList<EventDto> events;
     private MyClickListener listener;
 
-    public EventListAdapter(ArrayList<MyEvent> events){
+    public EventListAdapter(ArrayList<EventDto> events){
         this.events=events;
     }
 
@@ -43,15 +44,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Log.d("MY_TAG", "onBindViewHolder: ");
-        MyEvent event = events.get(i);
-        myViewHolder.familyName.setText(event.getFamilyName());
-        myViewHolder.eventTitle.setText(event.getEventTitle());
-        myViewHolder.eventDate.setText(event.getEventDate());
-
+        EventDto event = events.get(i);
+        myViewHolder.familyName.setText(event.getOwner().getFullName());
+        myViewHolder.eventTitle.setText(event.getTitle());
+        myViewHolder.eventDate.setText(event.getDate().toString());
 
     }
 
-    public void addEvent(MyEvent event){
+    public void addEvent(EventDto event){
         events.add(event);
         Log.d("MY_TAG", "addEvent: ");
         notifyDataSetChanged();
@@ -62,7 +62,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         return events.size();
     }
 
-    public ArrayList<MyEvent> getEvents() {
+    public ArrayList<EventDto> getEvents() {
         return events;
     }
 
@@ -79,6 +79,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             eventTitle = itemView.findViewById(R.id.event_title);
             eventDate = itemView.findViewById(R.id.event_date);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    //TODO
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

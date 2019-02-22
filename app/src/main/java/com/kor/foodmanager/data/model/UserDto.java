@@ -4,6 +4,7 @@ public class UserDto {
     // TODO: 19.02.2019 Update this!
     private String firstName;
     private String lastName;
+    private String fullName;
 
     public UserDto(String firstName, String lastName) {
         this.firstName = firstName;
@@ -11,6 +12,14 @@ public class UserDto {
     }
 
     public UserDto() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getFirstName() {
