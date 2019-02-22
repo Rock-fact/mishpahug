@@ -1,5 +1,6 @@
 package com.kor.foodmanager.data.provider.web;
 
+import com.kor.foodmanager.data.model.NotificationListDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 
@@ -20,6 +21,10 @@ public interface Api {
 
     @POST("/user/login")
     Call<UserDto> login(@Header("Authorization") String token);
+    
+    //Client receives list of his notifications.
+    @GET ("/notification/list")
+    Call<NotificationListDto> getNotificatonList(@Header("Authorization") String token);
 
 
 
