@@ -1,6 +1,7 @@
 package com.kor.foodmanager.data.model;
 
 import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 public class EventDto {
