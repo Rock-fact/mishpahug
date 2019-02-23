@@ -4,7 +4,7 @@ import android.location.Location;
 
 class EventAddress {
     private String city, place_id;
-    private Location location;
+    private LocationDto location;
 
     public EventAddress() {
     }
@@ -25,11 +25,11 @@ class EventAddress {
         this.place_id = place_id;
     }
 
-    public Location getLocation() {
+    public LocationDto getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationDto location) {
         this.location = location;
     }
 }

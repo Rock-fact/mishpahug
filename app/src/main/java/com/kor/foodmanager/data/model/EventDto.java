@@ -10,7 +10,7 @@ public class EventDto {
     private String title, status, holiday, confession, description;
     private int duration;
     private Long eventId;
-    private Date date;
+    private String date;
     private Time time;
     private List<UserDto> participants;
     private List<String> food;
@@ -77,11 +77,11 @@ public class EventDto {
         this.eventId = eventId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

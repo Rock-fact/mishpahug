@@ -16,6 +16,8 @@ public class EventListDto {
     public EventListDto() {
     }
 
+
+
     public List<EventDto> getMyEvents() {
         return myEvents;
     }

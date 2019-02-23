@@ -18,10 +18,19 @@ import android.widget.Toast;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.provider.web.Api;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EventListFragment extends Fragment implements EventListAdapter.MyClickListener{
     private RecyclerView recyclerView;
@@ -30,6 +39,10 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
 //    private boolean listExists;
+
+
+    private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
+    private Api api;
 
     public EventListFragment() {
 
@@ -63,7 +76,20 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     @Override
     public void onStart() {
         super.onStart();
-        new LoadingList().execute();
+        // new LoadingList().execute();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        api = retrofit.create(Api.class);
+        Log.d("MY_TAG", "doInBackground: 2");
+        try {
+        Call<EventListDto> call = api.getListOfEventsInProgress(0, 10);
+        Log.d("MY_TAG", "doInBackground: 3"+call.request());
+        retrofit2.Response<EventListDto> response = call.execute();
+            Log.d("MY_TAG", "doInBackground: 4");
+        } catch (Exception e){
+            Log.d("MY_TAG", "onStart: "+e.getMessage());
+        }
+
     }
 
     @Override
@@ -72,67 +98,81 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     }
 
 
-    private class LoadingList extends AsyncTask<Void, Void, String> {
-
-        ArrayList<EventDto> tmp;
-
-        @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            filtersBtn.setVisibility(View.GONE);
-            addBtn.setClickable(false);
-            tmp = new ArrayList<>();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            try {
-                tmp = new ArrayList<>();
-                //TODO get list from server
-                // To be deleted TODO
-                for (int i=0; i<8; i++){
-                    EventDto event = new EventDto();
-                    UserDto owner = new UserDto();
-                    owner.setFullName("Zuz");
-                    event.setOwner(owner);
-                    event.setTitle("title");
-                    event.setDate(new Date());
-                    tmp.add(event);
-                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
-                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
-
-                }
-                wait(500);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            progressBar.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            filtersBtn.setVisibility(View.VISIBLE);
-            addBtn.setClickable(true);
-//            listExists = true;
-                Log.d("MY_TAG", "onPostExecute: ");
-//                adapter.removeAll();
-                if (!tmp.isEmpty()) {
-                    Log.d("MY_TAG", "onPostExecute: "+tmp.size());
-                    for(int i=0; i<tmp.size(); i++){
-                        adapter.addEvent(tmp.get(i));
-                    }
-
-                }
-             else {
-                Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
+//
+//
+//        @Override
+//        protected void onPreExecute() {
+//            progressBar.setVisibility(View.VISIBLE);
+//            recyclerView.setVisibility(View.GONE);
+//            filtersBtn.setVisibility(View.GONE);
+//            addBtn.setClickable(false);
+//        }
+//
+//        @Override
+//        protected List<EventDto> doInBackground(Void... voids) {
+//            try {
+//
+//                // To be deleted TODO
+////                for (int i=0; i<8; i++){
+////                    EventDto event = new EventDto();
+////                    UserDto owner = new UserDto();
+////                    owner.setFullName("Zuz");
+////                    event.setOwner(owner);
+////                    event.setTitle("title");
+////                    event.setDate(15.03.2020);
+////                    tmp.add(event);
+////                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
+////                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
+////
+////                }
+//
+//                Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+//                        .addConverterFactory(GsonConverterFactory.create()).build();
+//                api = retrofit.create(Api.class);
+//                Log.d("MY_TAG", "doInBackground: 2");
+//                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
+//                Log.d("MY_TAG", "doInBackground: 3");
+//                Response<EventListDto> response = call.execute();
+//                Log.d("MY_TAG", "doInBackground: 4");
+//                if(response.isSuccessful()){
+//                    Log.d("MY_TAG", "doInBackground: 5");
+//                    EventListDto eventListDto = response.body();
+//                    Log.d("MY_TAG", "doInBackground: "+eventListDto);
+//                    return eventListDto.getContent();
+//                } else {
+//                    throw new Exception(response.errorBody().string());
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<EventDto> list) {
+//            progressBar.setVisibility(View.GONE);
+//            recyclerView.setVisibility(View.VISIBLE);
+//            filtersBtn.setVisibility(View.VISIBLE);
+//            addBtn.setClickable(true);
+//
+////            listExists = true;
+//                Log.d("MY_TAG", "onPostExecute: ");
+////                adapter.removeAll();
+//                if (list!=null) {
+//                    Log.d("MY_TAG", "onPostExecute: "+list);
+//                    for(int i=0; i<list.size(); i++){
+//                        adapter.addEvent(list.get(i));
+//                    }
+//
+//                }
+//             else {
+//                    Log.d("MY_TAG", "onPostExecute: "+list);
+//                Toast.makeText(getActivity(), "Error - empty list", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
 
 

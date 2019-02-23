@@ -26,8 +26,8 @@ public interface Api {
 
 
     //List of Events in progress  -- TODO WTF?
-    @POST("/event/allprogresslist?page={page}&size={size}")
-    Call<EventListDto> getListOfEventsInProgress(@Path("page") int page, @Path("size") int size);
+    @POST("/event/allprogresslist")
+    Call<EventListDto> getListOfEventsInProgress(@Query("page") int page, @Query("size") int size);
 
 
     //Authorized requests
@@ -39,7 +39,7 @@ public interface Api {
     Call<UserDto> login(@Header("Authorization") String token);
 
     //Update User Profile
-    Call<UserDto> updateUserProfile(@Header("Authorization") String token, @Body UserDto user); //TODO auto parsing?
+    Call<UserDto> updateUserProfile(@Header("Authorization") String token, @Body UserDto user);
 
     //Client receives list of his notifications.
     @GET("/notification/list")
