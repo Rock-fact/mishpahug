@@ -14,7 +14,7 @@ public class EventDto {
     private UserDto owner;
     private AddressDto address;
 
-    public EventDto(String title, String status, String holiday, String confession, String description, int eventId, int duration, String date, Time time, List<UserDto> participants, List<String> food, UserDto owner, AddressDto address) {
+    public EventDto(String title, String status, String holiday, String confession, String description, Long eventId, int duration, String date, Time time, List<UserDto> participants, List<String> food, UserDto owner, AddressDto address) {
         this.title = title;
         this.status = status;
         this.holiday = holiday;
@@ -81,11 +81,11 @@ public class EventDto {
         this.description = description;
     }
 
-    public int getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
     }
 
