@@ -41,9 +41,6 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
 //    private boolean listExists;
 
 
-    private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
-    private Api api;
-
     public EventListFragment() {
 
     }
@@ -76,19 +73,7 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     @Override
     public void onStart() {
         super.onStart();
-        // new LoadingList().execute();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create()).build();
-        api = retrofit.create(Api.class);
-        Log.d("MY_TAG", "doInBackground: 2");
-        try {
-        Call<EventListDto> call = api.getListOfEventsInProgress(0, 10);
-        Log.d("MY_TAG", "doInBackground: 3"+call.request());
-        retrofit2.Response<EventListDto> response = call.execute();
-            Log.d("MY_TAG", "doInBackground: 4");
-        } catch (Exception e){
-            Log.d("MY_TAG", "onStart: "+e.getMessage());
-        }
+         new LoadingList().execute();
 
     }
 
@@ -98,81 +83,85 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     }
 
 
-//    private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
-//
-//
-//        @Override
-//        protected void onPreExecute() {
-//            progressBar.setVisibility(View.VISIBLE);
-//            recyclerView.setVisibility(View.GONE);
-//            filtersBtn.setVisibility(View.GONE);
-//            addBtn.setClickable(false);
-//        }
-//
-//        @Override
-//        protected List<EventDto> doInBackground(Void... voids) {
-//            try {
-//
-//                // To be deleted TODO
-////                for (int i=0; i<8; i++){
-////                    EventDto event = new EventDto();
-////                    UserDto owner = new UserDto();
-////                    owner.setFullName("Zuz");
-////                    event.setOwner(owner);
-////                    event.setTitle("title");
-////                    event.setDate(15.03.2020);
-////                    tmp.add(event);
-////                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
-////                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
-////
-////                }
-//
-//                Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-//                        .addConverterFactory(GsonConverterFactory.create()).build();
-//                api = retrofit.create(Api.class);
-//                Log.d("MY_TAG", "doInBackground: 2");
-//                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
-//                Log.d("MY_TAG", "doInBackground: 3");
-//                Response<EventListDto> response = call.execute();
-//                Log.d("MY_TAG", "doInBackground: 4");
-//                if(response.isSuccessful()){
-//                    Log.d("MY_TAG", "doInBackground: 5");
-//                    EventListDto eventListDto = response.body();
-//                    Log.d("MY_TAG", "doInBackground: "+eventListDto);
-//                    return eventListDto.getContent();
-//                } else {
-//                    throw new Exception(response.errorBody().string());
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<EventDto> list) {
-//            progressBar.setVisibility(View.GONE);
-//            recyclerView.setVisibility(View.VISIBLE);
-//            filtersBtn.setVisibility(View.VISIBLE);
-//            addBtn.setClickable(true);
-//
-////            listExists = true;
-//                Log.d("MY_TAG", "onPostExecute: ");
-////                adapter.removeAll();
-//                if (list!=null) {
-//                    Log.d("MY_TAG", "onPostExecute: "+list);
-//                    for(int i=0; i<list.size(); i++){
-//                        adapter.addEvent(list.get(i));
-//                    }
+    private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
+
+        private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
+        private Api api;
+        private List<EventDto> tmp;
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            filtersBtn.setVisibility(View.GONE);
+            addBtn.setClickable(false);
+        }
+
+        @Override
+        protected List<EventDto> doInBackground(Void... voids) {
+            try {
+                // To be deleted TODO
+//                for (int i=0; i<8; i++){
+//                    EventDto event = new EventDto();
+//                    UserDto owner = new UserDto();
+//                    owner.setFullName("Zuz");
+//                    event.setOwner(owner);
+//                    event.setTitle("title");
+//                    event.setDate(15.03.2020);
+//                    tmp.add(event);
+//                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
+//                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
 //
 //                }
-//             else {
-//                    Log.d("MY_TAG", "onPostExecute: "+list);
-//                Toast.makeText(getActivity(), "Error - empty list", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+
+                Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create()).build();
+                api = retrofit.create(Api.class);
+                Log.d("MY_TAG", "doInBackground: 2");
+                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
+                Log.d("MY_TAG", "doInBackground: 3");
+                retrofit2.Response<EventListDto> response = call.execute();
+                Log.d("MY_TAG", "doInBackground: 4");
+                if(response.isSuccessful()){
+                    Log.d("MY_TAG", "doInBackground: 5");
+                    EventListDto eventListDto = response.body();
+                    Log.d("MY_TAG", "doInBackground: "+eventListDto);
+                    tmp = eventListDto.getContent();
+                    Log.d("MY_TAG", "doInBackground: ");
+                    return tmp;
+                } else {
+                    throw new Exception(response.errorBody().string());
+                }
+
+            } catch (Exception e) {
+                Log.d("MY_TAG", "doInBackground: "+e.getMessage());;
+            }
+                return tmp;
+        }
+
+        @Override
+        protected void onPostExecute(List<EventDto> list) {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            filtersBtn.setVisibility(View.VISIBLE);
+            addBtn.setClickable(true);
+
+//            listExists = true;
+                Log.d("MY_TAG", "onPostExecute: ");
+//                adapter.removeAll();
+                if (list!=null) {
+                    Log.d("MY_TAG", "onPostExecute: "+list);
+                    for(int i=0; i<list.size(); i++){
+                        adapter.addEvent(list.get(i));
+                    }
+
+                }
+             else {
+                    Log.d("MY_TAG", "onPostExecute: "+list);
+                Toast.makeText(getActivity(), "Error - empty list", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 
 
