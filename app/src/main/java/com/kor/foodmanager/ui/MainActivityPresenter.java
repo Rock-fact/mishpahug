@@ -50,4 +50,33 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
         navigatorHolder.removeNavigator();
     }
 
+    public void eventList() {
+        router.navigateTo(EVENT_LIST_SCREEN);
+    }
+
+    public void notice(){
+        router.showSystemMessage("notice screen");
+    }
+
+    public void calendar(){
+        router.showSystemMessage("calendar screen");
+    }
+
+    public void participation(){
+        router.showSystemMessage("participations screen");
+    }
+
+    public void myProfile(){
+        router.showSystemMessage("profile screen");
+    }
+
+    public void myEventList(){
+        router.showSystemMessage("my event list");
+    }
+
+    public void logOut(){
+        authRepository.clearToken();
+        router.newRootScreen(LOGIN_SCREEN);
+    }
+
 }

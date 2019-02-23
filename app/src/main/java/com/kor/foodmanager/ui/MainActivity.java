@@ -1,8 +1,15 @@
 package com.kor.foodmanager.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -26,7 +33,7 @@ import butterknife.Unbinder;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements IMain{
+public class MainActivity extends MvpAppCompatActivity implements IMain, NavigationView.OnNavigationItemSelectedListener{
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String HOME_SCREEN = "HOME_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
@@ -40,6 +47,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
+    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.toolbar) Toolbar toolbar;
     private Unbinder unbinder;
 
 
@@ -47,9 +57,27 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setSupportActionBar(toolbar);
         unbinder = ButterKnife.bind(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        drawer.openDrawer(GravityCompat.START);
+        navigationView.setNavigationItemSelectedListener(this);
+
         progressFrame.setOnClickListener(null);
         presenter.startWork();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -71,6 +99,31 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
                 .setCancelable(false)
                 .create()
                 .show();
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.eventList) {
+            presenter.eventList();
+        } else if (id == R.id.myProfile) {
+            presenter.myProfile();
+        } else if (id == R.id.notice) {
+            presenter.notice();
+        } else if (id == R.id.calendar) {
+            presenter.calendar();
+        } else if (id == R.id.participation) {
+            presenter.participation();
+        } else if (id == R.id.myEventList) {
+            presenter.myEventList();
+        } else if (id == R.id.logOut) {
+            presenter.logOut();
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),R.id.root) {

@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".m2_forTest"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.MainActivity"
+    tools:showIn="@layout/app_bar_main"
     android:id="@+id/root">
+    
 
 </android.support.constraint.ConstraintLayout>
