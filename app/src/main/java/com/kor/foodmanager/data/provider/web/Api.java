@@ -1,6 +1,5 @@
 package com.kor.foodmanager.data.provider.web;
 
-import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.ErrorDto;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
@@ -28,8 +27,8 @@ public interface Api {
 
 
     //List of Events in progress  -- TODO WTF?
-    @POST("/event/allprogresslist?page={page}&size={size}")
-    Call<EventListDto> getListOfEventsInProgress(@Path("page") int page, @Path("size") int size);
+    @POST("/event/allprogresslist")
+    Call<EventListDto> getListOfEventsInProgress(@Query("page") int page, @Query("size") int size);
 
 
     //Authorized requests
@@ -41,7 +40,8 @@ public interface Api {
     Call<UserDto> login(@Header("Authorization") String token);
 
     //Update User Profile
-    Call<UserDto> updateUserProfile(@Header("Authorization") String token, @Body UserDto user); //TODO auto parsing?
+    @POST("/user/profile")
+    Call<UserDto> updateUserProfile(@Header("Authorization") String token, @Body UserDto user);
 
     //Client receives list of his notifications.
     @GET("/notification/list")
@@ -50,10 +50,6 @@ public interface Api {
     //Returns Event List for Calendar
     @GET("/event/calendar/{month}")
     Call<EventListDto> getListForCalendar(@Header("Authorization") String token, @Path("month") int month);
-
-    //Create new event
-    @POST("/event/creation")
-    Call<ErrorDto> createNewEvent(@Header("Authorization") String token, @Body EventDto event);
 
     //User receives the event that he created.
     @GET("/event/own/{eventId}")
@@ -107,5 +103,7 @@ public interface Api {
     Call<MessageDto> notificetionIsRead(@Header("Authorization") String token,
                                              @Path("notificationId") Long notificationId);
 
-
+    //Create new event
+    @POST("/event/creation")
+    Call<MessageDto> createNewEvent(@Header("Authorization") String token, @Body EventDto event);
 }

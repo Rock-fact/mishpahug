@@ -6,7 +6,8 @@ import java.util.List;
 
 public class EventDto {
     private String title, status, holiday, confession, description;
-    private int eventId, duration;
+    private int duration;
+    private long eventId;
     private String date;
     private Time time;
     private List<UserDto> participants;
