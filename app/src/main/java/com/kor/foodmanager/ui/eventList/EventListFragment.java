@@ -104,25 +104,12 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-                // To be deleted TODO
-//                for (int i=0; i<8; i++){
-//                    EventDto event = new EventDto();
-//                    UserDto owner = new UserDto();
-//                    owner.setFullName("Zuz");
-//                    event.setOwner(owner);
-//                    event.setTitle("title");
-//                    event.setDate("15.03.2019");
-//                    tmp.add(event);
-//                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
-//                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
-//
-//                }
-
                 Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create()).build();
                 api = retrofit.create(Api.class);
                 Log.d("MY_TAG", "doInBackground: 2");
-                Call<EventListDto> call = api.getMyEventList(token);
+//                Call<EventListDto> call = api.getMyEventList(token);
+                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
                 Log.d("MY_TAG", "doInBackground: 3");
                 retrofit2.Response<EventListDto> response = call.execute();
                 Log.d("MY_TAG", "doInBackground: 4");
@@ -130,7 +117,8 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
                     Log.d("MY_TAG", "doInBackground: 5");
                     EventListDto eventListDto = response.body();
                     Log.d("MY_TAG", "doInBackground: "+eventListDto);
-                    tmp = eventListDto.getEvents();
+//                    tmp = eventListDto.getEvents();
+                    tmp = eventListDto.getContent();
                     Log.d("MY_TAG", "doInBackground: ");
                     return tmp;
                 } else {
@@ -150,9 +138,7 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
             filtersBtn.setVisibility(View.VISIBLE);
             addBtn.setClickable(true);
 
-//            listExists = true;
                 Log.d("MY_TAG", "onPostExecute: ");
-//                adapter.removeAll();
                 if (list!=null) {
                     Log.d("MY_TAG", "onPostExecute: "+list);
                     for(int i=0; i<list.size(); i++){
