@@ -16,6 +16,8 @@ import butterknife.Unbinder;
 
 public class HomeFragment extends MvpAppCompatFragment implements IHome{
     @InjectPresenter HomePresenter presenter;
+
+
     @BindView(R.id.hello_text) TextView helloTxt;
     @BindView(R.id.logout_btn) Button logoutBtn;
     private Unbinder unbinder;

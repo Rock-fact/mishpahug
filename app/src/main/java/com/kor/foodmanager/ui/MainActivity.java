@@ -11,6 +11,7 @@ import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
+import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.home.HomeFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 
@@ -24,6 +25,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String HOME_SCREEN = "HOME_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
+    public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
     public static final String HIDE_PROGRESS = "HIDE_PROGRESS";
     public static final String TAG = "MY_TAG";
@@ -72,6 +74,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
                     return new HomeFragment();
                 case ADD_EVENT_SCREEN:
                     return new AddEventFragment();
+                case EVENT_LIST_SCREEN:
+                    return new EventListFragment();
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class UserDto {
-    private String firstName, lastName, fullname, gender, maritalStatus, confession, phoneNumber, description;
+    private String firstName, lastName, fullName, gender, maritalStatus, confession, phoneNumber, description;
     private Date dateOfBirth;
     private List<String> pictureLink, foodPreferences, languages;
     private double rate;
@@ -26,10 +26,10 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String firstName, String lastName, String fullname, String gender, String maritalStatus, String confession, String phoneNumber, String description, String dateOfBirth, List<String> pictureLink, List<String> foodPreferences, List<String> languages, double rate, int numberOfVoters) {
+    public UserDto(String firstName, String lastName, String fullName, String gender, String maritalStatus, String confession, String phoneNumber, String description, String dateOfBirth, List<String> pictureLink, List<String> foodPreferences, List<String> languages, double rate, int numberOfVoters) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.fullname = fullname;
+        this.fullName = fullName;
         this.gender = gender;
         this.maritalStatus = maritalStatus;
         this.confession = confession;
@@ -43,12 +43,12 @@ public class UserDto {
         this.dateOfBirth = parseDate(dateOfBirth);
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {

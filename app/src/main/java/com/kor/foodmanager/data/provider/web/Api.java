@@ -26,7 +26,7 @@ public interface Api {
     Call<StaticfieldsDto> getStaticFields();
 
 
-    //List of Events in progress  -- TODO WTF?
+    //List of Events in progress
     @POST("/event/allprogresslist")
     Call<EventListDto> getListOfEventsInProgress(@Query("page") int page, @Query("size") int size);
 
@@ -70,7 +70,7 @@ public interface Api {
     //User receives list of events which user subscribed or will participate.
     // Events at status "done" in which user participated includes into list only if user didn’t vote them.
     @GET("/event/participationlist")
-    Call<EventListDto> getParticipationList(@Header("Authorization") String token); //TODO specify EventListDto
+    Call<EventListDto> getParticipationList(@Header("Authorization") String token);
 
     //User receives number of unread notifications
     @GET("/notification/count")
@@ -92,7 +92,7 @@ public interface Api {
     //Invite to event
     @PUT("/event/invitation/{eventId}/{userId}")
     Call<InvitationStatusDto> inviteToEvent(@Header("Authorization") String token, @Path("eventId") Long eventId,
-                                            @Path("userId") Long userId); //TODO maybe UserDto
+                                            @Path("userId") Long userId);
 
     //Change event status
     @PUT("/event/pending/{eventId}")

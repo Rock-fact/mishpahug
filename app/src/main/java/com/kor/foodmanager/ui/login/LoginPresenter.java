@@ -12,6 +12,8 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
+
+import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 
 @InjectViewState
@@ -44,10 +46,6 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         } catch (PasswordValidException e) {
             getViewState().showPasswordError(e.getMessage());
         }
-    }
-
-    public void showHomeScreen(){
-        router.replaceScreen(HOME_SCREEN);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         protected void onPostExecute(String s) {
             getViewState().hideProgressFrame();
             if(isSuccess){
-                showHomeScreen();
+                router.navigateTo(EVENT_LIST_SCREEN);
             }else{
                 getViewState().showError(s);
             }
