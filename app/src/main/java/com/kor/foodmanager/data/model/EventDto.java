@@ -9,13 +9,13 @@ public class EventDto {
     private int duration;
     private long eventId;
     private String date;
-    private Time time;
+    private String time;
     private List<UserDto> participants;
     private List<String> food;
     private UserDto owner;
     private AddressDto address;
 
-    public EventDto(String title, String status, String holiday, String confession, String description, Long eventId, int duration, String date, Time time, List<UserDto> participants, List<String> food, UserDto owner, AddressDto address) {
+    public EventDto(String title, String status, String holiday, String confession, String description, Long eventId, int duration, String date, String time, List<UserDto> participants, List<String> food, UserDto owner, AddressDto address) {
         this.title = title;
         this.status = status;
         this.holiday = holiday;
@@ -106,11 +106,11 @@ public class EventDto {
         this.date = date;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
