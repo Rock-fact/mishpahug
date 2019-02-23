@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.eventList;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -87,7 +90,8 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
 
         private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
         private Api api;
-        private List<EventDto> tmp;
+        private List<EventDto> tmp = new ArrayList<>();
+        private String token = getActivity().getSharedPreferences("AUTH", Context.MODE_PRIVATE).getString("CURR", null);
 
         @Override
         protected void onPreExecute() {
@@ -107,18 +111,18 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
 //                    owner.setFullName("Zuz");
 //                    event.setOwner(owner);
 //                    event.setTitle("title");
-//                    event.setDate(15.03.2020);
+//                    event.setDate("15.03.2019");
 //                    tmp.add(event);
 //                    Log.d("MY_TAG", "EventListAdapter: "+event.toString());
 //                    Log.d("MY_TAG", "EventListAdapter: "+tmp.size());
 //
 //                }
 
-                Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create()).build();
                 api = retrofit.create(Api.class);
                 Log.d("MY_TAG", "doInBackground: 2");
-                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
+                Call<EventListDto> call = api.getMyEventList(token);
                 Log.d("MY_TAG", "doInBackground: 3");
                 retrofit2.Response<EventListDto> response = call.execute();
                 Log.d("MY_TAG", "doInBackground: 4");
@@ -126,13 +130,13 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
                     Log.d("MY_TAG", "doInBackground: 5");
                     EventListDto eventListDto = response.body();
                     Log.d("MY_TAG", "doInBackground: "+eventListDto);
-                    tmp = eventListDto.getContent();
+                    tmp = eventListDto.getEvents();
                     Log.d("MY_TAG", "doInBackground: ");
                     return tmp;
                 } else {
                     throw new Exception(response.errorBody().string());
                 }
-
+//
             } catch (Exception e) {
                 Log.d("MY_TAG", "doInBackground: "+e.getMessage());;
             }
