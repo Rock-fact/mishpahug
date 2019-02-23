@@ -1,29 +1,20 @@
 package com.kor.foodmanager.data.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDto {
     private String firstName, lastName, fullName, gender, maritalStatus, confession, phoneNumber, description;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private List<String> pictureLink, foodPreferences, languages;
     private double rate;
     private int numberOfVoters;
 
-    public Date parseDate(String dateStr){
-        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-        Date date;
-        try {
-            date = ft.parse(dateStr);
-        } catch (ParseException e) {
-            date = null;
-        }
-        return date;
-    }
 
     public UserDto() {
+        pictureLink = new ArrayList<>();
+        foodPreferences = new ArrayList<>();
+        languages = new ArrayList<>();
     }
 
     public UserDto(String firstName, String lastName, String fullName, String gender, String maritalStatus, String confession, String phoneNumber, String description, String dateOfBirth, List<String> pictureLink, List<String> foodPreferences, List<String> languages, double rate, int numberOfVoters) {
@@ -35,24 +26,12 @@ public class UserDto {
         this.confession = confession;
         this.phoneNumber = phoneNumber;
         this.description = description;
+        this.dateOfBirth = dateOfBirth;
         this.pictureLink = pictureLink;
         this.foodPreferences = foodPreferences;
         this.languages = languages;
         this.rate = rate;
         this.numberOfVoters = numberOfVoters;
-        this.dateOfBirth = parseDate(dateOfBirth);
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFirstName() {
@@ -69,6 +48,14 @@ public class UserDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getGender() {
@@ -111,12 +98,12 @@ public class UserDto {
         this.description = description;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = parseDate(dateOfBirth);
+        this.dateOfBirth = dateOfBirth;
     }
 
     public List<String> getPictureLink() {

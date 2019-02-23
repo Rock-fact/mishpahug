@@ -15,6 +15,7 @@ import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.REGISTRATION_FRAGMENT;
 
 @InjectViewState
 public class LoginPresenter extends MvpPresenter<ILogin> {
@@ -37,16 +38,20 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         }
     }
 
-    public void registration(String email, String password) {
-        try {
-            interactor.validate(email,password);
-            new RegistrationTask(email,password).execute();
-        } catch (EmailValidException e) {
-            getViewState().showEmailError(e.getMessage());
-        } catch (PasswordValidException e) {
-            getViewState().showPasswordError(e.getMessage());
-        }
+    public void registration(){
+        router.navigateTo(REGISTRATION_FRAGMENT);
     }
+
+//    public void registration(String email, String password) {
+//        try {
+//            interactor.validate(email,password);
+//            new RegistrationTask(email,password).execute();
+//        } catch (EmailValidException e) {
+//            getViewState().showEmailError(e.getMessage());
+//        } catch (PasswordValidException e) {
+//            getViewState().showPasswordError(e.getMessage());
+//        }
+//    }
 
     @Override
     public void onDestroy() {
@@ -131,8 +136,7 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         protected void onPostExecute(String s) {
             getViewState().hideProgressFrame();
             if(isSuccess){
-                // TODO: 19.02.2019 add registration flow 
-                getViewState().showError("SUCCESS REGISTRATION!");
+                router.navigateTo(REGISTRATION_FRAGMENT);
             }else{
                 getViewState().showError(s);
             }

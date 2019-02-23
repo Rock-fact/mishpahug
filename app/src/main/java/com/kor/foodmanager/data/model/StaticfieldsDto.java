@@ -1,5 +1,6 @@
 package com.kor.foodmanager.data.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StaticfieldsDto {
@@ -9,6 +10,8 @@ public class StaticfieldsDto {
     private List<String> foodPreferences;
     private List<String> languages;
     private List<String> holiday;
+
+
 
     public List<String> getConfession() {
         return confession;
@@ -59,6 +62,12 @@ public class StaticfieldsDto {
     }
 
     public StaticfieldsDto() {
+        this.confession = new ArrayList<>();
+        this.gender = new ArrayList<>();
+        this.maritalStatus = new ArrayList<>();
+        this.foodPreferences = new ArrayList<>();
+        this.languages = new ArrayList<>();
+        this.holiday = new ArrayList<>();
     }
 
     public StaticfieldsDto(List<String> confession, List<String> gender, List<String> maritalStatus, List<String> foodPreferences, List<String> languages, List<String> holiday) {

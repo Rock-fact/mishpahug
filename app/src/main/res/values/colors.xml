@@ -4,5 +4,11 @@
     <color name="colorPrimaryDark">#32265F</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorLight">#434436</color>
+    <color name="white">#FFFFFF</color>
+    <color name="shadow">#8ABEB6B6</color>
+    <color name="peach">#FFEED9</color>
+    <color name="dark">#434436</color>
+    <color name="darkblue">#32265F</color>
+    <color name="lightblue">#5F4F8D</color>
     <color name="colorBeige">#FFEED9</color>
 </resources>

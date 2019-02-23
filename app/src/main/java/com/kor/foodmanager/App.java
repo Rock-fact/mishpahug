@@ -2,6 +2,7 @@ package com.kor.foodmanager;
 
 import android.app.Application;
 
+
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
@@ -27,7 +28,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mainComponent = DaggerMainComponent.builder().mainModule(new MainModule(this)).build();
+        mainComponent = DaggerMainComponent.builder()
+                .mainModule(new MainModule(this))
+                .build();
 
     }
 

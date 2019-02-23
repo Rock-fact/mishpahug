@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.provider.web.Api;
+import com.kor.foodmanager.data.userData.IUserDataRepository;
+import com.kor.foodmanager.data.userData.UserDataRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -76,5 +78,10 @@ public class MainModule {
     @Provides @Singleton
     IAuthRepository provideAuthRepository(Context context, Gson gson){
         return new AuthRepository(context, gson);
+    }
+
+    @Provides @Singleton
+    IUserDataRepository provideUserDataRepository(IAuthRepository authRepository, Api api){
+        return new UserDataRepository(api, authRepository);
     }
 }

@@ -61,10 +61,15 @@ public class LoginFragment extends MvpAppCompatFragment implements ILogin {
 
     @OnClick(R.id.regBtn)
     public void regBtnClicked(){
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
-        presenter.registration(email,password);
+        presenter.registration();
     }
+
+//    @OnClick(R.id.regBtn)
+//    public void regBtnClicked(){
+//        String email = inputEmail.getText().toString();
+//        String password = inputPassword.getText().toString();
+//        presenter.registration(email,password);
+//    }
 
     @Override
     public void showEmailError(String error) {

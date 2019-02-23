@@ -10,10 +10,15 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
+import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.home.HomeFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
+import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
+import com.kor.foodmanager.ui.registration.RegistrationFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +33,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
     public static final String HIDE_PROGRESS = "HIDE_PROGRESS";
+    public static final String PERSONALPROFILE_FRAGMENT_NEW = "PERSONALPROFILE_FRAGMENT_NEW";
+    public static final String ABOUTMYSELF_FRAGMENT_NEW = "ABOUTMYSELF_FRAGMENT_NEW";
+    public static final String CONTACTINFO_FRAGMENT_NEW = "CONTACTINFO_FRAGMENT_NEW";
+    public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -76,6 +85,14 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:
                     return new EventListFragment();
+                case REGISTRATION_FRAGMENT:
+                    return new RegistrationFragment();
+                case ABOUTMYSELF_FRAGMENT_NEW:
+                    return AboutMyselfFragment.getNewInstance((UserDto)data, true);
+                case PERSONALPROFILE_FRAGMENT_NEW:
+                    return PersonalProfileFragment.getNewInstance((UserDto) data, true);
+                case CONTACTINFO_FRAGMENT_NEW:
+                    return ContactInfoFragment.getNewInstance((UserDto) data, true);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

@@ -1,6 +1,9 @@
 package com.kor.foodmanager.di.login;
 
+import com.kor.foodmanager.buissness.login.ILoginInteractor;
+import com.kor.foodmanager.data.login.ILoginRepository;
 import com.kor.foodmanager.ui.login.LoginPresenter;
+import com.kor.foodmanager.ui.registration.RegistrationPresenter;
 
 import dagger.Subcomponent;
 
@@ -8,4 +11,5 @@ import dagger.Subcomponent;
 @LoginScope
 public interface LoginComponent {
     void inject(LoginPresenter presenter);
+    ILoginInteractor getLoginInteractor();
 }
