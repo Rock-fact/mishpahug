@@ -94,25 +94,4 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));};
 
-    @Override
-    public void showProgressFrame() {
-        // TODO: 22.02.2019
-    }
-
-    @Override
-    public void hideProgressFrame() {
-        // TODO: 22.02.2019
-    }
-
-    @Override
-    public void showError(String error) {
-        new AlertDialog.Builder(getActivity())
-                .setMessage(error)
-                .setTitle("Error!")
-                .setPositiveButton("Ok", null)
-                .setCancelable(false)
-                .create()
-                .show();
-    }
-
 }

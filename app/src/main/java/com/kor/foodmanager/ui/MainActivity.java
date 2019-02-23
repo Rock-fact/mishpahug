@@ -2,6 +2,9 @@ package com.kor.foodmanager.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -11,6 +14,7 @@ import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.home.HomeFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import ru.terrakok.cicerone.Navigator;
@@ -20,8 +24,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String HOME_SCREEN = "HOME_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
+    public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
+    public static final String HIDE_PROGRESS = "HIDE_PROGRESS";
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
+    @BindView(R.id.progressFrame) FrameLayout progressFrame;
     private Unbinder unbinder;
 
 
@@ -30,7 +37,29 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
+        progressFrame.setOnClickListener(null);
         presenter.startWork();
+    }
+
+    @Override
+    public void showProgressFrame() {
+        progressFrame.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressFrame() {
+        progressFrame.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String error) {
+        new AlertDialog.Builder(this)
+                .setMessage(error)
+                .setTitle("Error!")
+                .setPositiveButton("Ok", null)
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),R.id.root) {
@@ -50,12 +79,21 @@ public class MainActivity extends MvpAppCompatActivity implements IMain{
 
         @Override
         protected void showSystemMessage(String message) {
-            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            switch (message){
+                case SHOW_PROGRESS:
+                    showProgressFrame();
+                    break;
+                case HIDE_PROGRESS:
+                    hideProgressFrame();
+                    break;
+                    default:
+                        showError(message);
+            }
         }
 
         @Override
         protected void exit() {
-            finish();
+            getSupportFragmentManager().popBackStack();
         }
     };
 

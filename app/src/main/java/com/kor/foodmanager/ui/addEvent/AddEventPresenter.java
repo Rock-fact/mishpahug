@@ -14,9 +14,14 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import ru.terrakok.cicerone.Router;
+
+import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
+import static com.kor.foodmanager.ui.MainActivity.SHOW_PROGRESS;
+
 @InjectViewState
 public class AddEventPresenter extends MvpPresenter<IAddEvent> {
-
+    @Inject Router router;
     @Inject IHomeInteractor interactor;
 
     public AddEventPresenter(){
@@ -43,7 +48,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
 
         @Override
         protected void onPreExecute() {
-            getViewState().showProgressFrame();
+            router.showSystemMessage(SHOW_PROGRESS);
         }
 
         @Override
@@ -64,12 +69,11 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
 
         @Override
         protected void onPostExecute(String s) {
-            getViewState().hideProgressFrame();
+            router.showSystemMessage(HIDE_PROGRESS);
             if(isSuccess){
-                // TODO: 22.02.2019
-                getViewState().showError("EVENT ADDED");
+                router.showSystemMessage("EVENT ADDED");
             }else{
-                getViewState().showError(s);
+                router.showSystemMessage(s);
             }
 
         }
