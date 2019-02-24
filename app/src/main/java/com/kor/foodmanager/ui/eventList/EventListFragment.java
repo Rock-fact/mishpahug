@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
@@ -35,13 +37,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EventListFragment extends Fragment implements EventListAdapter.MyClickListener{
+public class EventListFragment extends MvpAppCompatFragment implements EventListAdapter.MyClickListener, IEventList{
+    @InjectPresenter EventListPresenter presenter;
     private RecyclerView recyclerView;
     private EventListAdapter adapter;
     private Button filtersBtn;
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
-//    private boolean listExists;
+
 
 
     public EventListFragment() {
@@ -60,13 +63,13 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
         recyclerView = view.findViewById(R.id.eventList_rv);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new EventListAdapter();
+        adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
-        Log.d("MY_TAG", "onCreateView: "+adapter.toString());
+
         return view;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +79,7 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     @Override
     public void onStart() {
         super.onStart();
-         new LoadingList().execute();
+         presenter.loadEventList();
 
     }
 
@@ -86,72 +89,22 @@ public class EventListFragment extends Fragment implements EventListAdapter.MyCl
     }
 
 
-    private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
-
-        private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
-        private Api api;
-        private List<EventDto> tmp = new ArrayList<>();
-        private String token = getActivity().getSharedPreferences("AUTH", Context.MODE_PRIVATE).getString("CURR", null);
-
-        @Override
-        protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            filtersBtn.setVisibility(View.GONE);
-            addBtn.setClickable(false);
-        }
-
-        @Override
-        protected List<EventDto> doInBackground(Void... voids) {
-            try {
-                Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create()).build();
-                api = retrofit.create(Api.class);
-                Log.d("MY_TAG", "doInBackground: 2");
-//                Call<EventListDto> call = api.getMyEventList(token);
-                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
-                Log.d("MY_TAG", "doInBackground: 3");
-                retrofit2.Response<EventListDto> response = call.execute();
-                Log.d("MY_TAG", "doInBackground: 4");
-                if(response.isSuccessful()){
-                    Log.d("MY_TAG", "doInBackground: 5");
-                    EventListDto eventListDto = response.body();
-                    Log.d("MY_TAG", "doInBackground: "+eventListDto);
-//                    tmp = eventListDto.getEvents();
-                    tmp = eventListDto.getContent();
-                    Log.d("MY_TAG", "doInBackground: ");
-                    return tmp;
-                } else {
-                    throw new Exception(response.errorBody().string());
-                }
-//
-            } catch (Exception e) {
-                Log.d("MY_TAG", "doInBackground: "+e.getMessage());;
-            }
-                return tmp;
-        }
-
-        @Override
-        protected void onPostExecute(List<EventDto> list) {
-            progressBar.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            filtersBtn.setVisibility(View.VISIBLE);
-            addBtn.setClickable(true);
-
-                Log.d("MY_TAG", "onPostExecute: ");
-                if (list!=null) {
-                    Log.d("MY_TAG", "onPostExecute: "+list);
-                    for(int i=0; i<list.size(); i++){
-                        adapter.addEvent(list.get(i));
-                    }
-
-                }
-             else {
-                    Log.d("MY_TAG", "onPostExecute: "+list);
-                Toast.makeText(getActivity(), "Error - empty list", Toast.LENGTH_SHORT).show();
-            }
-        }
+    @Override
+    public void showProgressFrame() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        filtersBtn.setVisibility(View.GONE);
+        addBtn.setClickable(false);
     }
+
+    @Override
+    public void hideProgressFrame() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        filtersBtn.setVisibility(View.VISIBLE);
+        addBtn.setClickable(true);
+    }
+
 
 
 
