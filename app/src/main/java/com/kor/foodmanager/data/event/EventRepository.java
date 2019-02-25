@@ -1,4 +1,4 @@
-package com.kor.foodmanager.data.home;
+package com.kor.foodmanager.data.event;
 
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.model.ErrorDto;
@@ -11,11 +11,11 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class HomeRepository implements IHomeRepository {
+public class EventRepository implements IEventRepository {
     private Api api;
     private Gson gson;
 
-    public HomeRepository(Api api, Gson gson) {
+    public EventRepository(Api api, Gson gson) {
         this.api = api;
         this.gson = gson;
     }

@@ -1,7 +1,7 @@
 package com.kor.foodmanager.di.application;
 
-import com.kor.foodmanager.di.home.HomeComponent;
-import com.kor.foodmanager.di.home.HomeModule;
+import com.kor.foodmanager.di.event.EventComponent;
+import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
 import com.kor.foodmanager.ui.MainActivityPresenter;
@@ -19,7 +19,7 @@ import dagger.Component;
 public interface MainComponent{
     void inject(MainActivityPresenter presenter);
     LoginComponent plus(LoginModule module);
-    HomeComponent plus(HomeModule module);
+    EventComponent plus(EventModule module);
     void inject(RegistrationPresenter presenter);
     void inject(PersonalProfilePresenter presenter);
     void inject(AboutMyselfPresenter presenter);

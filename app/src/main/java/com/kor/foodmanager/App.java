@@ -6,8 +6,8 @@ import android.app.Application;
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
-import com.kor.foodmanager.di.home.HomeComponent;
-import com.kor.foodmanager.di.home.HomeModule;
+import com.kor.foodmanager.di.event.EventComponent;
+import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
 
@@ -15,7 +15,7 @@ public class App extends Application {
     private static App app;
     private MainComponent mainComponent;
     private LoginComponent loginComponent;
-    private HomeComponent homeComponent;
+    private EventComponent eventComponent;
 
     public App(){
         app = this;
@@ -49,14 +49,14 @@ public class App extends Application {
         loginComponent = null;
     }
 
-    public HomeComponent homeComponent(){
-        if(homeComponent == null){
-            homeComponent = mainComponent.plus(new HomeModule());
+    public EventComponent eventComponent(){
+        if(eventComponent == null){
+            eventComponent = mainComponent.plus(new EventModule());
         }
-        return homeComponent;
+        return eventComponent;
     }
 
-    public void clearHomeComponent(){
-        homeComponent = null;
+    public void clearEventComponent(){
+        eventComponent = null;
     }
 }

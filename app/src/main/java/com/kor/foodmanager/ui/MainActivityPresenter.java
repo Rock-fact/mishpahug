@@ -12,7 +12,6 @@ import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
-import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
 
 @InjectViewState
@@ -26,7 +25,6 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void startWork() {
-        authRepository.clearToken();
         if(authRepository.getToken()==null){
             showLoginScreen();
         }else {

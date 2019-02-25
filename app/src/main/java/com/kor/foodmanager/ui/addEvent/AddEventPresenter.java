@@ -5,9 +5,8 @@ import android.os.AsyncTask;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
-import com.kor.foodmanager.buissness.home.HomeInteractor;
-import com.kor.foodmanager.buissness.home.IHomeInteractor;
-import com.kor.foodmanager.data.home.ServerException;
+import com.kor.foodmanager.buissness.event.IEventInteractor;
+import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 
 import java.io.IOException;
@@ -22,10 +21,10 @@ import static com.kor.foodmanager.ui.MainActivity.SHOW_PROGRESS;
 @InjectViewState
 public class AddEventPresenter extends MvpPresenter<IAddEvent> {
     @Inject Router router;
-    @Inject IHomeInteractor interactor;
+    @Inject IEventInteractor interactor;
 
     public AddEventPresenter(){
-        App.get().homeComponent().inject(this);
+        App.get().eventComponent().inject(this);
     }
 
     public void addNewEvent(EventDto event) {
@@ -34,7 +33,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
 
     @Override
     public void onDestroy() {
-        App.get().clearHomeComponent();
+        App.get().clearEventComponent();
         super.onDestroy();
     }
 

@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -22,7 +21,6 @@ import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
-import com.kor.foodmanager.ui.home.HomeFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
@@ -35,7 +33,6 @@ import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements IMain, NavigationView.OnNavigationItemSelectedListener{
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
-    public static final String HOME_SCREEN = "HOME_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
@@ -131,8 +128,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
             switch (screenKey){
                 case LOGIN_SCREEN:
                     return new LoginFragment();
-                case HOME_SCREEN:
-                    return new HomeFragment();
                 case ADD_EVENT_SCREEN:
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:

@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
-import static com.kor.foodmanager.ui.MainActivity.HOME_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.REGISTRATION_FRAGMENT;
 
 @InjectViewState
