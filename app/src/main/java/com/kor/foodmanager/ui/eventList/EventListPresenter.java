@@ -75,6 +75,7 @@ private EventListAdapter adapter = new EventListAdapter();
         protected void onPostExecute(List<EventDto> list) {
            getViewState().hideProgressFrame();
             if (list!=null) {
+                adapter.removeAll();
                 for(int i=0; i<list.size(); i++){
                     adapter.addEvent(list.get(i));
                 }
