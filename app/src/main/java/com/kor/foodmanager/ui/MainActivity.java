@@ -64,7 +64,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        drawer.openDrawer(GravityCompat.START);
         navigationView.setNavigationItemSelectedListener(this);
 
         progressFrame.setOnClickListener(null);
