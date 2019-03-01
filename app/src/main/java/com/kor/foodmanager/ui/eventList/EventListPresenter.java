@@ -9,22 +9,34 @@ import android.widget.Toast;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.provider.web.Api;
+import com.kor.foodmanager.di.application.MainModule;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class EventListPresenter extends MvpPresenter<IEventList> {
 
+    @Inject Router router;
+
 private EventListAdapter adapter = new EventListAdapter();
+
+    public EventListPresenter() {
+        App.get().mainComponent().inject(this);
+    }
 
     public void loadEventList(){
         new LoadingList().execute();
@@ -33,6 +45,8 @@ private EventListAdapter adapter = new EventListAdapter();
     public EventListAdapter getAdapter(){
         return adapter;
     }
+
+    public void addEvent() {router.navigateTo(MainActivity.ADD_EVENT_SCREEN);}
 
 
 
