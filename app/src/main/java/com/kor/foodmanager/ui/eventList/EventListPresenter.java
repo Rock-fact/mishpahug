@@ -29,8 +29,8 @@ import ru.terrakok.cicerone.Router;
 
 @InjectViewState
 public class EventListPresenter extends MvpPresenter<IEventList> {
-
     @Inject Router router;
+    @Inject Api api;
 
 private EventListAdapter adapter = new EventListAdapter();
 
@@ -53,9 +53,9 @@ private EventListAdapter adapter = new EventListAdapter();
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
 
         private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
-        private Api api;
+//        private Api api;
         private List<EventDto> tmp = new ArrayList<>();
-//        private EventListAdapter tmpAdapter = adapter;
+
 
         @Override
         protected void onPreExecute() {
@@ -65,9 +65,9 @@ private EventListAdapter adapter = new EventListAdapter();
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-                Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
-                        .addConverterFactory(GsonConverterFactory.create()).build();
-                api = retrofit.create(Api.class);
+//                Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
+//                        .addConverterFactory(GsonConverterFactory.create()).build();
+//                api = retrofit.create(Api.class);
                 Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
                 retrofit2.Response<EventListDto> response = call.execute();
                 Log.d("MY_TAG", "doInBackground: 4");
