@@ -4,6 +4,8 @@ import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
+import com.kor.foodmanager.di.notification.NotificationComponent;
+import com.kor.foodmanager.di.notification.NotificationModule;
 import com.kor.foodmanager.ui.MainActivityPresenter;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfPresenter;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoPresenter;
@@ -20,8 +22,10 @@ public interface MainComponent{
     void inject(MainActivityPresenter presenter);
     LoginComponent plus(LoginModule module);
     EventComponent plus(EventModule module);
+    NotificationComponent plus(NotificationModule module);
     void inject(RegistrationPresenter presenter);
     void inject(PersonalProfilePresenter presenter);
     void inject(AboutMyselfPresenter presenter);
     void inject(ContactInfoPresenter presenter);
+
 }

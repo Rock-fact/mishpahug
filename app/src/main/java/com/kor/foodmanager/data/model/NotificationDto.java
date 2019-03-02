@@ -77,6 +77,19 @@ public class NotificationDto {
         this.date = date;
     }
 
+    @Override
+    public String toString() {
+        return "NotificationDto{" +
+                "eventId=" + eventId +
+                ", notificationId=" + notificationId +
+                ", title='" + title + '\'' +
+                ", message='" + message + '\'' +
+                ", type='" + type + '\'' +
+                ", isRead=" + isRead +
+                ", date=" + date +
+                '}';
+    }
+
     //     "notificationId": 4,++
 //             "title": "Invitation",++
 //             "message": "You was invited to event 'Pesah'",++

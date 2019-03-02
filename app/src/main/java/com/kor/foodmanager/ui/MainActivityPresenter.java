@@ -13,6 +13,7 @@ import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.NOTIFICATIONS_SCREEN;
 
 @InjectViewState
 public class MainActivityPresenter extends MvpPresenter<IMain> {
@@ -53,7 +54,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void notice(){
-        router.showSystemMessage("notice screen");
+        router.navigateTo(NOTIFICATIONS_SCREEN);
     }
 
     public void calendar(){

@@ -22,6 +22,7 @@ import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
+import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
 
@@ -35,6 +36,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
+    public static final String NOTIFICATIONS_SCREEN = "NOTIFICATIONS_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
     public static final String HIDE_PROGRESS = "HIDE_PROGRESS";
     public static final String PERSONALPROFILE_FRAGMENT_NEW = "PERSONALPROFILE_FRAGMENT_NEW";
@@ -132,6 +134,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:
                     return new EventListFragment();
+                case NOTIFICATIONS_SCREEN:
+                    return new NotificationListFragment();
                 case REGISTRATION_FRAGMENT:
                     return new RegistrationFragment();
                 case ABOUTMYSELF_FRAGMENT_NEW:

@@ -10,12 +10,15 @@ import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
+import com.kor.foodmanager.di.notification.NotificationComponent;
+import com.kor.foodmanager.di.notification.NotificationModule;
 
 public class App extends Application {
     private static App app;
     private MainComponent mainComponent;
     private LoginComponent loginComponent;
     private EventComponent eventComponent;
+    private NotificationComponent notificationComponent;
 
     public App(){
         app = this;
@@ -58,5 +61,16 @@ public class App extends Application {
 
     public void clearEventComponent(){
         eventComponent = null;
+    }
+
+    public NotificationComponent notificationComponent(){
+        if(notificationComponent == null){
+            notificationComponent = mainComponent.plus(new NotificationModule());
+        }
+        return notificationComponent;
+    }
+
+    public void clearNotificationComponent() {
+        notificationComponent = null;
     }
 }

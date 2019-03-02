@@ -3,20 +3,20 @@ package com.kor.foodmanager.data.model;
 import java.util.List;
 
 public class NotificationListDto {
-    private List<NotificationDto> notificationList;
+    private List<NotificationDto> notifications;
 
     public NotificationListDto() {
     }
 
-    public NotificationListDto(List<NotificationDto> notificationList) {
-        this.notificationList = notificationList;
+    public NotificationListDto(List<NotificationDto> notifications) {
+        this.notifications = this.notifications;
     }
 
-    public List<NotificationDto> getNotificationList() {
-        return notificationList;
+    public List<NotificationDto> getNotifications() {
+        return notifications;
     }
 
-    public void setNotificationList(List<NotificationDto> notificationList) {
-        this.notificationList = notificationList;
+    public void setNotifications(List<NotificationDto> notifications) {
+        this.notifications = notifications;
     }
 }
