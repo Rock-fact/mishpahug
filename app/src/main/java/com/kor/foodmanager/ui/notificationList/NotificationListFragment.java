@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.NotificationListDto;
+import com.kor.foodmanager.data.model.NotificationDto;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import butterknife.Unbinder;
 
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
-public class NotificationListFragment extends MvpAppCompatFragment implements INotificationList {
+public class NotificationListFragment extends MvpAppCompatFragment implements INotificationList, NotificationListAdapter.MyClickListener {
     @InjectPresenter NotificationListPresenter presenter;
     @BindView(R.id.notificationList) RecyclerView notificationList;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -54,6 +54,7 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
     @Override
     public void showNotificationList(NotificationListAdapter adapter) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        adapter.setListener(this);
         notificationList.setLayoutManager(layoutManager);
         notificationList.setAdapter(adapter);
         Log.d(TAG, "showNotificationList: size: "+adapter.getItemCount());
@@ -68,5 +69,10 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
     @Override
     public void hideProgressFrame() {
         progressFrame.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(NotificationDto notificationDto) {
+        presenter.showInfo(notificationDto);
     }
 }

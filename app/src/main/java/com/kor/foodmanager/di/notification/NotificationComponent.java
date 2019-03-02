@@ -1,5 +1,6 @@
 package com.kor.foodmanager.di.notification;
 
+import com.kor.foodmanager.ui.notificationInfo.NotificationInfoPresenter;
 import com.kor.foodmanager.ui.notificationList.NotificationListPresenter;
 
 import dagger.Subcomponent;
@@ -8,4 +9,5 @@ import dagger.Subcomponent;
 @NotificationScope
 public interface NotificationComponent {
     void inject(NotificationListPresenter presenter);
+    void inject(NotificationInfoPresenter notificationInfoPresenter);
 }

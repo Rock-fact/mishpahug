@@ -19,6 +19,7 @@ import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.NotificationViewHolder> {
     List<NotificationDto> list = new ArrayList<>();
+    private MyClickListener listener;
 
     public NotificationListAdapter() {
     }
@@ -32,7 +33,21 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.notification_item,viewGroup,false);
-        return new NotificationViewHolder(view);
+        NotificationViewHolder holder = new NotificationViewHolder(view);
+        view.setOnClickListener(v -> {
+            int pos = holder.getAdapterPosition();
+            if(pos!=RecyclerView.NO_POSITION){
+                if(listener!=null){
+                    listener.onClick(list.get(pos));
+                }
+                itemClicked(pos);
+            }
+        });
+        return holder;
+    }
+
+    private void itemClicked(int pos) {
+
     }
 
     @Override
@@ -53,6 +68,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void setListener(MyClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface MyClickListener{
+        void onClick(NotificationDto notificationDto);
     }
 
 

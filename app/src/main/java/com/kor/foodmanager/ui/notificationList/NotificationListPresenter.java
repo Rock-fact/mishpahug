@@ -17,10 +17,11 @@ import java.util.List;
 import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
 import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
+import static com.kor.foodmanager.ui.MainActivity.NOTIFICATION_INFO_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
-public class NotificationListPresenter extends MvpPresenter<INotificationList> {
+public class NotificationListPresenter extends MvpPresenter<INotificationList>{
     @Inject Router router;
     @Inject INotificationInteractor interactor;
     NotificationListAdapter adapter;
@@ -38,6 +39,10 @@ public class NotificationListPresenter extends MvpPresenter<INotificationList> {
     public void onDestroy() {
         App.get().clearNotificationComponent();
         super.onDestroy();
+    }
+
+    public void showInfo(NotificationDto notificationDto) {
+        router.navigateTo(NOTIFICATION_INFO_SCREEN, notificationDto);
     }
 
     private class GetNotificationListTask extends AsyncTask<Void,Void, List<NotificationDto>> {
