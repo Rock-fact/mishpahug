@@ -1,24 +1,17 @@
 package com.kor.foodmanager.ui.notificationList;
 
 import android.os.AsyncTask;
-import android.util.Log;
-
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.notification.INotificationInteractor;
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.NotificationDto;
-import com.kor.foodmanager.data.model.NotificationListDto;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
-import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
 import static com.kor.foodmanager.ui.MainActivity.NOTIFICATION_INFO_SCREEN;
-import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
 public class NotificationListPresenter extends MvpPresenter<INotificationList>{
@@ -43,6 +36,10 @@ public class NotificationListPresenter extends MvpPresenter<INotificationList>{
 
     public void showInfo(NotificationDto notificationDto) {
         router.navigateTo(NOTIFICATION_INFO_SCREEN, notificationDto);
+    }
+
+    public void onResume() {
+        adapter.notifyDataSetChanged();             // TODO: 03.03.2019 for new (isRead) change. Not working now. 
     }
 
     private class GetNotificationListTask extends AsyncTask<Void,Void, List<NotificationDto>> {
@@ -76,8 +73,6 @@ public class NotificationListPresenter extends MvpPresenter<INotificationList>{
                 List<NotificationDto> list = notificationListDto;
                 adapter.setList(list);
                 getViewState().showNotificationList(adapter);
-                // TODO: 02.03.2019 listener
-//                adapter.setListener((RecyclerContactAdapter.MyClickListener) getActivity());
             }else{
                 router.showSystemMessage(res);
             }

@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface INotificationInteractor {
     List<NotificationDto> getNotificationList() throws IOException, ServerException;
+    void notificationIsRead(Long notificationId) throws IOException, ServerException;
 }

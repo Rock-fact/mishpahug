@@ -28,4 +28,10 @@ public class NotificationInteractor implements INotificationInteractor {
         Collections.sort(sortedList, new NotificationComparator());
         return sortedList;
     }
+
+    @Override
+    public void notificationIsRead(Long notificationId) throws IOException, ServerException {
+        String token = authRepository.getToken();
+        notificationRepository.notificationIsRead(token, notificationId);
+    }
 }

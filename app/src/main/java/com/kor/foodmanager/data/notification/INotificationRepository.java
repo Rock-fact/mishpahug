@@ -7,4 +7,5 @@ import java.io.IOException;
 
 public interface INotificationRepository {
     NotificationListDto getNotificationList(String token) throws IOException, ServerException;
+    void notificationIsRead(String token, Long notificationId) throws IOException, ServerException;
 }

@@ -45,7 +45,7 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
         message.setText(notification.getMessage());
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         date.setText(formatDate.format(notification.getDate()));
-        presenter.startWork();
+        presenter.startWork(notification.getNotificationId());
         return view;
     }
 

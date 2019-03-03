@@ -1,6 +1,5 @@
 package com.kor.foodmanager.ui.notificationList;
 
-
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,16 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.NotificationDto;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 public class NotificationListFragment extends MvpAppCompatFragment implements INotificationList, NotificationListAdapter.MyClickListener {
@@ -43,6 +39,12 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
         unbinder = ButterKnife.bind(this,view);
         progressFrame.setOnClickListener(null);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
     }
 
     @Override

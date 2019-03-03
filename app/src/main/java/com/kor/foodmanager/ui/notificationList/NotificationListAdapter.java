@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.NotificationDto;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
