@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,6 +57,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         Log.d("MY_TAG", "EventId: "+event.getEventId());
         Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
         myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
+
     }
 
     public void addEvent(EventDto event){
@@ -82,6 +85,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView familyName, eventTitle, eventDate;
         private RatingBar ratingBar;
+        private ImageView eventImg;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

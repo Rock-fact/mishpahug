@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfo;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +66,11 @@ private EventDto event;
             eventAddress.setText(event.getAddress().getCity());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
+            if(event.getOwner().getPictureLink()!=null) {
+                Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(0));
+                //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(eventImg); //TODO get 1 img
+                //Picasso.get().load(R.drawable.ic_fav).into(eventImg);
+            }
         }
         return view;
     }
