@@ -9,6 +9,7 @@ import com.kor.foodmanager.di.notification.NotificationModule;
 import com.kor.foodmanager.ui.MainActivityPresenter;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfPresenter;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoPresenter;
+import com.kor.foodmanager.ui.eventList.EventListPresenter;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfilePresenter;
 import com.kor.foodmanager.ui.registration.RegistrationPresenter;
 
@@ -27,5 +28,5 @@ public interface MainComponent{
     void inject(PersonalProfilePresenter presenter);
     void inject(AboutMyselfPresenter presenter);
     void inject(ContactInfoPresenter presenter);
-
+    void inject(EventListPresenter presenter);
 }

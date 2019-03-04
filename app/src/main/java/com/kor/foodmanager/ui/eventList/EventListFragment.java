@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.kor.foodmanager.App;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
@@ -31,13 +33,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EventListFragment extends MvpAppCompatFragment implements EventListAdapter.MyClickListener, IEventList{
+public class EventListFragment extends MvpAppCompatFragment implements EventListAdapter.MyClickListener, IEventList {
     @InjectPresenter EventListPresenter presenter;
     private RecyclerView recyclerView;
     private EventListAdapter adapter;
@@ -58,8 +61,15 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         filtersBtn = view.findViewById(R.id.filter_btn);
         progressBar = view.findViewById(R.id.progressBar);
         addBtn=view.findViewById(R.id.add_btn);
-        // TODO addBtn is visible only if user is family
-
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(v.getId()==R.id.add_btn) {
+                    Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
+                    presenter.addEvent();
+                }
+            }
+        });
         recyclerView = view.findViewById(R.id.eventList_rv);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -105,6 +115,11 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         addBtn.setClickable(true);
     }
 
+//    @OnClick (R.id.add_btn)
+//    public void addBtnClicked (){
+////        presenter.addEvent();
+//        Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
+//    }
 
 
 
