@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo;
+package com.kor.foodmanager.ui.eventInfo.myEventInfoPending;
 
 
 import android.os.Bundle;
@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 
 import com.kor.foodmanager.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class MyEventInfoPendingFragment extends Fragment {
 
 

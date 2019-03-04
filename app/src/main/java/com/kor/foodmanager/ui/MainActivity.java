@@ -16,11 +16,13 @@ import android.widget.FrameLayout;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
@@ -38,6 +40,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
+    public static final String EVENT_INFO_SCREEN = "EVENT_INFO_SCREEN";
     public static final String NOTIFICATIONS_SCREEN = "NOTIFICATIONS_SCREEN";
     public static final String NOTIFICATION_INFO_SCREEN = "NOTIFICATION_INFO_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
@@ -152,6 +155,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return PersonalProfileFragment.getNewInstance((UserDto) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
+                case EVENT_INFO_SCREEN:
+                    return GuestEventInfoFragment.getNewInstance((EventDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

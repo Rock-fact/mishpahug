@@ -2,12 +2,13 @@ package com.kor.foodmanager;
 
 import android.app.Application;
 
-
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
 import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
+import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
+import com.kor.foodmanager.di.eventInfo.GuestEventInfoModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
 import com.kor.foodmanager.di.notification.NotificationComponent;
@@ -19,6 +20,7 @@ public class App extends Application {
     private LoginComponent loginComponent;
     private EventComponent eventComponent;
     private NotificationComponent notificationComponent;
+    private GuestEventInfoComponent guestEventInfoComponent;
 
     public App(){
         app = this;
@@ -72,5 +74,16 @@ public class App extends Application {
 
     public void clearNotificationComponent() {
         notificationComponent = null;
+    }
+
+    public GuestEventInfoComponent guestEventInfoComponent(){
+        if(guestEventInfoComponent==null){
+            guestEventInfoComponent = mainComponent.plus(new GuestEventInfoModule());
+        }
+        return guestEventInfoComponent;
+    }
+
+    public void clearGuestEventInfoComponent(){
+        guestEventInfoComponent = null;
     }
 }
