@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo;
+package com.kor.foodmanager.ui.eventInfo.GuestEventInfoInprogress;
 
 
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.kor.foodmanager.R;
 
 
-public class GuestEvenInfoInprogressFragment extends Fragment {
+public class GuestEventInfoInprogressFragment extends Fragment {
 
 
-    public GuestEvenInfoInprogressFragment() {
+    public GuestEventInfoInprogressFragment() {
         // Required empty public constructor
     }
 

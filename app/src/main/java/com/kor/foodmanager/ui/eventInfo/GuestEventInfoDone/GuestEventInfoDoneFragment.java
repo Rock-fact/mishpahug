@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo;
+package com.kor.foodmanager.ui.eventInfo.GuestEventInfoDone;
 
 
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.kor.foodmanager.R;
 
 
-public class GuestEvenInfoPendingFragment extends Fragment {
+public class GuestEventInfoDoneFragment extends Fragment {
 
 
-    public GuestEvenInfoPendingFragment() {
+    public GuestEventInfoDoneFragment() {
         // Required empty public constructor
     }
 
@@ -21,8 +21,8 @@ public class GuestEvenInfoPendingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_guest_even_info_pending, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_guest_even_info_done, container, false);
     }
 
 }

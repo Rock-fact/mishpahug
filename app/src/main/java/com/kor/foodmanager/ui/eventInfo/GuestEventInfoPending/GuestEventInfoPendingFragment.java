@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo;
+package com.kor.foodmanager.ui.eventInfo.GuestEventInfoPending;
 
 
 import android.os.Bundle;
@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 
 import com.kor.foodmanager.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class GuestEventInfoFragment extends Fragment {
+
+public class GuestEventInfoPendingFragment extends Fragment {
 
 
-    public GuestEventInfoFragment() {
+    public GuestEventInfoPendingFragment() {
         // Required empty public constructor
     }
 
@@ -23,8 +21,8 @@ public class GuestEventInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.guest_fragment_event_info, container, false);
+
+        return inflater.inflate(R.layout.fragment_guest_even_info_pending, container, false);
     }
 
 }

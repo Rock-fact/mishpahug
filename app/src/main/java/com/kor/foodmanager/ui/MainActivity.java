@@ -38,6 +38,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
+    public static final String EVENT_INFO_SCREEN = "EVENT_INFO_SCREEN";
     public static final String NOTIFICATIONS_SCREEN = "NOTIFICATIONS_SCREEN";
     public static final String NOTIFICATION_INFO_SCREEN = "NOTIFICATION_INFO_SCREEN";
     public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
@@ -149,6 +150,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
                     return PersonalProfileFragment.getNewInstance((UserDto) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
+//                case EVENT_INFO_SCREEN:
+//                    return GuestEventInfoFragment();
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }
