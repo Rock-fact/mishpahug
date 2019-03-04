@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo.GuestEventInfoInprogress;
+package com.kor.foodmanager.ui.eventInfo.guestEventInfoDone;
 
 
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.kor.foodmanager.R;
 
 
-public class GuestEventInfoInprogressFragment extends Fragment {
+public class GuestEventInfoDoneFragment extends Fragment {
 
 
-    public GuestEventInfoInprogressFragment() {
+    public GuestEventInfoDoneFragment() {
         // Required empty public constructor
     }
 
@@ -22,7 +22,7 @@ public class GuestEventInfoInprogressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guest_even_info_inprogress, container, false);
+        return inflater.inflate(R.layout.fragment_guest_even_info_done, container, false);
     }
 
 }

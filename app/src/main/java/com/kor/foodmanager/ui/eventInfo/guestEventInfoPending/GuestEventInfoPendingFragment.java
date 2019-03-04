@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.eventInfo.GuestEventInfoPending;
+package com.kor.foodmanager.ui.eventInfo.guestEventInfoPending;
 
 
 import android.os.Bundle;

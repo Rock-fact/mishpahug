@@ -21,6 +21,7 @@ import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
@@ -150,8 +151,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
                     return PersonalProfileFragment.getNewInstance((UserDto) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
-//                case EVENT_INFO_SCREEN:
-//                    return GuestEventInfoFragment();
+                case EVENT_INFO_SCREEN:
+                    return new GuestEventInfoFragment();
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

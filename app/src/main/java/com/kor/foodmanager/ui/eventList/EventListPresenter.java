@@ -47,13 +47,19 @@ private EventListAdapter adapter = new EventListAdapter();
     }
 
     public void addEvent() {router.navigateTo(MainActivity.ADD_EVENT_SCREEN);}
+    public void eventInfo(){router.navigateTo(MainActivity.EVENT_INFO_SCREEN);}
 
+//    @Override
+//    public void onDestroy() {
+//        App.get().clear
+//        super.onDestroy();
+//    }
 
+    //TODO
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
 
-        private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
-//        private Api api;
+//        private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
         private List<EventDto> tmp = new ArrayList<>();
 
 
@@ -65,9 +71,6 @@ private EventListAdapter adapter = new EventListAdapter();
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-//                Retrofit retrofit = new Retrofit.Builder().client(new OkHttpClient()).baseUrl(BASE_URL)
-//                        .addConverterFactory(GsonConverterFactory.create()).build();
-//                api = retrofit.create(Api.class);
                 Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
                 retrofit2.Response<EventListDto> response = call.execute();
                 Log.d("MY_TAG", "doInBackground: 4");
