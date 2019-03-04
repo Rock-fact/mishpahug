@@ -109,6 +109,6 @@ private EventDto event;
 
     @Override
     public void onClick(View v) {
-        presenter.joinEvent();
+        presenter.joinEvent(event.getEventId());
     }
 }

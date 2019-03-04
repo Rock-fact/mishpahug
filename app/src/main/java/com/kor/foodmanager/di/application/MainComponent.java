@@ -2,6 +2,8 @@ package com.kor.foodmanager.di.application;
 
 import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
+import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
+import com.kor.foodmanager.di.eventInfo.GuestEventInfoModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
 import com.kor.foodmanager.di.notification.NotificationComponent;
@@ -25,10 +27,11 @@ public interface MainComponent{
     LoginComponent plus(LoginModule module);
     EventComponent plus(EventModule module);
     NotificationComponent plus(NotificationModule module);
+    GuestEventInfoComponent plus(GuestEventInfoModule module);
     void inject(RegistrationPresenter presenter);
     void inject(PersonalProfilePresenter presenter);
     void inject(AboutMyselfPresenter presenter);
     void inject(ContactInfoPresenter presenter);
     void inject(EventListPresenter presenter);
-    void inject(GuestEventInfoPresenter presenter);
+    //void inject(GuestEventInfoPresenter presenter);
 }

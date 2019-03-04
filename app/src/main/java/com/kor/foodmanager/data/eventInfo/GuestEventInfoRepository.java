@@ -10,10 +10,16 @@ import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class GuestEventInfoRepository implements IGuestEventInfoRepository{
     private Api api;
     private Gson gson;
+
+    public GuestEventInfoRepository(Api api, Gson gson) {
+        this.api = api;
+        this.gson = gson;
+    }
 
     @Override
     public String joinEvent(String token, long eventId) throws IOException, ServerException {

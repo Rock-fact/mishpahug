@@ -1,5 +1,9 @@
 package com.kor.foodmanager.buissness.eventInfo;
 
+import com.kor.foodmanager.data.event.ServerException;
+
+import java.io.IOException;
+
 public interface IGuestEventInfoInteractor {
-    public void joinEvent();
+    public String joinEvent(long eventId) throws IOException, ServerException;
 }
