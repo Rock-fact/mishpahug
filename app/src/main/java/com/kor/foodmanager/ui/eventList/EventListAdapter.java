@@ -52,6 +52,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         myViewHolder.familyName.setText(event.getOwner().getFullName());
         myViewHolder.eventTitle.setText(event.getTitle());
         myViewHolder.eventDate.setText(event.getDate().toString());
+        Log.d("MY_TAG", "EventId: "+event.getEventId());
+        Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
+        myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
     }
 
     public void addEvent(EventDto event){
@@ -86,13 +89,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             eventTitle = itemView.findViewById(R.id.event_title);
             eventDate = itemView.findViewById(R.id.event_date);
             ratingBar = itemView.findViewById(R.id.ratingBar);
-            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                @Override
-                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                    //TODO
-                }
-            });
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

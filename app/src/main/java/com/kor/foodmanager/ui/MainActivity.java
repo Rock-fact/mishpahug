@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
@@ -152,7 +153,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
                 case EVENT_INFO_SCREEN:
-                    return new GuestEventInfoFragment();
+                    return GuestEventInfoFragment.getNewInstance((EventDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

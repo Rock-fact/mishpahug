@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +36,19 @@ public class GuestEventInfoFragment extends MvpAppCompatFragment implements IGue
 @BindView(R.id.join_btn) Button joinBtn;
 @BindView(R.id.progressBar) ProgressBar progressBar;
 private Unbinder unbinder;
+private EventDto event;
 
 
     public GuestEventInfoFragment() {
 
     }
+
+    public static GuestEventInfoFragment getNewInstance(EventDto event){
+        GuestEventInfoFragment guestEventInfoFragment = new GuestEventInfoFragment();
+        guestEventInfoFragment.event = event;
+        return guestEventInfoFragment;
+    }
+
 
 
     @Override
@@ -48,6 +57,14 @@ private Unbinder unbinder;
         View view = inflater.inflate(R.layout.guest_fragment_event_info, container, false);
         unbinder = ButterKnife.bind(this,view);
         joinBtn.setOnClickListener(this);
+        if(event!=null){
+            eventTitle.setText(event.getTitle());
+            familyname.setText(event.getOwner().getLastName());
+            eventDate.setText(event.getDate());
+            eventAddress.setText(event.getAddress().getCity());
+            ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
+            eventDescription.setText(event.getDescription());
+        }
         return view;
     }
 

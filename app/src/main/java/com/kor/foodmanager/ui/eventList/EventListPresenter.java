@@ -47,7 +47,9 @@ private EventListAdapter adapter = new EventListAdapter();
     }
 
     public void addEvent() {router.navigateTo(MainActivity.ADD_EVENT_SCREEN);}
-    public void eventInfo(){router.navigateTo(MainActivity.EVENT_INFO_SCREEN);}
+    public void eventInfo(int position){
+        EventDto tmp = adapter.getEvents().get(position);
+        router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp);}
 
 //    @Override
 //    public void onDestroy() {
@@ -73,11 +75,9 @@ private EventListAdapter adapter = new EventListAdapter();
             try {
                 Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
                 retrofit2.Response<EventListDto> response = call.execute();
-                Log.d("MY_TAG", "doInBackground: 4");
                 if(response.isSuccessful()){
                     EventListDto eventListDto = response.body();
                     tmp = eventListDto.getContent();
-                    Log.d("MY_TAG", "doInBackground: ");
                     return tmp;
                 } else {
                     throw new Exception(response.errorBody().string());

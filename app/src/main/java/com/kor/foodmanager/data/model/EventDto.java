@@ -15,21 +15,10 @@ public class EventDto {
     private UserDto owner;
     private AddressDto address;
 
-    public EventDto(String title, String status, String holiday, String confession, String description, Long eventId, int duration, String date, String time, List<UserDto> participants, List<String> food, UserDto owner, AddressDto address) {
-        this.title = title;
-        this.status = status;
-        this.holiday = holiday;
-        this.confession = confession;
-        this.description = description;
-        this.eventId = eventId;
-        this.duration = duration;
-        this.date = date;
-        this.time = time;
-        this.participants = participants;
-        this.food = food;
-        this.owner = owner;
-        this.address = address;
+
+    public EventDto() {
     }
+
 
     public AddressDto getAddress() {
         return address;
@@ -39,8 +28,7 @@ public class EventDto {
         this.address = address;
     }
 
-    public EventDto() {
-    }
+
 
     public String getTitle() {
         return title;

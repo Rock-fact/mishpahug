@@ -75,7 +75,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
 
     @Override
     public void onItemClick(int position) {
-        presenter.eventInfo();
+        presenter.eventInfo(position);
     }
 
 
