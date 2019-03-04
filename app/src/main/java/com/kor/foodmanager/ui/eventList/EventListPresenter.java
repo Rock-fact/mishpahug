@@ -60,8 +60,6 @@ private EventListAdapter adapter = new EventListAdapter();
     //TODO
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
-
-//        private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
         private List<EventDto> tmp = new ArrayList<>();
 
 
