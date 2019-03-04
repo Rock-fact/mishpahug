@@ -78,7 +78,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView familyName, eventTitle, eventDate;
-        private ToggleButton favBtn;
         private RatingBar ratingBar;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -103,16 +102,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
                 }
             });
 
-            favBtn = itemView.findViewById(R.id.fav_btn);
-            favBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        // TODO The toggle is enabled
-                    } else {
-                        // TODO The toggle is disabled
-                    }
-                }
-            });
+           
 
         }
     }
