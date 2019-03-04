@@ -13,6 +13,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 
 public class ContactInfoFragment extends MvpAppCompatFragment implements IContactInfoFragment, View.OnClickListener {
@@ -24,6 +25,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     private boolean isNew;
     private EditText emailInput, phoneInput;
     Button nextBtn;
+    private IToolbar iToolbar;
 
     public static ContactInfoFragment getNewInstance(UserDto user, boolean isNew){
         ContactInfoFragment fragment = new ContactInfoFragment();
@@ -42,6 +44,9 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         phoneInput = view.findViewById(R.id.phoneNumber);
         nextBtn = view.findViewById(R.id.next_btn);
         nextBtn.setOnClickListener(this);
+
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Contact Info",true);
 
         return view;
     }

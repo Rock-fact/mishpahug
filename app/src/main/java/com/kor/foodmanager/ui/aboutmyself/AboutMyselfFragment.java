@@ -20,6 +20,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     EditText marital, food, allergy;
     Spinner spinnerMarital, spinnerFood, spinnerAllergy;
     Button saveBtn;
+    private IToolbar iToolbar;
 
     public static AboutMyselfFragment getNewInstance(UserDto user,boolean isNew){
         AboutMyselfFragment fragment = new AboutMyselfFragment();
@@ -65,6 +67,9 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         saveBtn = view.findViewById(R.id.save_btn);
 
         saveBtn.setOnClickListener(this);
+
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("About myself",true);
 
         return view;
     }

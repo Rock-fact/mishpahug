@@ -12,6 +12,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.NotificationDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 import java.text.SimpleDateFormat;
 
@@ -26,6 +27,7 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
     @BindView(R.id.date) TextView date;
     private Unbinder unbinder;
     private NotificationDto notification;
+    private IToolbar iToolbar;
 
     public NotificationInfoFragment() {
     }
@@ -46,6 +48,8 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         date.setText(formatDate.format(notification.getDate()));
         presenter.startWork(notification.getNotificationId());
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Notification Info",true);
         return view;
     }
 

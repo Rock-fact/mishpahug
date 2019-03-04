@@ -16,6 +16,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +39,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     @BindView(R.id.createBtn) Button createBtn;
     Calendar dateAndTime;
     Object data;
+    private IToolbar iToolbar;
 
     public AddEventFragment() {
     }
@@ -48,6 +50,10 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         unbinder = ButterKnife.bind(this,view);
         dateAndTime = Calendar.getInstance();
+
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Add event",true);
+
         return view;
     }
 

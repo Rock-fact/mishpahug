@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.data.provider.web.Api;
+import com.kor.foodmanager.ui.IToolbar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     private Button filtersBtn;
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
-
+    private IToolbar iToolbar;
 
 
     public EventListFragment() {
@@ -66,6 +68,10 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
+
+        iToolbar=(IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Event list",true);
+
 
         return view;
     }

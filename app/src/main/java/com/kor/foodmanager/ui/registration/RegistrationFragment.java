@@ -25,6 +25,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 
 public class RegistrationFragment extends MvpAppCompatFragment implements IRegistrationFragment, View.OnClickListener {
@@ -36,6 +37,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements IRegis
     private TextView nameTxt, changeName;
     private EditText emailInput, phoneInput, passwordInput;
     private Button saveBtn;
+
 
     @Override
 
@@ -62,6 +64,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements IRegis
 
         saveBtn = view.findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(this);
+
 
         return view;
 

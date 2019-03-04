@@ -34,7 +34,7 @@ import butterknife.Unbinder;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements IMain, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar, NavigationView.OnNavigationItemSelectedListener{
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
@@ -52,6 +52,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    ActionBarDrawerToggle toggle;
     private Unbinder unbinder;
 
 
@@ -62,10 +63,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
         setSupportActionBar(toolbar);
         unbinder = ButterKnife.bind(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
         progressFrame.setOnClickListener(null);
@@ -190,5 +193,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, Navigat
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void setTitleToolbarEnable(String title, Boolean isEnable) {
+        toolbar.setTitle(title);
+        toggle.setDrawerIndicatorEnabled(isEnable);
     }
 }
