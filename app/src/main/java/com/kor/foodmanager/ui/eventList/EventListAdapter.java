@@ -1,5 +1,6 @@
 package com.kor.foodmanager.ui.eventList;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,7 +58,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         Log.d("MY_TAG", "EventId: "+event.getEventId());
         Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
         myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
+        Uri uri = Uri.parse("http://i.imgur.com/DvpvklR.png");
+//        myViewHolder.eventImg.setImageURI(uri);
+        Picasso.get().load("http://i.imgur.com/DvpvklR.png").placeholder(R.color.colorAccent)
+                .error(R.color.colorBeige).into(myViewHolder.eventImg); //TODO
     }
 
     public void addEvent(EventDto event){
@@ -93,6 +98,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             eventTitle = itemView.findViewById(R.id.event_title);
             eventDate = itemView.findViewById(R.id.event_date);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            eventImg = itemView.findViewById(R.id.event_img);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
