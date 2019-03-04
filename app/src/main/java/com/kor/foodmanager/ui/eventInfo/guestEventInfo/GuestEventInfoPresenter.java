@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.data.model.MessageDto;
 import com.kor.foodmanager.data.provider.web.Api;
 
 import javax.inject.Inject;
 
+import retrofit2.Call;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
