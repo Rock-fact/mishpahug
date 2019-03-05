@@ -108,6 +108,11 @@ private EventDto event;
     }
 
     @Override
+    public void hideJoinBtn() {
+        joinBtn.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onClick(View v) {
         presenter.joinEvent(event.getEventId());
     }

@@ -36,10 +36,12 @@ public class GuestEventInfoPresenter extends MvpPresenter<IGuestEventInfo> {
 
     private class JoinEventTask extends AsyncTask<Long, Void, String>{
         private String res;
+        private boolean isSuccess;
 
         @Override
         protected void onPreExecute() {
             getViewState().showProgressFrame();
+            isSuccess = true;
         }
 
         @Override
@@ -47,8 +49,10 @@ public class GuestEventInfoPresenter extends MvpPresenter<IGuestEventInfo> {
             try {
                 res = interactor.joinEvent(longs[0]);
             } catch (IOException e) {
+                isSuccess = false;
                 res = "Connection failed!";
             } catch (ServerException e) {
+                isSuccess = false;
                 res = e.getMessage();
             }
             return res;
@@ -59,6 +63,9 @@ public class GuestEventInfoPresenter extends MvpPresenter<IGuestEventInfo> {
             getViewState().hideProgressFrame();
             //getViewState().showToast(s);
             router.showSystemMessage(s);
+            if (isSuccess){
+                getViewState().hideJoinBtn();
+            }
         }
     }
 }

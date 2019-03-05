@@ -9,6 +9,7 @@ public class UserDto {
     private List<String> pictureLink, foodPreferences, languages;
     private double rate;
     private int numberOfVoters;
+    private long userId;
 
 
     public UserDto() {
@@ -17,7 +18,7 @@ public class UserDto {
         languages = new ArrayList<>();
     }
 
-    public UserDto(String firstName, String lastName, String fullName, String gender, String maritalStatus, String confession, String phoneNumber, String description, String dateOfBirth, List<String> pictureLink, List<String> foodPreferences, List<String> languages, double rate, int numberOfVoters) {
+    public UserDto(String firstName, String lastName, String fullName, String gender, String maritalStatus, String confession, String phoneNumber, String description, String dateOfBirth, List<String> pictureLink, List<String> foodPreferences, List<String> languages, double rate, int numberOfVoters, long userId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.fullName = fullName;
@@ -32,6 +33,15 @@ public class UserDto {
         this.languages = languages;
         this.rate = rate;
         this.numberOfVoters = numberOfVoters;
+        this.userId = userId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

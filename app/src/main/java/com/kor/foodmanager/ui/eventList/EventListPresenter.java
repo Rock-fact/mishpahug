@@ -10,6 +10,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.data.auth.AuthRepository;
+import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.provider.web.Api;
@@ -31,11 +33,12 @@ import ru.terrakok.cicerone.Router;
 public class EventListPresenter extends MvpPresenter<IEventList> {
     @Inject Router router;
     @Inject Api api;
+    @Inject IAuthRepository authRepository;
 
 private EventListAdapter adapter = new EventListAdapter();
 
     public EventListPresenter() {
-        App.get().mainComponent().inject(this);
+        App.get().guestEventInfoComponent().inject(this);
     }
 
     public void loadEventList(){
@@ -61,6 +64,7 @@ private EventListAdapter adapter = new EventListAdapter();
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
         private List<EventDto> tmp = new ArrayList<>();
+        //IAuthRepository tmpRepository = authRepository;
 
 
         @Override
@@ -92,7 +96,9 @@ private EventListAdapter adapter = new EventListAdapter();
             if (list!=null) {
                 adapter.removeAll();
                 for(int i=0; i<list.size(); i++){
-                    adapter.addEvent(list.get(i));
+                    if(authRepository.getUser()!=list.get(i).getOwner()) { //TODO
+                        adapter.addEvent(list.get(i));
+                    }
                 }
 
             }
