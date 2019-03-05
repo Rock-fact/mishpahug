@@ -27,8 +27,14 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         App.get().eventComponent().inject(this);
     }
 
-    public void addNewEvent(EventDto event) {
-        new AddEventTask(event).execute();
+    public void addNewEvent(EventDto event) {   // TODO: 05.03.2019 good fields validation 
+        event.setConfession(interactor.getUser().getConfession());
+        event.setFood(interactor.getUser().getFoodPreferences());       // TODO: 05.03.2019 maybe it wrong buissness decision 
+        if(event.getDuration()>0){
+            new AddEventTask(event).execute();
+        }else {
+            router.showSystemMessage("Please, choose duration of your event!");
+        }
     }
 
     @Override

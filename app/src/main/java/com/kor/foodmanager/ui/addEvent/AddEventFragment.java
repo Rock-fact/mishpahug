@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.addEvent;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -37,9 +40,15 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     @BindView(R.id.textDate) TextView textDate;
     @BindView(R.id.inputDescription) TextView inputDescription;
     @BindView(R.id.createBtn) Button createBtn;
+    @BindView(R.id.inputHoliday) TextView inputHoliday;
+    @BindView(R.id.duration_picker) NumberPicker durationPicker;
+    @BindView(R.id.pickerFrame) FrameLayout pickerFrame;
+    @BindView(R.id.confirm_duration) Button confirmDuration;
+
     Calendar dateAndTime;
     Object data;
     private IToolbar iToolbar;
+    private int duration = 0;
 
     public AddEventFragment() {
     }
@@ -66,6 +75,28 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
                 .show();
     }
 
+    public void setTime(){
+        new TimePickerDialog(getActivity(),timeCallback,
+                dateAndTime.get(Calendar.HOUR_OF_DAY),
+                dateAndTime.get(Calendar.MINUTE),
+                true)
+                .show();
+    }
+
+    public void setDuration(){
+        pickerFrame.setVisibility(View.VISIBLE);
+        durationPicker.setMaxValue(24);
+        durationPicker.setMinValue(0);
+        durationPicker.setValue(duration);
+    }
+
+    @OnClick(R.id.confirm_duration)
+    public void confirmDuration(){
+        pickerFrame.setVisibility(View.GONE);
+        duration = durationPicker.getValue();
+        textDate.setText(textDate.getText().toString()+", duration: "+duration+" hours");
+    }
+
     @Override
     public void onDestroy() {
         unbinder.unbind();
@@ -80,11 +111,13 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     public EventDto createEvent(){
         EventDto event = new EventDto();
         event.setTitle(inputTitle.getText().toString());
+        event.setHoliday(inputHoliday.getText().toString());                // TODO: 05.03.2019 options 
         event.setDescription(inputDescription.getText().toString());
         SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
         Date dateTime = dateAndTime.getTime();
         String date = form.format(dateTime);
         event.setDate(date);
+        event.setDuration(duration);
         AddressDto addressDto = new AddressDto();
         addressDto.setPlace_id(inputAddress.getText().toString());
         event.setAddress(addressDto);
@@ -96,8 +129,17 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, month);
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            textDate.setText(DateUtils.formatDateTime(getActivity(),
+            setTime();
+    };
+
+    //обработчик выбора времени
+    TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
+        dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        dateAndTime.set(Calendar.MINUTE, minute);
+        textDate.setText(DateUtils.formatDateTime(getActivity(),
                 dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));};
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
+        setDuration();
+    };
 
 }
