@@ -26,16 +26,16 @@ public class GuestEventInfoRepository implements IGuestEventInfoRepository{
         Call<MessageDto> call = api.subscribeToEvent(token, eventId);
         Response<MessageDto> response = call.execute();
         if(response.isSuccessful()){
+           return response.body().getMessage();
+        } else {
             if(response.code()==409){
                 return "You are the owner of the event or already subscribed to it!";
             } else if (response.code()==401){
                 return "Authorization needed";
             } else {
-                return response.body().getMessage();
-            }
-        } else {
             ErrorDto errorDto = gson.fromJson(response.errorBody().string(), ErrorDto.class);
             throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            }
         }
     }
 }
