@@ -64,7 +64,8 @@ private EventListAdapter adapter = new EventListAdapter();
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
         private List<EventDto> tmp = new ArrayList<>();
-        //IAuthRepository tmpRepository = authRepository;
+        IAuthRepository tmpRepository = authRepository;
+        Call<EventListDto> call;
 
 
         @Override
@@ -75,7 +76,11 @@ private EventListAdapter adapter = new EventListAdapter();
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
+                if (tmpRepository.getToken()!=null){
+                    call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                } else {
+                    call = api.getListOfEventsInProgress(0, 10);
+                }
                 retrofit2.Response<EventListDto> response = call.execute();
                 if(response.isSuccessful()){
                     EventListDto eventListDto = response.body();

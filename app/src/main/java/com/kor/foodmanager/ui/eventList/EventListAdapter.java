@@ -44,7 +44,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_in_list,viewGroup, false);
-        Log.d("MY_TAG", "onCreateViewHolder: ");
         return new MyViewHolder(view);
     }
 
@@ -58,11 +57,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         Log.d("MY_TAG", "EventId: "+event.getEventId());
         Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
         myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
-        Uri uri = Uri.parse("http://i.imgur.com/DvpvklR.png");
-//        myViewHolder.eventImg.setImageURI(uri);
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png").placeholder(R.color.colorAccent)
-                .error(R.color.colorBeige).into(myViewHolder.eventImg); //TODO
+        if (event.getOwner().getPictureLink().get(0)!=null){
+            //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
+            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
+        } else {
+            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
+        }
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").placeholder(R.color.colorAccent)
+//                .error(R.color.colorBeige).into(myViewHolder.eventImg); //TODO
     }
 
     public void addEvent(EventDto event){
@@ -99,12 +101,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
             eventDate = itemView.findViewById(R.id.event_date);
             ratingBar = itemView.findViewById(R.id.ratingBar);
             eventImg = itemView.findViewById(R.id.event_img);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onItemClick(getAdapterPosition());
-                    }
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(getAdapterPosition());
                 }
             });
 
