@@ -1,54 +1,30 @@
 package com.kor.foodmanager.ui.addEvent;
-
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.libraries.places.compat.Places;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
-import com.kor.foodmanager.data.model.LocationDto;
 import com.kor.foodmanager.ui.IToolbar;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static android.app.Activity.RESULT_OK;
-import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 // TODO: 06.03.2019 for future improvement we need to replace current fragment with custom. for example:
 // https://stackoverflow.com/questions/36999647/how-to-customize-placeautocomplete-widget-dialog-design-to-list-places

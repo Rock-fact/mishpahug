@@ -29,4 +29,9 @@ public class EventInteractor implements IEventInteractor {
         return authRepository.getUser();
     }
 
+    @Override
+    public String getCity(String placeId, String api_key) throws IOException, ServerException {
+        return homeRepository.getCityName(placeId, api_key);
+    }
+
 }

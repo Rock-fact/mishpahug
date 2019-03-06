@@ -11,4 +11,6 @@ public interface IEventInteractor {
     MessageDto addNewEvent(EventDto event) throws IOException, ServerException;
 
     UserDto getUser();
+
+    String getCity(String placeId, String api_key) throws IOException, ServerException;
 }
