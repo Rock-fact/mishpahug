@@ -9,4 +9,5 @@ public interface IGuestEventInfo extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
     void showToast(String s);
+    void hideJoinBtn();
 }

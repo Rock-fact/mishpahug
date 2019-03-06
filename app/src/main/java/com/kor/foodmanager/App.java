@@ -2,6 +2,7 @@ package com.kor.foodmanager;
 
 import android.app.Application;
 
+
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
