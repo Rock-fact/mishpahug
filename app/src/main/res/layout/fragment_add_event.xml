@@ -87,19 +87,16 @@
                 android:textColor="@color/colorBeige" />
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textAdress"
+        <FrameLayout
+            android:id="@+id/autocomplete_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="27dp"
-            android:text="Choose address"
-            android:textColor="@color/colorBeige"
-            android:textSize="18sp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputHolidayLayout"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/inputHolidayLayout"></FrameLayout>
 
         <TextView
             android:id="@+id/textDate"
@@ -113,7 +110,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textAdress"></TextView>
+            app:layout_constraintTop_toBottomOf="@id/autocomplete_layout"></TextView>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputDescriptionLayout"

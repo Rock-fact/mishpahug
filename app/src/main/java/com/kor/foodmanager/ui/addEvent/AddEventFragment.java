@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -24,6 +27,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.libraries.places.compat.Places;
@@ -43,7 +48,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static com.kor.foodmanager.ui.MainActivity.TAG;
 
+// TODO: 06.03.2019 for future improvement we need to replace current fragment with custom. for example:
+// https://stackoverflow.com/questions/36999647/how-to-customize-placeautocomplete-widget-dialog-design-to-list-places
+// https://techstricks.com/custom-google-place-autocomplete-android/
 public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent {
     private static final int REQUEST_SELECT_PLACE = 1000;
     @InjectPresenter
@@ -51,8 +60,6 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
     private Unbinder unbinder;
     @BindView(R.id.inputTitle)
     TextView inputTitle;
-    @BindView(R.id.textAdress)
-    TextView textAddress;
     @BindView(R.id.textDate)
     TextView textDate;
     @BindView(R.id.inputDescription)
@@ -67,13 +74,13 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
     FrameLayout pickerFrame;
     @BindView(R.id.confirm_duration)
     Button confirmDuration;
+    SupportPlaceAutocompleteFragment autocompleteFragment;
     private static final String COUNTRY_CODE = "IL";
 
     Calendar dateAndTime;
     Object data;
     private IToolbar iToolbar;
     private int duration = 0;
-    private AddressDto addressDto;
 
     public AddEventFragment() {
     }
@@ -86,7 +93,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
         dateAndTime = Calendar.getInstance();
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Add event", true);
-
+        placesAutocomplete(view);
         return view;
     }
 
@@ -121,17 +128,11 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
         textDate.setText(textDate.getText().toString() + ", duration: " + duration + " hours");
     }
 
-    @OnClick(R.id.textAdress)
-    public void placesAuthocomplete() {
-        try {
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                    .build(getActivity());
-            startActivityForResult(intent, REQUEST_SELECT_PLACE);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
+    public void placesAutocomplete(View view){
+        FragmentManager fragmentManager = getChildFragmentManager();
+        SupportPlaceAutocompleteFragment fragment = presenter.showAutocomplete();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.autocomplete_layout, fragment, "AUTOCOMPLETE_FRAGMENT").commit();
     }
 
     @Override
@@ -157,8 +158,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
         SimpleDateFormat formTime = new SimpleDateFormat("HH:mm:ss");
         String time = formTime.format(dateTime);
         event.setTime(time);
-        event.setDuration(duration);
-        event.setAddress(addressDto);
+        event.setDuration(duration * 60);
         return event;
     }
 
@@ -179,26 +179,4 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
         setDuration();
     };
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SELECT_PLACE) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                this.onPlaceSelected(place);
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
-                presenter.showError(status.getStatusMessage());
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void onPlaceSelected(Place place) {
-        textAddress.setText(place.getName() + ", " + place.getAddress());
-        LocationDto locationDto = new LocationDto();
-        locationDto.setLat(place.getLatLng().latitude);
-        locationDto.setLng(place.getLatLng().longitude);
-        String address = place.getAddress().toString();     // TODO: 06.03.2019 add place api 
-        addressDto = new AddressDto(address ,place.getId(),locationDto);
-    }
 }
