@@ -14,6 +14,7 @@ import ru.terrakok.cicerone.Router;
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.NOTIFICATIONS_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.PARTICIPATION_LIST_SCREEN;
 
 @InjectViewState
 public class MainActivityPresenter extends MvpPresenter<IMain> {
@@ -62,7 +63,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void participation(){
-        router.showSystemMessage("participations screen");
+        router.navigateTo(PARTICIPATION_LIST_SCREEN);
     }
 
     public void myProfile(){

@@ -18,7 +18,7 @@ import java.util.List;
 public class ParticipationListAdapter extends RecyclerView.Adapter<ParticipationListAdapter.MyViewHolder>{
 
     private List<EventDto> participationList;
-    private EventListAdapter.MyClickListener listener;
+    private MyClickListener listener;
 
     public ParticipationListAdapter() {
         participationList = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         myViewHolder.eventTitle.setText(event.getTitle());
         myViewHolder.eventDate.setText(event.getDate().toString());
         myViewHolder.eventDescription.setText(event.getDescription());
-        myViewHolder.eventStatus.setText(event.getStatus().toUpperCase());
+       // myViewHolder.eventStatus.setText(event.getStatus().toUpperCase()); //TODO
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         return participationList.size();
     }
 
-    public void setListener(EventListAdapter.MyClickListener listener) {
+    public void setListener(MyClickListener listener) {
         this.listener = listener;
     }
 
@@ -57,6 +57,10 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
     public void removeAll(){
         participationList.clear();
         notifyDataSetChanged();
+    }
+
+    public List<EventDto> getParticipationList() {
+        return participationList;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{

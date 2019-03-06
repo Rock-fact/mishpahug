@@ -44,13 +44,10 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         filtersBtn = view.findViewById(R.id.filter_btn);
         progressBar = view.findViewById(R.id.progressBar);
         addBtn=view.findViewById(R.id.add_btn);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId()==R.id.add_btn) {
-                    Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
-                    presenter.addEvent();
-                }
+        addBtn.setOnClickListener(v -> {
+            if(v.getId()==R.id.add_btn) {
+                //Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
+                presenter.addEvent();
             }
         });
         recyclerView = view.findViewById(R.id.eventList_rv);

@@ -35,10 +35,11 @@ public class EventListPresenter extends MvpPresenter<IEventList> {
     @Inject Api api;
     @Inject IAuthRepository authRepository;
 
-private EventListAdapter adapter = new EventListAdapter();
+private EventListAdapter adapter;
 
     public EventListPresenter() {
         App.get().guestEventInfoComponent().inject(this);
+        adapter = new EventListAdapter();
     }
 
     public void loadEventList(){
@@ -101,9 +102,8 @@ private EventListAdapter adapter = new EventListAdapter();
             if (list!=null) {
                 adapter.removeAll();
                 for(int i=0; i<list.size(); i++){
-                    if(authRepository.getUser()!=list.get(i).getOwner()) { //TODO
                         adapter.addEvent(list.get(i));
-                    }
+
                 }
 
             }

@@ -13,6 +13,8 @@ import dagger.Provides;
 
 @Module
 public class ParticipationListModule {
+
+
     @Provides @ParticipationListScope
     IParticipationListRepository provideParticipationListRepository(Api api, Gson gson){
         return new ParticipationListRepository(api, gson);
