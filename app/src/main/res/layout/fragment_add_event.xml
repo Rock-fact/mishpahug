@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.addEvent.AddEventFragment"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/background_gradient"
+    tools:context=".ui.addEvent.AddEventFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -87,31 +87,19 @@
                 android:textColor="@color/colorBeige" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputAddressLayout"
+        <TextView
+            android:id="@+id/textAdress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:textColorHint="@color/colorBeige"
+            android:layout_marginEnd="27dp"
+            android:text="Choose address"
+            android:textColor="@color/colorBeige"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputHolidayLayout">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/inputAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Type address"
-                android:inputType="textPostalAddress"
-                android:textColor="@color/colorBeige" />
-        </android.support.design.widget.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/inputHolidayLayout"></TextView>
 
         <TextView
             android:id="@+id/textDate"
@@ -120,12 +108,12 @@
             android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
-            android:hint="Choose date"
+            android:text="Choose date"
             android:textColor="@color/colorBeige"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputAddressLayout"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/textAdress"></TextView>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputDescriptionLayout"
@@ -167,18 +155,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputDescriptionLayout" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="69dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="207dp"
-            android:text="Button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/createBtn" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -75,7 +75,7 @@ private EventListAdapter adapter = new EventListAdapter();
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-                Call<EventListDto> call = api.getListOfEventsInProgress(0,10);
+                Call<EventListDto> call = api.getListOfEventsInProgress(0,30);
                 retrofit2.Response<EventListDto> response = call.execute();
                 if(response.isSuccessful()){
                     EventListDto eventListDto = response.body();

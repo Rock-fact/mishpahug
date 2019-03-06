@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.addEvent;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -18,6 +19,7 @@ import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
 import static com.kor.foodmanager.ui.MainActivity.SHOW_PROGRESS;
+import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
 public class AddEventPresenter extends MvpPresenter<IAddEvent> {
@@ -30,8 +32,9 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
 
     public void addNewEvent(EventDto event) {   // TODO: 05.03.2019 good fields validation 
         event.setConfession(interactor.getUser().getConfession());
-        event.setFood(interactor.getUser().getFoodPreferences());       // TODO: 05.03.2019 maybe it wrong buissness decision 
+        event.setFood(interactor.getUser().getFoodPreferences());// TODO: 05.03.2019 maybe it wrong buissness decision
         if(event.getDuration()>0){
+            Log.d(TAG, "addNewEvent: "+event.toString());
             new AddEventTask(event).execute();
         }else {
             router.showSystemMessage("Please, choose duration of your event!");
@@ -65,7 +68,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
-                interactor.addNewEvent(event);
+                res = interactor.addNewEvent(event).getMessage();
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";
@@ -81,7 +84,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         protected void onPostExecute(String s) {
             router.showSystemMessage(HIDE_PROGRESS);
             if(isSuccess){
-                router.showSystemMessage("EVENT ADDED");
+                router.showSystemMessage(s);
             }else{
                 router.showSystemMessage(s);
             }

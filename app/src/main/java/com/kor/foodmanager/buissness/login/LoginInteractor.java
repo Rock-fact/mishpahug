@@ -35,6 +35,7 @@ public class LoginInteractor implements ILoginInteractor{
         Log.d(TAG, "login: "+token);
         UserDto userDto = loginRepository.login(token);
         authRepository.saveToken(token);
+        authRepository.saveUser(userDto);
     }
 
     @Override

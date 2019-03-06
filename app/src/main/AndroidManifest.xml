@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBvbVolIMXkkiEela7LQGIlOKpV9pmEfYQ"/>
+            android:value="AIzaSyDaffS-SBNhZElzCDBANjokRpLQnxr6mB4"/>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
