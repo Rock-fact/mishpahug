@@ -2,6 +2,7 @@ package com.kor.foodmanager.ui.participationList;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
         myViewHolder.eventTitle.setText(event.getTitle());
         myViewHolder.eventDate.setText(event.getDate().toString());
         myViewHolder.eventDescription.setText(event.getDescription());
-       // myViewHolder.eventStatus.setText(event.getStatus().toUpperCase()); //TODO
+        myViewHolder.eventStatus.setText(event.getStatus().toUpperCase()); //TODO
     }
 
     @Override
@@ -70,10 +71,10 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            eventStatus = itemView.findViewById(R.id.status_txt);
             eventTitle = itemView.findViewById(R.id.event_title);
             eventDate = itemView.findViewById(R.id.event_date);
             eventDescription = itemView.findViewById(R.id.event_description);
-            eventStatus = itemView.findViewById(R.id.event_status_txt);
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(getAdapterPosition());

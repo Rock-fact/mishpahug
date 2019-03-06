@@ -43,6 +43,11 @@ public class ParticipationListPresenter extends MvpPresenter<IParticipationList>
         new LoadingParticipationList().execute();
     }
 
+    public void eventInfo(int position){
+        EventDto tmp = adapter.getParticipationList().get(position);
+        //router.navigateTo(); TODO
+    }
+
     private class LoadingParticipationList extends AsyncTask<Void, Void, List<EventDto>> {
         private String res;
         private List<EventDto> tmpList;

@@ -45,7 +45,6 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
-        //recyclerView.addItemDecoration();
         return view;
     }
 
@@ -63,7 +62,7 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
 
     @Override
     public void onItemClick(int position) {
-        //TODO
+        presenter.eventInfo(position);
     }
 
     @Override

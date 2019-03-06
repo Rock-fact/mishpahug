@@ -55,13 +55,12 @@ private EventListAdapter adapter;
         EventDto tmp = adapter.getEvents().get(position);
         router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp);}
 
-//    @Override
-//    public void onDestroy() {
-//        App.get().clear
-//        super.onDestroy();
-//    }
+    @Override
+    public void onDestroy() {
+        App.get().clearGuestEventInfoComponent();
+        super.onDestroy();
+    }
 
-    //TODO
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
         private List<EventDto> tmp = new ArrayList<>();
