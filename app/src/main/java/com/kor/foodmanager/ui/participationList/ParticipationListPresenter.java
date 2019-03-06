@@ -9,6 +9,7 @@ import com.kor.foodmanager.buissness.participationList.IParticipationListInterac
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +46,7 @@ public class ParticipationListPresenter extends MvpPresenter<IParticipationList>
 
     public void eventInfo(int position){
         EventDto tmp = adapter.getParticipationList().get(position);
-        //router.navigateTo(); TODO
+        router.navigateTo(MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN, tmp);
     }
 
     private class LoadingParticipationList extends AsyncTask<Void, Void, List<EventDto>> {
