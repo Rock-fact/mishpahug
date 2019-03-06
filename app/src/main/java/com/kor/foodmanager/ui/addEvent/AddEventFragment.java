@@ -2,10 +2,11 @@ package com.kor.foodmanager.ui.addEvent;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,18 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.libraries.places.compat.Places;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
@@ -29,10 +39,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static com.kor.foodmanager.ui.MainActivity.TAG;
+import static android.app.Activity.RESULT_OK;
 
 public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
+    private static final int REQUEST_SELECT_PLACE = 1000;
     @InjectPresenter AddEventPresenter presenter;
     private Unbinder unbinder;
     @BindView(R.id.inputTitle) TextView inputTitle;
@@ -44,6 +54,9 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     @BindView(R.id.duration_picker) NumberPicker durationPicker;
     @BindView(R.id.pickerFrame) FrameLayout pickerFrame;
     @BindView(R.id.confirm_duration) Button confirmDuration;
+    @BindView(R.id.button2) Button button2;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     Calendar dateAndTime;
     Object data;
@@ -59,7 +72,6 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         unbinder = ButterKnife.bind(this,view);
         dateAndTime = Calendar.getInstance();
-
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Add event",true);
 
@@ -95,6 +107,20 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
         pickerFrame.setVisibility(View.GONE);
         duration = durationPicker.getValue();
         textDate.setText(textDate.getText().toString()+", duration: "+duration+" hours");
+    }
+
+    @OnClick(R.id.button2)
+    public void placesAuthocomplete(){
+        try {
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                    .setBoundsBias(BOUNDS_MOUNTAIN_VIEW)
+                .build(getActivity());
+            startActivityForResult(intent, REQUEST_SELECT_PLACE);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -142,4 +168,24 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
         setDuration();
     };
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SELECT_PLACE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(getActivity(),data);
+                this.onPlaceSelected(place);
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+                presenter.showError(status.toString());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void onPlaceSelected(Place place) {
+            inputAddress.setText(place.getName()+" "+place.getAddress()+place.getPhoneNumber()+place
+                .getWebsiteUri()+place.getRating()+place.getId());
+        if (!TextUtils.isEmpty(place.getAttributions())){
+            Toast.makeText(getActivity(), Html.fromHtml(place.getAttributions().toString()), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

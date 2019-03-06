@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.common.api.Status;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.event.IEventInteractor;
 import com.kor.foodmanager.data.event.ServerException;
@@ -41,6 +42,10 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
     public void onDestroy() {
         App.get().clearEventComponent();
         super.onDestroy();
+    }
+
+    public void showError(String string) {
+        router.showSystemMessage(string);
     }
 
     private class AddEventTask extends AsyncTask<Void,Void,String> {
