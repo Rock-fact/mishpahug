@@ -45,6 +45,7 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
+        //recyclerView.addItemDecoration();
         return view;
     }
 
