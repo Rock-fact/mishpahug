@@ -30,6 +30,9 @@ public interface Api {
     @POST("/event/allprogresslist")
     Call<EventListDto> getListOfEventsInProgress(@Query("page") int page, @Query("size") int size);
 
+    @POST("/event/allprogresslist")
+    Call<EventListDto> getLoginedListOfEventsInProgress(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
+
 
     //Authorized requests
     //---------------------------------------------------------------------------------------------
