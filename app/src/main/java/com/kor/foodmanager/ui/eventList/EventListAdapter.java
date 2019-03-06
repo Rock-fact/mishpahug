@@ -49,7 +49,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        Log.d("MY_TAG", "onBindViewHolder: ");
         EventDto event = events.get(i);
         myViewHolder.familyName.setText(event.getOwner().getFullName());
         myViewHolder.eventTitle.setText(event.getTitle());
@@ -69,7 +68,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
 
     public void addEvent(EventDto event){
         events.add(event);
-        Log.d("MY_TAG", "addEvent: ");
         notifyDataSetChanged();
     }
 

@@ -20,11 +20,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.auth.AuthRepository;
-import com.kor.foodmanager.data.model.EventDto;
-import com.kor.foodmanager.data.model.EventListDto;
-import com.kor.foodmanager.data.model.UserDto;
-import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.ui.IToolbar;
 
 

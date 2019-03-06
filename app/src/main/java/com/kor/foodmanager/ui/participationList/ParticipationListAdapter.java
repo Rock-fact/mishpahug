@@ -11,16 +11,18 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.eventList.EventListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class ParticipationListAdapter extends RecyclerView.Adapter<ParticipationListAdapter.MyViewHolder>{
 
     private List<EventDto> participationList;
     private EventListAdapter.MyClickListener listener;
+
+    public ParticipationListAdapter() {
+        participationList = new ArrayList<>();
+    }
 
     @NonNull
     @Override
@@ -31,35 +33,51 @@ public class ParticipationListAdapter extends RecyclerView.Adapter<Participation
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-
+        EventDto event = participationList.get(i);
+        myViewHolder.eventTitle.setText(event.getTitle());
+        myViewHolder.eventDate.setText(event.getDate().toString());
+        myViewHolder.eventDescription.setText(event.getDescription());
+        myViewHolder.eventStatus.setText(event.getStatus().toUpperCase());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return participationList.size();
     }
 
     public void setListener(EventListAdapter.MyClickListener listener) {
         this.listener = listener;
     }
 
+    public void addEvent(EventDto event){
+        participationList.add(event);
+        notifyDataSetChanged();
+    }
+
+    public void removeAll(){
+        participationList.clear();
+        notifyDataSetChanged();
+    }
+
     class MyViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.event_title) TextView eventTitle;
-        @BindView(R.id.event_date) TextView eventDate;
-        @BindView(R.id.event_description) TextView eventDescription;
-        @BindView(R.id.event_status_txt) TextView eventStatus;
-        private Unbinder unbinder;
+        TextView eventTitle, eventDate, eventDescription, eventStatus;
+
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            unbinder= ButterKnife.bind(this, itemView);
+            eventTitle = itemView.findViewById(R.id.event_title);
+            eventDate = itemView.findViewById(R.id.event_date);
+            eventDescription = itemView.findViewById(R.id.event_description);
+            eventStatus = itemView.findViewById(R.id.event_status_txt);
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(getAdapterPosition());
                 }
             });
         }
+
+
     }
 
     public interface MyClickListener{
