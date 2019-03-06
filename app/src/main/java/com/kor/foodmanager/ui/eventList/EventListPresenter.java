@@ -35,10 +35,11 @@ public class EventListPresenter extends MvpPresenter<IEventList> {
     @Inject Api api;
     @Inject IAuthRepository authRepository;
 
-private EventListAdapter adapter = new EventListAdapter();
+private EventListAdapter adapter;
 
     public EventListPresenter() {
         App.get().guestEventInfoComponent().inject(this);
+        adapter = new EventListAdapter();
     }
 
     public void loadEventList(){
@@ -54,17 +55,17 @@ private EventListAdapter adapter = new EventListAdapter();
         EventDto tmp = adapter.getEvents().get(position);
         router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp);}
 
-//    @Override
-//    public void onDestroy() {
-//        App.get().clear
-//        super.onDestroy();
-//    }
+    @Override
+    public void onDestroy() {
+        App.get().clearGuestEventInfoComponent();
+        super.onDestroy();
+    }
 
-    //TODO
 
     private class LoadingList extends AsyncTask<Void, Void, List<EventDto>> {
         private List<EventDto> tmp = new ArrayList<>();
-        //IAuthRepository tmpRepository = authRepository;
+        IAuthRepository tmpRepository = authRepository;
+        Call<EventListDto> call;
 
 
         @Override
@@ -75,7 +76,11 @@ private EventListAdapter adapter = new EventListAdapter();
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
-                Call<EventListDto> call = api.getListOfEventsInProgress(0,30);
+                if (tmpRepository.getToken()!=null){
+                    call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                } else {
+                    call = api.getListOfEventsInProgress(0, 10);
+                }
                 retrofit2.Response<EventListDto> response = call.execute();
                 if(response.isSuccessful()){
                     EventListDto eventListDto = response.body();
@@ -96,9 +101,8 @@ private EventListAdapter adapter = new EventListAdapter();
             if (list!=null) {
                 adapter.removeAll();
                 for(int i=0; i<list.size(); i++){
-                    if(authRepository.getUser()!=list.get(i).getOwner()) { //TODO
                         adapter.addEvent(list.get(i));
-                    }
+
                 }
 
             }

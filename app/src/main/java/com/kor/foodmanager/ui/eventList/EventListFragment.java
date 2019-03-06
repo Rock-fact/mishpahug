@@ -20,11 +20,6 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.auth.AuthRepository;
-import com.kor.foodmanager.data.model.EventDto;
-import com.kor.foodmanager.data.model.EventListDto;
-import com.kor.foodmanager.data.model.UserDto;
-import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.ui.IToolbar;
 
 
@@ -49,13 +44,10 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         filtersBtn = view.findViewById(R.id.filter_btn);
         progressBar = view.findViewById(R.id.progressBar);
         addBtn=view.findViewById(R.id.add_btn);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId()==R.id.add_btn) {
-                    Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
-                    presenter.addEvent();
-                }
+        addBtn.setOnClickListener(v -> {
+            if(v.getId()==R.id.add_btn) {
+                //Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
+                presenter.addEvent();
             }
         });
         recyclerView = view.findViewById(R.id.eventList_rv);

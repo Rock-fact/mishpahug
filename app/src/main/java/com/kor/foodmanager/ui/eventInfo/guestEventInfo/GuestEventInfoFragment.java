@@ -69,7 +69,7 @@ private EventDto event;
             if(event.getOwner().getPictureLink()!=null) {
                 Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(0));
                 //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(eventImg); //TODO get 1 img
-                //Picasso.get().load(R.drawable.ic_fav).into(eventImg);
+                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }
         return view;

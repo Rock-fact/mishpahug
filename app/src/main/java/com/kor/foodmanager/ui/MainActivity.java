@@ -28,10 +28,12 @@ import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfoPending.GuestEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
 import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
+import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
 
@@ -56,6 +58,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String ABOUTMYSELF_FRAGMENT_NEW = "ABOUTMYSELF_FRAGMENT_NEW";
     public static final String CONTACTINFO_FRAGMENT_NEW = "CONTACTINFO_FRAGMENT_NEW";
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
+    public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
+    public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -164,6 +168,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
                 case EVENT_INFO_SCREEN:
                     return GuestEventInfoFragment.getNewInstance((EventDto) data);
+                case PARTICIPATION_LIST_SCREEN:
+                    return new ParticipationListFragment();
+                case GUEST_EVENT_INFO_PENDING_SCREEN:
+                    return GuestEventInfoPendingFragment.getNewInstance((EventDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }
