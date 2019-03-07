@@ -24,8 +24,13 @@ import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoPending.GuestEventInfoPendingFragment;
+import com.kor.foodmanager.ui.eventInfo.myEventInfoDone.MyEventInfoDoneFragment;
+import com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress.MyEventInfoInProgressFragment;
+import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
+import com.kor.foodmanager.ui.myEventList.MyEventListFragment;
+import com.kor.foodmanager.ui.myEventList.TitleRow;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
 import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
@@ -53,6 +58,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
     public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
+    public static final String MY_EVENT_LIST_SCREEN = "MY_EVENT_LIST_SCREEN";
+    public static final String MY_EVENT_INFO_INPROGRESS_SCREEN = "MY_EVENT_INFO_INPROGRESS_SCREEN";
+    public static final String MY_EVENT_INFO_PENDING_SCREEN = "MY_EVENT_INFO_PENDING_SCREEN";
+    public static final String MY_EVENT_INFO_DONE_SCREEN = "MY_EVENT_INFO_DONE_SCREEN";
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -165,6 +174,14 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return new ParticipationListFragment();
                 case GUEST_EVENT_INFO_PENDING_SCREEN:
                     return GuestEventInfoPendingFragment.getNewInstance((EventDto) data);
+                case MY_EVENT_LIST_SCREEN:
+                    return new MyEventListFragment();
+                case MY_EVENT_INFO_INPROGRESS_SCREEN:
+                    return MyEventInfoInProgressFragment.getNewInstance((TitleRow) data);
+                case MY_EVENT_INFO_PENDING_SCREEN:
+                    return MyEventInfoPendingFragment.getNewInstance((TitleRow) data);
+                case MY_EVENT_INFO_DONE_SCREEN:
+                    return MyEventInfoDoneFragment.getNewInstance((TitleRow) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

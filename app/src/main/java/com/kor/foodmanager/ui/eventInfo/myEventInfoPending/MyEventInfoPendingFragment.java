@@ -7,15 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.ui.myEventList.TitleRow;
 
 
-public class MyEventInfoPendingFragment extends Fragment {
-
+public class MyEventInfoPendingFragment extends MvpAppCompatFragment {
+TitleRow event;
 
     public MyEventInfoPendingFragment() {
         // Required empty public constructor
     }
+
+    public static MyEventInfoPendingFragment getNewInstance(TitleRow event){
+        MyEventInfoPendingFragment myEventInfoPendingFragment=new MyEventInfoPendingFragment();
+        myEventInfoPendingFragment.event=event;
+        return myEventInfoPendingFragment;
+    }
+
 
 
     @Override

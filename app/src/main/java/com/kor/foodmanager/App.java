@@ -12,6 +12,8 @@ import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
 import com.kor.foodmanager.di.eventInfo.GuestEventInfoModule;
 import com.kor.foodmanager.di.login.LoginComponent;
 import com.kor.foodmanager.di.login.LoginModule;
+import com.kor.foodmanager.di.myEventList.MyEventListComponent;
+import com.kor.foodmanager.di.myEventList.MyEventListModule;
 import com.kor.foodmanager.di.notification.NotificationComponent;
 import com.kor.foodmanager.di.notification.NotificationModule;
 import com.kor.foodmanager.di.participationList.ParticipationListComponent;
@@ -25,6 +27,7 @@ public class App extends Application {
     private NotificationComponent notificationComponent;
     private GuestEventInfoComponent guestEventInfoComponent;
     private ParticipationListComponent participationListComponent;
+    private MyEventListComponent myEventListComponent;
 
     public App(){
         app = this;
@@ -102,5 +105,13 @@ public class App extends Application {
         participationListComponent = null;
     }
 
-
+    public MyEventListComponent myEventListComponent(){
+        if (myEventListComponent==null){
+            myEventListComponent=mainComponent.plus(new MyEventListModule());
+        }
+        return myEventListComponent;
+    }
+    public void clearMyEventListComponent(){
+        myEventListComponent=null;
+    }
 }
