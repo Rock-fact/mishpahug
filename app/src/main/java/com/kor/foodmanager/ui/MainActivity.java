@@ -23,6 +23,8 @@ import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoPending.GuestEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
@@ -53,6 +55,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
     public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
+    public static final String GUEST_EVENT_INFO_INPROGRESS_SCREEN = "GUEST_EVENT_INFO_INPROGRESS_SCREEN";
+    public static final String GUEST_EVENT_INFO_DONE_SCREEN = "GUEST_EVENT_INFO_DONE_SCREEN";
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -165,6 +169,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return new ParticipationListFragment();
                 case GUEST_EVENT_INFO_PENDING_SCREEN:
                     return GuestEventInfoPendingFragment.getNewInstance((EventDto) data);
+                case GUEST_EVENT_INFO_INPROGRESS_SCREEN:
+                    return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
+                case GUEST_EVENT_INFO_DONE_SCREEN:
+                    return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

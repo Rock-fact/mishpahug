@@ -22,6 +22,9 @@ import ru.terrakok.cicerone.Router;
 public class ParticipationListPresenter extends MvpPresenter<IParticipationList> {
     @Inject Router router;
     @Inject IParticipationListInteractor interactor;
+    public static final String IN_PROGRESS = "In progress";
+    public static final String PENDING ="Pending";
+    public static final String DONE = "Done";
 
     private ParticipationListAdapter adapter;
 
@@ -46,7 +49,18 @@ public class ParticipationListPresenter extends MvpPresenter<IParticipationList>
 
     public void eventInfo(int position){
         EventDto tmp = adapter.getParticipationList().get(position);
-        router.navigateTo(MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN, tmp);
+        switch (tmp.getStatus()){
+            case IN_PROGRESS:
+                router.navigateTo(MainActivity.GUEST_EVENT_INFO_INPROGRESS_SCREEN, tmp);
+                break;
+            case PENDING:
+                router.navigateTo(MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN, tmp);
+                break;
+            case DONE:
+                //router.navigateTo(); TODO
+                break;
+        }
+
     }
 
     private class LoadingParticipationList extends AsyncTask<Void, Void, List<EventDto>> {

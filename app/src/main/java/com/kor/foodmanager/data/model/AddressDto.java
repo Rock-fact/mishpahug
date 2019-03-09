@@ -36,5 +36,10 @@ public class AddressDto {
     public void setLocation(LocationDto location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return city + ", " + location;
+    }
 }
 
