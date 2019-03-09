@@ -9,12 +9,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.NotificationDto;
@@ -33,6 +38,8 @@ import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

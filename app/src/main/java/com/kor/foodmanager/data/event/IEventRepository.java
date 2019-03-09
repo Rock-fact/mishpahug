@@ -7,4 +7,5 @@ import java.io.IOException;
 
 public interface IEventRepository {
     MessageDto addNewEvent(String token, EventDto event) throws IOException, ServerException;
+    String getCityName(String placeId, String API_KEY) throws IOException, ServerException;
 }

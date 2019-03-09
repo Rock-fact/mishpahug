@@ -40,6 +40,11 @@ public class AddressDto {
     @Override
     public String toString() {
         return city + ", " + location;
+        return "AddressDto{" +
+                "city='" + city + '\'' +
+                ", place_id='" + place_id + '\'' +
+                ", location=" + location +
+                '}';
     }
 }
 
