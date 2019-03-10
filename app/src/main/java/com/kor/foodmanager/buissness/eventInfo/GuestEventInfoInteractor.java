@@ -28,4 +28,10 @@ public class GuestEventInfoInteractor implements IGuestEventInfoInteractor{
         res = guestEventInfoRepository.unsubscribeFromEvent(token, eventId);
         return res;
     }
+
+    @Override
+    public String voteForEvent(long eventId, double rate) throws IOException, ServerException {
+        res = guestEventInfoRepository.voteForEvent(token, eventId, rate);
+        return res;
+    }
 }
