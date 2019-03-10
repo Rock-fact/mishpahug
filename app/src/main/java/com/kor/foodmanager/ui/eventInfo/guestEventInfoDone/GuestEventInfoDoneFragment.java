@@ -117,18 +117,15 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.vote_dialog, null);
         RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+        ratingBar.setMax(5);
+        ratingBar.setNumStars(5);
         new AlertDialog.Builder(getActivity())
                 .setMessage("Vote for event")
                 .setView(view)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    presenter.voteForEvent(eventId, ratingBar.getRating());
-                    }
-                })
+                .setPositiveButton("Ok", (dialog, which) ->
+                        presenter.voteForEvent(eventId, ratingBar.getRating()))
                 .create()
                 .show();
-
     }
 
 }

@@ -15,6 +15,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.squareup.picasso.Picasso;
@@ -25,7 +27,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class GuestEventInfoPendingFragment extends Fragment implements IGuestEventInfoPending{
+public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implements IGuestEventInfoPending{
+    @InjectPresenter GuestEventInfoPendingPresenter presenter;
     private EventDto event;
     private Unbinder unbinder;
     @BindView(R.id.event_img) ImageView eventImg;
@@ -80,13 +83,17 @@ public class GuestEventInfoPendingFragment extends Fragment implements IGuestEve
 
     @OnClick(R.id.call_owner_btn)
     void callOwner(){
-        Toast.makeText(getActivity(), "Call owner", Toast.LENGTH_SHORT).show();
-        //TODO
+        if (ownerPhone.getText()!=null){
+        presenter.callOwner(ownerPhone.getText().toString());}
+        else {
+            Toast.makeText(getActivity(), "This owner has not entered his phone number",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.show_on_te_map_btn)
     void showOnMap(){
-        Toast.makeText(getActivity(), "Show on map", Toast.LENGTH_SHORT).show();
+        presenter.showOnMap(event.getAddress().getPlace_id());
         //TODO
     }
 
