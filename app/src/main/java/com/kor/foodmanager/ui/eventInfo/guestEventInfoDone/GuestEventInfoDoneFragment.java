@@ -1,9 +1,12 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfoDone;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,11 +115,20 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
     @Override
     public void showVoteDialog(long eventId) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.vote_dialog, null);
+        RatingBar ratingBar = view.findViewById(R.id.ratingBar);
         new AlertDialog.Builder(getActivity())
                 .setMessage("Vote for event")
-                .setPositiveButton("Ok", (dialog, which) -> presenter.voteForEvent(eventId))
-                .setView(inflater.inflate(R.layout.vote_dialog, null))
+                .setView(view)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    presenter.voteForEvent(eventId, ratingBar.getRating());
+                    }
+                })
                 .create()
                 .show();
+
     }
+
 }
