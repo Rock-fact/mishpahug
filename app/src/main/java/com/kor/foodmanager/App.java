@@ -3,6 +3,8 @@ package com.kor.foodmanager;
 import android.app.Application;
 
 
+import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressComponent;
+import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressModule;
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
@@ -28,6 +30,7 @@ public class App extends Application {
     private GuestEventInfoComponent guestEventInfoComponent;
     private ParticipationListComponent participationListComponent;
     private MyEventListComponent myEventListComponent;
+    private MyEventInProgressComponent myEventInProgressComponent;
 
     public App(){
         app = this;
@@ -114,4 +117,16 @@ public class App extends Application {
     public void clearMyEventListComponent(){
         myEventListComponent=null;
     }
+
+
+    public MyEventInProgressComponent myEventInProgressComponent(){
+        if (myEventInProgressComponent==null){
+            myEventInProgressComponent=mainComponent.plus(new MyEventInProgressModule());
+        }
+        return myEventInProgressComponent;
+    }
+    public void clearMyEventInProgressComponent(){
+        myEventInProgressComponent=null;
+    }
+
 }

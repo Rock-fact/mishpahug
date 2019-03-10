@@ -10,6 +10,7 @@ public class UserDto {
     private double rate;
     private int numberOfVoters;
     private long userId;
+    private Boolean isInvited;
 
 
     public UserDto() {
@@ -35,6 +36,11 @@ public class UserDto {
         this.numberOfVoters = numberOfVoters;
         this.userId = userId;
     }
+
+    public Boolean getInvited() {
+        return isInvited;
+    }
+
 
     public long getUserId() {
         return userId;

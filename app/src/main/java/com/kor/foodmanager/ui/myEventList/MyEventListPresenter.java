@@ -12,11 +12,14 @@ import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -87,6 +90,7 @@ public class MyEventListPresenter extends MvpPresenter<IMyEventList> {
 
         @Override
         protected void onPostExecute(List<EventDto> list) {
+            Collections.sort(list, (lhs, rhs) -> getStatusPriority(lhs.getStatus()) > getStatusPriority(rhs.getStatus()) ? -1 : (getStatusPriority(lhs.getStatus()) < getStatusPriority(rhs.getStatus())) ? 1 : 0);
             ArrayList<TitleRow> events = new ArrayList<>();
             getViewState().hideProgressFrame();
             Log.d("MY_TAG", "onPostExecute: " + list.size());
@@ -113,6 +117,21 @@ public class MyEventListPresenter extends MvpPresenter<IMyEventList> {
     public void onDestroy() {
         App.get().clearMyEventListComponent();
         super.onDestroy();
+    }
+
+    private int getStatusPriority(String str){
+        int res=-10;
+        switch (str){
+            case "In progress":
+                res=3;
+                break;
+            case "Pending":
+                res=2;
+                break;
+            case "Done":
+                res=1;
+        }
+        return res;
     }
 }
 

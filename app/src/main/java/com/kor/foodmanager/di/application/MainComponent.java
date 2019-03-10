@@ -1,5 +1,7 @@
 package com.kor.foodmanager.di.application;
 
+import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressComponent;
+import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressModule;
 import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
@@ -16,6 +18,7 @@ import com.kor.foodmanager.ui.MainActivityPresenter;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfPresenter;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoPresenter;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoPresenter;
+import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingPresenter;
 import com.kor.foodmanager.ui.eventList.EventListPresenter;
 import com.kor.foodmanager.ui.myEventList.MyEventListPresenter;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfilePresenter;
@@ -38,7 +41,9 @@ public interface MainComponent{
     void inject(AboutMyselfPresenter presenter);
     void inject(ContactInfoPresenter presenter);
     void inject(EventListPresenter presenter);
+    void inject(MyEventInfoPendingPresenter presenter);
     ParticipationListComponent plus(ParticipationListModule participationListModule);
     MyEventListComponent plus(MyEventListModule myEventListModule);
+    MyEventInProgressComponent plus(MyEventInProgressModule myEventInProgressModule);
     //void inject(GuestEventInfoPresenter presenter);
 }

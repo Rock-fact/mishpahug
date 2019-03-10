@@ -14,6 +14,7 @@ public class TitleRow {
     private String date;
     private int amountOfParticipants;
     private List<UserDto> participants;
+    private long eventId;
 
     public TitleRow(String status) {
         this.type=STATUS;
@@ -27,7 +28,14 @@ public class TitleRow {
         this.date=eventDto.getDate();
         this.amountOfParticipants=eventDto.getParticipants().size();
         this.participants=eventDto.getParticipants();
+        this.eventId=eventDto.getEventId();
     }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+
     public static String setStatus(String status){
         switch (status){
             case "In progress":
@@ -70,5 +78,9 @@ public class TitleRow {
 
     public int getAmountOfParticipants() {
         return amountOfParticipants;
+    }
+
+    public List<UserDto> getParticipants() {
+        return participants;
     }
 }
