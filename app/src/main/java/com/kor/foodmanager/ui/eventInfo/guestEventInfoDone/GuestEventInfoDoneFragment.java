@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfoDone;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.squareup.picasso.Picasso;
@@ -23,9 +26,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class GuestEventInfoDoneFragment extends Fragment implements IGuestEventInfoDone {
+public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements IGuestEventInfoDone {
+    @InjectPresenter GuestEventInfoDonePresenter presenter;
     private EventDto event;
     private Unbinder unbinder;
+    private Boolean isVoted = false;
     @BindView(R.id.event_img) ImageView eventImg;
     @BindView(R.id.short_info) ConstraintLayout shortInfo;
     @BindView(R.id.family_name) TextView familyName;
@@ -65,6 +70,9 @@ public class GuestEventInfoDoneFragment extends Fragment implements IGuestEventI
                 //Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
                 Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
+            if(isVoted){
+                voteBtn.setVisibility(View.GONE);
+            }
         }
         return view;
     }
@@ -93,5 +101,22 @@ public class GuestEventInfoDoneFragment extends Fragment implements IGuestEventI
         ratingBar.setVisibility(View.VISIBLE);
         eventDescription.setVisibility(View.VISIBLE);
         voteBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideVoteBtn() {
+        voteBtn.setVisibility(View.GONE);
+        isVoted = true;
+    }
+
+    @Override
+    public void showVoteDialog(long eventId) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Vote for event")
+                .setPositiveButton("Ok", (dialog, which) -> presenter.voteForEvent(eventId))
+                .setView(inflater.inflate(R.layout.vote_dialog, null))
+                .create()
+                .show();
     }
 }
