@@ -1,9 +1,11 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.squareup.picasso.Picasso;
@@ -25,7 +29,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class GuestEventInfoInprogressFragment extends Fragment implements IGuestEventInfoInprogress{
+public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment implements IGuestEventInfoInprogress{
+    @InjectPresenter GuestEventInfoInprogressPresenter presenter;
     private EventDto event;
     private Unbinder unbinder;
     @BindView(R.id.event_img)
@@ -84,10 +89,17 @@ public class GuestEventInfoInprogressFragment extends Fragment implements IGuest
     }
 
     @OnClick(R.id.unsubscribe_btn)
-    void unsubscribe(){
-        //TODO
-        Toast.makeText(getActivity(), "Unsubscribe", Toast.LENGTH_SHORT).show();
-    }
+    @Override
+    public void showDialogToUnsubscribe() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Are you sure, that you want to unsubscribe?")
+                .setTitle("Unsubscribe")
+                .setPositiveButton("Yes", (dialog, which) -> presenter.unsubscribe(event.getEventId()))
+                .setNegativeButton("No", null)
+                .setCancelable(false)
+                .create()
+                .show();
+       }
 
 
     @Override
