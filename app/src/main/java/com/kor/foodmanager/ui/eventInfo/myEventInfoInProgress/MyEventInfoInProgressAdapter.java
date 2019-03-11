@@ -2,6 +2,7 @@ package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,16 @@ public class MyEventInfoInProgressAdapter extends RecyclerView.Adapter<MyEventIn
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         UserDto subscriber = listOfParticipants.get(i);
         myViewHolder.fullName.setText(subscriber.getFullName());
+        Log.d("MY_TAG", "onBindViewHolder: "+"amounOfParticipants="+listOfParticipants.size()+"adapter position="+i);
+        Log.d("MY_TAG", "onBindViewHolder: "+listOfParticipants.get(i).getInvited());
+        if (listOfParticipants.get(i).getInvited()==null || !listOfParticipants.get(i).getInvited()){
+            Log.d("MY_TAG", "onBindViewHolder: Yes!!!!!!!!!!");
+            myViewHolder.inviteBtn.setText("-");
+            myViewHolder.inviteBtn.setEnabled(true);
+        } else {
+            myViewHolder.inviteBtn.setText("+");
+            myViewHolder.inviteBtn.setEnabled(false);
+        }
          //TODO load image
     }
 
@@ -77,30 +88,21 @@ public class MyEventInfoInProgressAdapter extends RecyclerView.Adapter<MyEventIn
             fullName = itemView.findViewById(R.id.subscriber_full_name);
             pictureOfSubscriber = itemView.findViewById(R.id.subscriber_picture);
             inviteBtn = itemView.findViewById(R.id.invite_btn);
-            if (listOfParticipants.get(getAdapterPosition()).getInvited()) {
                 inviteBtn.setOnClickListener(v -> {
                     if (listener != null) {
-                        listener.onItemClick(eventId, listOfParticipants.get(getAdapterPosition()).getUserId());
-                    }
-                    inviteBtn.setText("^");
-                    inviteBtn.setEnabled(false);
-                });
-
-                itemView.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.userInfo(listOfParticipants.get(getAdapterPosition()));
+                        listener.onItemClick(eventId, listOfParticipants.get(getAdapterPosition()).getUserId(), itemView);
                     }
                 });
-
-            } else {
-                inviteBtn.setText("^");
-                inviteBtn.setEnabled(false);
-            }
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.userInfo(listOfParticipants.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
     public interface MyClickListener{
-        void onItemClick(Long eventId,Long userId);
+        void onItemClick(Long eventId,Long userId,View itemView);
         void userInfo(UserDto user);
     }
 }

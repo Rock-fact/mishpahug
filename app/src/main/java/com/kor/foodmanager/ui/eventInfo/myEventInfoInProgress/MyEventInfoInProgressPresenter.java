@@ -2,10 +2,13 @@ package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.R;
 import com.kor.foodmanager.buissness.MyEventInProgressInteractor.IMyEventInProgressInteractor;
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
@@ -38,8 +41,8 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         adapter = new MyEventInfoInProgressAdapter();
     }
 
-    public void inviteToEvent(Long eventId, Long userId) {
-        new InviteToEvent(eventId, userId).execute();
+    public void inviteToEvent(Long eventId, Long userId, View itemView) {
+        new InviteToEvent(eventId, userId, itemView).execute();
     }
     public void changeStatusToEvent(Long eventId){
         new ChangeStatusToEvent(eventId).execute();
@@ -57,10 +60,12 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         Long eventId;
         Long userId;
         String res;
+        View itemView;
 
-        public InviteToEvent(Long eventId, Long userId) {
+        public InviteToEvent(Long eventId, Long userId, View itemView) {
             this.eventId = eventId;
             this.userId = userId;
+            this.itemView=itemView;
         }
 
         @Override
@@ -73,6 +78,9 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
             InvitationStatusDto invitationStatusDto = null;
             try {
                 invitationStatusDto = myEventInProgressInteractor.inviteToEvent(eventId, userId);
+                Button inviteBtn =itemView.findViewById(R.id.invite_btn);
+                inviteBtn.setText("+");
+                inviteBtn.setEnabled(false);
             } catch (
                     IOException e) {
                 res = "Server error!";

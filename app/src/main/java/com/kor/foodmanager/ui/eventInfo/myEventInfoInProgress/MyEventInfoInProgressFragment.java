@@ -90,8 +90,8 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
     }
 
     @Override
-    public void onItemClick(Long eventId, Long userId) {
-        presenter.inviteToEvent(eventId, userId);
+    public void onItemClick(Long eventId, Long userId,View itemView) {
+        presenter.inviteToEvent(eventId, userId, itemView);
     }
 
     @Override
