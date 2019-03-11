@@ -3,8 +3,10 @@ package com.kor.foodmanager.ui.participationList;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,9 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper helper = new ItemTouchHelper(new MyTouchCallBack());
+        helper.attachToRecyclerView(recyclerView);
         return view;
     }
 
@@ -75,4 +80,24 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
+
+    class MyTouchCallBack extends ItemTouchHelper.Callback{
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return makeMovementFlags(0, ItemTouchHelper.END | ItemTouchHelper.START);
+        }
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            presenter.loadParticipationList();
+        }
+    }
+
+
 }

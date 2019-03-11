@@ -57,7 +57,7 @@ public class ParticipationListPresenter extends MvpPresenter<IParticipationList>
                 router.navigateTo(MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN, tmp);
                 break;
             case DONE:
-                //router.navigateTo(); TODO
+                router.navigateTo(MainActivity.GUEST_EVENT_INFO_DONE_SCREEN, tmp);
                 break;
         }
 
