@@ -144,4 +144,6 @@ public class EventDto {
                 ", address=" + address +
                 '}';
     }
+
+
 }

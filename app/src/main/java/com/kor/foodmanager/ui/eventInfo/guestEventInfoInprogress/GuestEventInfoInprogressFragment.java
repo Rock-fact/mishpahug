@@ -76,8 +76,8 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
             eventDescription.setText(event.getDescription());
             eventStatus.setText(event.getStatus().toUpperCase());
             if (event.getOwner().getPictureLink() != null) {
-                //Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
+//                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }
         return view;

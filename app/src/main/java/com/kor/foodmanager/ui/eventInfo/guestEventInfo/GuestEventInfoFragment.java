@@ -67,8 +67,8 @@ private EventDto event;
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
             if(event.getOwner().getPictureLink()!=null) {
-                Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(0));
-                //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(eventImg); //TODO get 1 img
+                Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(1));
+//                Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
                 Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }
