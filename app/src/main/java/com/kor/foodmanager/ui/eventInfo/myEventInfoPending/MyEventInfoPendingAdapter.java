@@ -82,13 +82,13 @@ public class MyEventInfoPendingAdapter extends RecyclerView.Adapter<MyEventInfoP
             inviteBtn.setVisibility(View.GONE);
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.userInfo(listOfParticipants.get(getAdapterPosition()));
+                    listener.userInfo(getAdapterPosition());
                 }
             });
 
         }
     }
     public interface MyClickListener{
-        void userInfo(UserDto user);
+        void userInfo(int adapterPosition);
     }
 }

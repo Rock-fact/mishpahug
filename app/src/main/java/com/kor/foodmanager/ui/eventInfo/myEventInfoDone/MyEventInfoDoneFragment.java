@@ -1,9 +1,7 @@
 package com.kor.foodmanager.ui.eventInfo.myEventInfoDone;
 
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,13 +27,13 @@ public class MyEventInfoDoneFragment extends MvpAppCompatFragment {
 
     private IToolbar iToolbar;
     private Unbinder unbinder;
-    private TitleRow event;
+    private EventDto event;
 
 
     public MyEventInfoDoneFragment() {
     }
 
-    public static MyEventInfoDoneFragment getNewInstance(TitleRow event) {
+    public static MyEventInfoDoneFragment getNewInstance(EventDto event) {
         MyEventInfoDoneFragment myEventInfoDoneFragment = new MyEventInfoDoneFragment();
         myEventInfoDoneFragment.event = event;
         return myEventInfoDoneFragment;

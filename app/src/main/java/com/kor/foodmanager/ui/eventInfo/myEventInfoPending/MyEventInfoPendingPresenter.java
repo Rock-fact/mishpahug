@@ -29,7 +29,8 @@ public class MyEventInfoPendingPresenter extends MvpPresenter<IMyEventInfoPendin
         adapter = new MyEventInfoPendingAdapter();
     }
 
-    public void userInfo(UserDto user) {
+    public void userInfo(int adapterPosition) {
+        long userId=adapter.getListOfParticipants().get(adapterPosition).getUserId();
         router.showSystemMessage("goToUserInfo");
     }
 

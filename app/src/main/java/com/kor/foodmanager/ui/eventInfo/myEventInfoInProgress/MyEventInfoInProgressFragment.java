@@ -15,9 +15,8 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,13 +40,14 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
     private MyEventInfoInProgressAdapter adapter;
     private IToolbar iToolbar;
     private Unbinder unbinder;
-    private TitleRow event;
+    private EventDto event;
+
 
 
     public MyEventInfoInProgressFragment() {
     }
 
-    public static MyEventInfoInProgressFragment getNewInstance(TitleRow event){
+    public static MyEventInfoInProgressFragment getNewInstance(EventDto event){
         MyEventInfoInProgressFragment myEventInfoInProgressFragment=new MyEventInfoInProgressFragment();
         myEventInfoInProgressFragment.event=event;
         return myEventInfoInProgressFragment;
@@ -62,7 +62,7 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
         eventDescription.setText(event.getDescription());
 
         finishInvite.setOnClickListener(v -> {
-            presenter.changeStatusToEvent(event.getEventId());
+            presenter.changeStatusToEvent(event);
         });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -90,13 +90,13 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
     }
 
     @Override
-    public void onItemClick(Long eventId, Long userId,View itemView) {
-        presenter.inviteToEvent(eventId, userId, itemView);
+    public void onItemClick(Long eventId, int adapterPosition) {
+        presenter.inviteToEvent(eventId, adapterPosition);
     }
 
     @Override
-    public void userInfo(UserDto user) {
-        presenter.userInfo(user);
+    public void userInfo(int adapterPosition) {
+        presenter.userInfo(adapterPosition);
     }
 
 
@@ -111,4 +111,5 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
+
 }

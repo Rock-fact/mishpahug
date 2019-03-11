@@ -90,19 +90,19 @@ public class MyEventInfoInProgressAdapter extends RecyclerView.Adapter<MyEventIn
             inviteBtn = itemView.findViewById(R.id.invite_btn);
                 inviteBtn.setOnClickListener(v -> {
                     if (listener != null) {
-                        listener.onItemClick(eventId, listOfParticipants.get(getAdapterPosition()).getUserId(), itemView);
-                    }
+                        listener.onItemClick(eventId, getAdapterPosition());
+                        }
                 });
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.userInfo(listOfParticipants.get(getAdapterPosition()));
+                    listener.userInfo(getAdapterPosition());
                 }
             });
         }
     }
 
     public interface MyClickListener{
-        void onItemClick(Long eventId,Long userId,View itemView);
-        void userInfo(UserDto user);
+        void onItemClick(Long eventId,int adapterPosition);
+        void userInfo(int adapterPosition);
     }
 }

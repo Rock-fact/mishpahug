@@ -1,27 +1,17 @@
 package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
-import com.kor.foodmanager.R;
 import com.kor.foodmanager.buissness.MyEventInProgressInteractor.IMyEventInProgressInteractor;
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.InvitationStatusDto;
-import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.MainActivity;
-import com.kor.foodmanager.ui.myEventList.IMyEventList;
-import com.kor.foodmanager.ui.myEventList.MyEventListAdapter;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,18 +31,19 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         adapter = new MyEventInfoInProgressAdapter();
     }
 
-    public void inviteToEvent(Long eventId, Long userId, View itemView) {
-        new InviteToEvent(eventId, userId, itemView).execute();
+    public void inviteToEvent(Long eventId, int adapterPosition) {
+        new InviteToEvent(eventId, adapterPosition).execute();
     }
-    public void changeStatusToEvent(Long eventId){
-        new ChangeStatusToEvent(eventId).execute();
+    public void changeStatusToEvent(EventDto event){
+        new ChangeStatusToEvent(event).execute();
     }
 
     public MyEventInfoInProgressAdapter getAdapter() {
         return adapter;
     }
 
-    public void userInfo(UserDto user){
+    public void userInfo(int adapterPosition){
+        long userId=adapter.getListOfParticipants().get(adapterPosition).getUserId();
         router.showSystemMessage("GoToUserInfoFragment");
     }
 
@@ -60,12 +51,11 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         Long eventId;
         Long userId;
         String res;
-        View itemView;
+        int adapterPosition;
 
-        public InviteToEvent(Long eventId, Long userId, View itemView) {
+        public InviteToEvent(Long eventId, int adapterPosition) {
             this.eventId = eventId;
-            this.userId = userId;
-            this.itemView=itemView;
+            this.adapterPosition = adapterPosition;
         }
 
         @Override
@@ -77,10 +67,8 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         protected InvitationStatusDto doInBackground(Void... voids) {
             InvitationStatusDto invitationStatusDto = null;
             try {
-                invitationStatusDto = myEventInProgressInteractor.inviteToEvent(eventId, userId);
-                Button inviteBtn =itemView.findViewById(R.id.invite_btn);
-                inviteBtn.setText("+");
-                inviteBtn.setEnabled(false);
+                invitationStatusDto = myEventInProgressInteractor.inviteToEvent(eventId, adapter.getListOfParticipants().get(adapterPosition).getUserId());
+                adapter.getListOfParticipants().get(adapterPosition).setInvited(true);
             } catch (
                     IOException e) {
                 res = "Server error!";
@@ -97,15 +85,16 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
             if (invitationStatusDto == null) {
                 router.showSystemMessage(res);
             }
+
         }
     }
 
-    private class ChangeStatusToEvent extends AsyncTask<Void, Void, EventDto> {
-        Long eventId;
+    private class ChangeStatusToEvent extends AsyncTask<Void, Void, com.kor.foodmanager.data.model.EventDto> {
+        EventDto event;
         String res;
 
-        public ChangeStatusToEvent(Long eventId) {
-            this.eventId = eventId;
+        public ChangeStatusToEvent(EventDto event) {
+            this.event=event;
         }
         @Override
         protected void onPreExecute() {
@@ -114,9 +103,10 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
 
         @Override
         protected EventDto doInBackground(Void... voids) {
-            EventDto event = null;
+            EventDto eventDto = null;
             try {
-                event = myEventInProgressInteractor.changeEventStatus(eventId);
+                eventDto = myEventInProgressInteractor.changeEventStatus(event.getEventId());
+
             } catch (
                     IOException e) {
                 res = "Server error!";
@@ -124,15 +114,15 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
                     ServerException e) {
                 res = e.getMessage();
             }
-            return event;
+            return eventDto;
         }
 
         @Override
-        protected void onPostExecute(EventDto event) {
+        protected void onPostExecute(EventDto eventDto) {
             getViewState().hideProgressFrame();
-            if (event == null) {
+            if (eventDto == null) {
                 router.showSystemMessage(res);
-            }
+            } else router.replaceScreen(MainActivity.MY_EVENT_INFO_PENDING_SCREEN, event);
         }
     }
 

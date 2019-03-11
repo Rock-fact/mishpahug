@@ -8,16 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,13 +37,13 @@ public class MyEventInfoPendingFragment extends MvpAppCompatFragment implements 
     private MyEventInfoPendingAdapter adapter;
     private IToolbar iToolbar;
     private Unbinder unbinder;
-    private TitleRow event;
+    private EventDto event;
 
 
     public MyEventInfoPendingFragment() {
     }
 
-    public static MyEventInfoPendingFragment getNewInstance(TitleRow event){
+    public static MyEventInfoPendingFragment getNewInstance(EventDto event){
         MyEventInfoPendingFragment myEventInfoPendingFragment=new MyEventInfoPendingFragment();
         myEventInfoPendingFragment.event=event;
         return myEventInfoPendingFragment;
@@ -82,8 +80,8 @@ public class MyEventInfoPendingFragment extends MvpAppCompatFragment implements 
         super.onDestroy();
     }
 
-    public void userInfo(UserDto user) {
-        presenter.userInfo(user);
+    public void userInfo(int adapterPosition) {
+        presenter.userInfo(adapterPosition);
     }
 
 

@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -34,14 +33,11 @@ import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingFra
 import com.kor.foodmanager.ui.eventList.EventListFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.myEventList.MyEventListFragment;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
 import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -189,11 +185,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case MY_EVENT_LIST_SCREEN:
                     return new MyEventListFragment();
                 case MY_EVENT_INFO_INPROGRESS_SCREEN:
-                    return MyEventInfoInProgressFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoInProgressFragment.getNewInstance((EventDto) data);
                 case MY_EVENT_INFO_PENDING_SCREEN:
-                    return MyEventInfoPendingFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoPendingFragment.getNewInstance((EventDto) data);
                 case MY_EVENT_INFO_DONE_SCREEN:
-                    return MyEventInfoDoneFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoDoneFragment.getNewInstance((EventDto) data);
 
                 case GUEST_EVENT_INFO_INPROGRESS_SCREEN:
                     return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
