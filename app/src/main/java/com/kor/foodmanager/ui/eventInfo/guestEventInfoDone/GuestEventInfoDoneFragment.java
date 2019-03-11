@@ -22,6 +22,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.ui.IToolbar;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -34,6 +35,7 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
     private EventDto event;
     private Unbinder unbinder;
     private Boolean isVoted = false;
+    private IToolbar iToolbar;
     @BindView(R.id.event_img) ImageView eventImg;
     @BindView(R.id.short_info) ConstraintLayout shortInfo;
     @BindView(R.id.family_name) TextView familyName;
@@ -63,6 +65,8 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         unbinder= ButterKnife.bind(this, view);
         progressBar.setVisibility(View.GONE);
         if (event!=null) {
+            iToolbar=(IToolbar) getActivity();
+            iToolbar.setTitleToolbarEnable(event.getTitle(),true);
             eventTitle.setText(event.getTitle());
             familyName.setText(event.getOwner().getLastName());
             Log.d("MY_TAG", "FamilyName: " + event.getOwner().getFullName());

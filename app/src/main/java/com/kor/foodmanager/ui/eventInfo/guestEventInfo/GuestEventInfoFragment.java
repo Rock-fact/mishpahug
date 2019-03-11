@@ -19,6 +19,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.ui.IToolbar;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -40,6 +41,7 @@ public class GuestEventInfoFragment extends MvpAppCompatFragment implements IGue
 @BindView(R.id.progressBar) ProgressBar progressBar;
 private Unbinder unbinder;
 private EventDto event;
+private IToolbar iToolbar;
 
 
     public GuestEventInfoFragment() {
@@ -61,6 +63,8 @@ private EventDto event;
         unbinder = ButterKnife.bind(this,view);
         joinBtn.setOnClickListener(this);
         if(event!=null){
+            iToolbar=(IToolbar) getActivity();
+            iToolbar.setTitleToolbarEnable(event.getTitle(),true);
             eventTitle.setText(event.getTitle());
             familyname.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
