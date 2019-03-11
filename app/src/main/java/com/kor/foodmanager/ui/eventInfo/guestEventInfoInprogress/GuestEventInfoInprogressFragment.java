@@ -102,6 +102,14 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
                 .show();
        }
 
+    @Override
+    public void showSuccessDialog(String s) {
+        new android.app.AlertDialog.Builder(getActivity()).setMessage(s)
+                .setPositiveButton("ok", null)
+                .create()
+                .show();
+    }
+
 
     @Override
     public void showProgressFrame() {

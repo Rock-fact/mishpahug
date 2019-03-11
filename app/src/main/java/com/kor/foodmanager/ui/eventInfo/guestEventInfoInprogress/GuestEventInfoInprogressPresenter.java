@@ -64,9 +64,11 @@ public class GuestEventInfoInprogressPresenter extends MvpPresenter<IGuestEventI
         @Override
         protected void onPostExecute(String s) {
             getViewState().hideProgressFrame();
-            router.showSystemMessage(s);
             if (isSuccess){
+                getViewState().showSuccessDialog(s);
                 router.navigateTo(MainActivity.PARTICIPATION_LIST_SCREEN);
+            } else {
+                router.showSystemMessage(s);
             }
         }
     }

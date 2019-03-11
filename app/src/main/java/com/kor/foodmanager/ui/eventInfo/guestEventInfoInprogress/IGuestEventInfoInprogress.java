@@ -9,4 +9,5 @@ public interface IGuestEventInfoInprogress extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
     void showDialogToUnsubscribe();
+    void showSuccessDialog(String s);
 }

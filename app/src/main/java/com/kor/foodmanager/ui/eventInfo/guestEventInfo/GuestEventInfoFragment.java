@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfo;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -110,6 +111,14 @@ private EventDto event;
     @Override
     public void hideJoinBtn() {
         joinBtn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showSuccessDialog(String s) {
+        new AlertDialog.Builder(getActivity()).setMessage(s)
+                .setPositiveButton("ok", null)
+                .create()
+                .show();
     }
 
     @Override

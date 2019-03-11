@@ -11,4 +11,5 @@ public interface IGuestEventInfoDone extends MvpView {
     void hideProgressFrame();
     void hideVoteBtn();
     void showVoteDialog(long eventId);
+    void showSuccessDialog(String s);
 }

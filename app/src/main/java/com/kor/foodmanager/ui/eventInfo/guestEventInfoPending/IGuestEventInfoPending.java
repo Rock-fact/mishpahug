@@ -8,4 +8,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface IGuestEventInfoPending extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
+
 }

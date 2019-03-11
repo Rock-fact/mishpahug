@@ -129,4 +129,12 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
                 .show();
     }
 
+    @Override
+    public void showSuccessDialog(String s) {
+        new AlertDialog.Builder(getActivity()).setMessage(s)
+                .setPositiveButton("ok", null)
+                .create()
+                .show();
+    }
+
 }

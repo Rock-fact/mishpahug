@@ -64,9 +64,11 @@ public class GuestEventInfoDonePresenter extends MvpPresenter<IGuestEventInfoDon
         @Override
         protected void onPostExecute(String s) {
             getViewState().hideProgressFrame();
-            router.showSystemMessage(s);
             if (isSuccess){
+                getViewState().showSuccessDialog(s);
                 getViewState().hideVoteBtn();
+            } else {
+                router.showSystemMessage(s);
             }
         }
     }
