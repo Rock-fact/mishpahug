@@ -61,6 +61,7 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guest_even_info_done, container, false);
         unbinder= ButterKnife.bind(this, view);
+        progressBar.setVisibility(View.GONE);
         if (event!=null) {
             eventTitle.setText(event.getTitle());
             familyName.setText(event.getOwner().getLastName());
