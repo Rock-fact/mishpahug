@@ -38,6 +38,7 @@ import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
+import com.kor.foodmanager.ui.userInfo.UserInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +69,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
     public static final String GUEST_EVENT_INFO_INPROGRESS_SCREEN = "GUEST_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String GUEST_EVENT_INFO_DONE_SCREEN = "GUEST_EVENT_INFO_DONE_SCREEN";
+
+    public static final String USER_INFO_SCREEN = "USER_INFO_SCREEN";
 
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
@@ -195,7 +198,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
                 case GUEST_EVENT_INFO_DONE_SCREEN:
                     return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
-
+                case USER_INFO_SCREEN:
+                    return UserInfo.getNewInstance((UserDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }
