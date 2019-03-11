@@ -38,7 +38,6 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
     @BindView(R.id.event_img) ImageView eventImg;
     @BindView(R.id.short_info) ConstraintLayout shortInfo;
     @BindView(R.id.family_name) TextView familyName;
-    @BindView(R.id.event_title) TextView eventTitle;
     @BindView(R.id.event_date) TextView eventDate;
     @BindView(R.id.status) TextView eventStatus;
     @BindView(R.id.ratingBar) RatingBar ratingBar;
@@ -70,7 +69,6 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
         if (event!=null){
             iToolbar=(IToolbar) getActivity();
             iToolbar.setTitleToolbarEnable(event.getTitle(),true);
-            eventTitle.setText(event.getTitle());
             familyName.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
             eventAddress.setText(event.getAddress().showFullEventAddres());

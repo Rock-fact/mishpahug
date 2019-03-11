@@ -41,7 +41,6 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
     ConstraintLayout shortInfo;
     @BindView(R.id.family_name)
     TextView familyName;
-    @BindView(R.id.event_title) TextView eventTitle;
     @BindView(R.id.event_date) TextView eventDate;
     @BindView(R.id.status) TextView eventStatus;
     @BindView(R.id.ratingBar)
@@ -72,7 +71,6 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
         if (event!=null) {
             iToolbar=(IToolbar) getActivity();
             iToolbar.setTitleToolbarEnable(event.getTitle(),true);
-            eventTitle.setText(event.getTitle());
             familyName.setText(event.getOwner().getLastName());
             Log.d("MY_TAG", "FamilyName: " + event.getOwner().getFullName());
             eventDate.setText(event.getDate());
