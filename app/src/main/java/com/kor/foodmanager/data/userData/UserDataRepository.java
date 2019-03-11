@@ -38,6 +38,7 @@ public class UserDataRepository implements IUserDataRepository {
        Call<UserDto> call = api.updateUserProfile(token,user);
        Response<UserDto> response = call.execute();
        if (response.isSuccessful()){
+           authRepository.saveUser(user);
            return response.body();
        }else{
            String error = response.errorBody().string();

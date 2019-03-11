@@ -11,4 +11,6 @@
     <color name="darkblue">#32265F</color>
     <color name="lightblue">#5F4F8D</color>
     <color name="colorBeige">#FFEED9</color>
+    <color name="place_autocomplete_search_text">#FFEED9</color>
+    <color name="place_autocomplete_search_hint">#FFEED9</color>
 </resources>

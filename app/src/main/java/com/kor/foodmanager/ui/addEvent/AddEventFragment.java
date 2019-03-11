@@ -1,45 +1,62 @@
 package com.kor.foodmanager.ui.addEvent;
-
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static com.kor.foodmanager.ui.MainActivity.TAG;
-
-public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
-    @InjectPresenter AddEventPresenter presenter;
+// TODO: 06.03.2019 for future improvement we need to replace current fragment with custom. for example:
+// https://stackoverflow.com/questions/36999647/how-to-customize-placeautocomplete-widget-dialog-design-to-list-places
+// https://techstricks.com/custom-google-place-autocomplete-android/
+public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent {
+    private static final int REQUEST_SELECT_PLACE = 1000;
+    @InjectPresenter
+    AddEventPresenter presenter;
     private Unbinder unbinder;
-    @BindView(R.id.inputTitle) TextView inputTitle;
-    @BindView(R.id.inputAddress) TextView inputAddress;
-    @BindView(R.id.textDate) TextView textDate;
-    @BindView(R.id.inputDescription) TextView inputDescription;
-    @BindView(R.id.createBtn) Button createBtn;
+    @BindView(R.id.inputTitle)
+    TextView inputTitle;
+    @BindView(R.id.textDate)
+    TextView textDate;
+    @BindView(R.id.inputDescription)
+    TextView inputDescription;
+    @BindView(R.id.createBtn)
+    Button createBtn;
+    @BindView(R.id.inputHoliday)
+    TextView inputHoliday;
+    @BindView(R.id.duration_picker)
+    NumberPicker durationPicker;
+    @BindView(R.id.pickerFrame)
+    FrameLayout pickerFrame;
+    @BindView(R.id.confirm_duration)
+    Button confirmDuration;
+    SupportPlaceAutocompleteFragment autocompleteFragment;
+    private static final String COUNTRY_CODE = "IL";
+
     Calendar dateAndTime;
     Object data;
     private IToolbar iToolbar;
+    private int duration = 0;
 
     public AddEventFragment() {
     }
@@ -48,12 +65,11 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
-        unbinder = ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         dateAndTime = Calendar.getInstance();
-
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Add event",true);
-
+        iToolbar.setTitleToolbarEnable("Add event", true);
+        placesAutocomplete(view);
         return view;
     }
 
@@ -66,6 +82,35 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
                 .show();
     }
 
+    public void setTime() {
+        new TimePickerDialog(getActivity(), timeCallback,
+                dateAndTime.get(Calendar.HOUR_OF_DAY),
+                dateAndTime.get(Calendar.MINUTE),
+                true)
+                .show();
+    }
+
+    public void setDuration() {
+        pickerFrame.setVisibility(View.VISIBLE);
+        durationPicker.setMaxValue(24);
+        durationPicker.setMinValue(0);
+        durationPicker.setValue(duration);
+    }
+
+    @OnClick(R.id.confirm_duration)
+    public void confirmDuration() {
+        pickerFrame.setVisibility(View.GONE);
+        duration = durationPicker.getValue();
+        textDate.setText(textDate.getText().toString() + ", duration: " + duration + " hours");
+    }
+
+    public void placesAutocomplete(View view){
+        FragmentManager fragmentManager = getChildFragmentManager();
+        SupportPlaceAutocompleteFragment fragment = presenter.showAutocomplete();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.autocomplete_layout, fragment, "AUTOCOMPLETE_FRAGMENT").commit();
+    }
+
     @Override
     public void onDestroy() {
         unbinder.unbind();
@@ -73,31 +118,41 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent{
     }
 
     @OnClick(R.id.createBtn)
-    public void makeEvent(){
+    public void makeEvent() {
         presenter.addNewEvent(createEvent());
     }
 
-    public EventDto createEvent(){
+    public EventDto createEvent() {
         EventDto event = new EventDto();
         event.setTitle(inputTitle.getText().toString());
+        event.setHoliday(inputHoliday.getText().toString());                // TODO: 05.03.2019 options 
         event.setDescription(inputDescription.getText().toString());
-        SimpleDateFormat form = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
         Date dateTime = dateAndTime.getTime();
-        String date = form.format(dateTime);
+        String date = formDate.format(dateTime);
         event.setDate(date);
-        AddressDto addressDto = new AddressDto();
-        addressDto.setPlace_id(inputAddress.getText().toString());
-        event.setAddress(addressDto);
+        SimpleDateFormat formTime = new SimpleDateFormat("HH:mm:ss");
+        String time = formTime.format(dateTime);
+        event.setTime(time);
+        event.setDuration(duration * 60);
         return event;
     }
 
     //обработчик выбора даты
     DatePickerDialog.OnDateSetListener dateCallback = (view, year, month, dayOfMonth) -> {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, month);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            textDate.setText(DateUtils.formatDateTime(getActivity(),
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));};
+        dateAndTime.set(Calendar.YEAR, year);
+        dateAndTime.set(Calendar.MONTH, month);
+        dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        setTime();
+    };
 
+    //обработчик выбора времени
+    TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
+        dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        dateAndTime.set(Calendar.MINUTE, minute);
+        textDate.setText(DateUtils.formatDateTime(getActivity(),
+                dateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
+        setDuration();
+    };
 }

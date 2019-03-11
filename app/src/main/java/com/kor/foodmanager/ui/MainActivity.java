@@ -9,12 +9,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.NotificationDto;
@@ -23,6 +28,8 @@ import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
+import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoPending.GuestEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoDone.MyEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress.MyEventInfoInProgressFragment;
@@ -36,6 +43,8 @@ import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,10 +67,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
     public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
+
     public static final String MY_EVENT_LIST_SCREEN = "MY_EVENT_LIST_SCREEN";
     public static final String MY_EVENT_INFO_INPROGRESS_SCREEN = "MY_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String MY_EVENT_INFO_PENDING_SCREEN = "MY_EVENT_INFO_PENDING_SCREEN";
     public static final String MY_EVENT_INFO_DONE_SCREEN = "MY_EVENT_INFO_DONE_SCREEN";
+
+    public static final String GUEST_EVENT_INFO_INPROGRESS_SCREEN = "GUEST_EVENT_INFO_INPROGRESS_SCREEN";
+    public static final String GUEST_EVENT_INFO_DONE_SCREEN = "GUEST_EVENT_INFO_DONE_SCREEN";
+
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
@@ -174,6 +188,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return new ParticipationListFragment();
                 case GUEST_EVENT_INFO_PENDING_SCREEN:
                     return GuestEventInfoPendingFragment.getNewInstance((EventDto) data);
+
                 case MY_EVENT_LIST_SCREEN:
                     return new MyEventListFragment();
                 case MY_EVENT_INFO_INPROGRESS_SCREEN:
@@ -182,6 +197,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return MyEventInfoPendingFragment.getNewInstance((TitleRow) data);
                 case MY_EVENT_INFO_DONE_SCREEN:
                     return MyEventInfoDoneFragment.getNewInstance((TitleRow) data);
+
+                case GUEST_EVENT_INFO_INPROGRESS_SCREEN:
+                    return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
+                case GUEST_EVENT_INFO_DONE_SCREEN:
+                    return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
+
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

@@ -125,4 +125,23 @@ public class EventDto {
     public void setOwner(UserDto owner) {
         this.owner = owner;
     }
+
+    @Override
+    public String toString() {
+        return "EventDto{" +
+                "title='" + title + '\'' +
+                ", status='" + status + '\'' +
+                ", holiday='" + holiday + '\'' +
+                ", confession='" + confession + '\'' +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                ", eventId=" + eventId +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", participants=" + participants +
+                ", food=" + food +
+                ", owner=" + owner +
+                ", address=" + address +
+                '}';
+    }
 }

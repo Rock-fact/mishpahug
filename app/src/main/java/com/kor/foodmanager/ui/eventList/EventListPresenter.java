@@ -53,7 +53,7 @@ private EventListAdapter adapter;
     public void addEvent() {router.navigateTo(MainActivity.ADD_EVENT_SCREEN);}
     public void eventInfo(int position){
         EventDto tmp = adapter.getEvents().get(position);
-        router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp);}
+        router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp); }
 
     @Override
     public void onDestroy() {

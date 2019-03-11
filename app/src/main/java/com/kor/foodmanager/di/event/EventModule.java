@@ -10,6 +10,7 @@ import com.kor.foodmanager.data.provider.web.Api;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
 
 @Module
 public class EventModule {
@@ -20,7 +21,7 @@ public class EventModule {
     }
 
     @Provides @EventScope
-    IEventRepository provideHomeRepository(Api api, Gson gson){
-        return new EventRepository(api, gson);
+    IEventRepository provideHomeRepository(Api api, Gson gson, OkHttpClient okHttpClient){
+        return new EventRepository(api, gson, okHttpClient);
     }
 }

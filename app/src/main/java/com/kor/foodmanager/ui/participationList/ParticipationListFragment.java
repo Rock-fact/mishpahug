@@ -27,7 +27,6 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
     private Unbinder unbinder;
     private ParticipationListAdapter adapter;
 
-
     public ParticipationListFragment() {
 
     }

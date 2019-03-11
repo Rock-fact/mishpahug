@@ -8,6 +8,21 @@
     tools:context=".ui.eventInfo.guestEventInfo.GuestEventInfoFragment"
     android:background="@drawable/background_gradient">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
     <ImageView
         android:id="@+id/event_img"
         android:layout_width="match_parent"
@@ -23,21 +38,20 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/short_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="50dp"
         android:background="#BF5F4F8D"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/event_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_img">
+        app:layout_constraintTop_toTopOf="@+id/event_img">
 
         <TextView
             android:id="@+id/family_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="Name"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,7 +109,8 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/short_info" />
+        app:layout_constraintTop_toBottomOf="@+id/short_info"
+        android:isIndicator="true"/>
 
     <ScrollView
         android:id="@+id/scrollView2"
