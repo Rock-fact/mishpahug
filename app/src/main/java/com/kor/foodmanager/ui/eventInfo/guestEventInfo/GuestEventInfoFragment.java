@@ -62,7 +62,7 @@ private EventDto event;
         joinBtn.setOnClickListener(this);
         if(event!=null){
             eventTitle.setText(event.getTitle());
-            familyname.setText(event.getOwner().getLastName());
+            familyname.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
             eventAddress.setText(event.getAddress().getCity());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
