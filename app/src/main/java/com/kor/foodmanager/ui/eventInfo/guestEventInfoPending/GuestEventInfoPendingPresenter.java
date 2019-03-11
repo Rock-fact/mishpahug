@@ -14,7 +14,8 @@ public class GuestEventInfoPendingPresenter extends MvpPresenter<IGuestEventInfo
         Uri uri = Uri.parse(phone);
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(uri);
-        //Intent chooser = Intent.createChooser(intent,"Select app");
+        Intent chooser = Intent.createChooser(intent,"Select app");
+
         //startActivity(chooser);
 
     }

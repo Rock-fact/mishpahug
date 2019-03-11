@@ -1,6 +1,8 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfoPending;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -65,15 +67,13 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
         progressBar.setVisibility(View.GONE);
         if (event!=null){
             eventTitle.setText(event.getTitle());
-            familyName.setText(event.getOwner().getLastName());
-            Log.d("MY_TAG", "FamilyName: "+event.getOwner().getLastName());
+            familyName.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
-            eventAddress.setText(event.getAddress().toString());
+            eventAddress.setText(event.getAddress().showFullEventAddres());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
             eventStatus.setText(event.getStatus().toUpperCase());
             ownerPhone.setText(event.getOwner().getPhoneNumber());
-            Log.d("MY_TAG", "Phone: "+event.getOwner().getPhoneNumber());
             if(event.getOwner().getPictureLink()!=null) {
                 //Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
                 Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
@@ -85,7 +85,13 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
     @OnClick(R.id.call_owner_btn)
     void callOwner(){
         if (ownerPhone.getText()!=null){
-        presenter.callOwner(ownerPhone.getText().toString());}
+       // presenter.callOwner(ownerPhone.getText().toString());
+            Uri uri = Uri.parse("tel:"+event.getOwner().getPhoneNumber());
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(uri);
+            Intent chooser = Intent.createChooser(intent,"Select app");
+            startActivity(chooser);
+        }
         else {
             Toast.makeText(getActivity(), "This owner has not entered his phone number",
                     Toast.LENGTH_SHORT).show();
@@ -94,8 +100,16 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
 
     @OnClick(R.id.show_on_te_map_btn)
     void showOnMap(){
-        presenter.showOnMap(event.getAddress().getPlace_id());
-        //TODO
+        //presenter.showOnMap(event.getAddress().getPlace_id());
+//        Log.d("MY_TAG", "placeId: "+event.getAddress().getPlace_id());
+//        Log.d("MY_TAG", "Location: "+event.getAddress().getLocation());
+        Uri uri = Uri.parse("geo:"+event.getAddress().getLocation().getLat()+","
+        +event.getAddress().getLocation().getLng());
+        Log.d("MY_TAG", "showOnMap: "+uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+        Intent chooser = Intent.createChooser(intent,"Select app");
+        startActivity(chooser);
     }
 
 

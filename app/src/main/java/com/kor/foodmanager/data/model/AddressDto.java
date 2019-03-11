@@ -46,5 +46,9 @@ public class AddressDto {
 //                ", location=" + location +
 //                '}';
     }
+
+    public String showFullEventAddres(){
+        return city + " " ; //TODO
+    }
 }
 

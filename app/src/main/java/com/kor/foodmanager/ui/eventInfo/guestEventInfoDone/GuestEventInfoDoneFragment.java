@@ -65,7 +65,7 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         if (event!=null) {
             eventTitle.setText(event.getTitle());
             familyName.setText(event.getOwner().getLastName());
-            Log.d("MY_TAG", "FamilyName: " + event.getOwner().getLastName());
+            Log.d("MY_TAG", "FamilyName: " + event.getOwner().getFullName());
             eventDate.setText(event.getDate());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
