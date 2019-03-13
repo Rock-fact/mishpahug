@@ -14,6 +14,7 @@ import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.di.application.MainModule;
@@ -47,6 +48,10 @@ private EventListAdapter adapter;
         new LoadingList().execute();
     }
 
+    public void loadEventList(EventsInProgressRequestDto filters){
+        new LoadingList(filters).execute();
+    }
+
     public EventListAdapter getAdapter(){
         return adapter;
     }
@@ -71,8 +76,14 @@ private EventListAdapter adapter;
         private List<EventDto> tmp = new ArrayList<>();
         IAuthRepository tmpRepository = authRepository;
         Call<EventListDto> call;
-        FiltersDto filters = null;
+        EventsInProgressRequestDto filters;
 
+        public LoadingList() {
+        }
+
+        public LoadingList(EventsInProgressRequestDto filters) {
+            this.filters = filters;
+        }
 
         @Override
         protected void onPreExecute() {

@@ -20,6 +20,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.ui.IToolbar;
 
@@ -32,14 +33,14 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private IToolbar iToolbar;
-    private FiltersDto filters;
+    private EventsInProgressRequestDto filters;
 
 
     public EventListFragment() {
 
     }
 
-    public static EventListFragment getNewInstance(FiltersDto filters) {
+    public static EventListFragment getNewInstance(EventsInProgressRequestDto filters) {
         EventListFragment eventListFragment = new EventListFragment();
         eventListFragment.filters = filters;
         return eventListFragment;

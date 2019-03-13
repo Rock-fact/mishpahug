@@ -19,6 +19,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -169,7 +170,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:
                     if(data!=null){
-                        return EventListFragment.getNewInstance((FiltersDto) data);
+                        return EventListFragment.getNewInstance((EventsInProgressRequestDto) data);
                     } else {
                         return new EventListFragment();
                     }
