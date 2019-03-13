@@ -4,6 +4,11 @@ public class EventsInProgressRequestDto {
     private LocationDto location;
     private FiltersDto filters;
 
+    public EventsInProgressRequestDto() {
+        filters = new FiltersDto();
+        location = new LocationDto();
+    }
+
     public LocationDto getLocation() {
         return location;
     }

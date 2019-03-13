@@ -79,7 +79,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_date_constr" />
+        app:layout_constraintTop_toBottomOf="@+id/event_date_constr"
+        android:textAlignment="center"/>
 
     <Spinner
         android:id="@+id/holiday_spinner"
@@ -93,7 +94,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confession_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/confession_spinner"
+        android:textAlignment="center"/>
 
     <Spinner
         android:id="@+id/city_spinner"
@@ -107,7 +109,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/holiday_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/holiday_spinner"
+        android:textAlignment="center"
+        android:visibility="gone"/>
 
     <Spinner
         android:id="@+id/food_pref_spinner"
@@ -121,7 +125,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/city_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/city_spinner"
+        android:textAlignment="center" />
 
 
 </android.support.constraint.ConstraintLayout>
