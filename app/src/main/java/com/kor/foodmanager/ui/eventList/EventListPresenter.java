@@ -55,6 +55,10 @@ private EventListAdapter adapter;
         EventDto tmp = adapter.getEvents().get(position);
         router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp); }
 
+        public void filters(){
+        router.navigateTo(MainActivity.FILTERS_SCREEN);
+        }
+
     @Override
     public void onDestroy() {
         App.get().clearGuestEventInfoComponent();

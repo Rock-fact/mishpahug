@@ -19,6 +19,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
@@ -32,6 +33,7 @@ import com.kor.foodmanager.ui.eventInfo.myEventInfoDone.MyEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress.MyEventInfoInProgressFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
+import com.kor.foodmanager.ui.eventList.FiltersFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.myEventList.MyEventListFragment;
 import com.kor.foodmanager.ui.myEventList.TitleRow;
@@ -53,6 +55,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
+    public static final String FILTERS_SCREEN = "FILTERS_SCREEN";
     public static final String EVENT_INFO_SCREEN = "EVENT_INFO_SCREEN";
     public static final String NOTIFICATIONS_SCREEN = "NOTIFICATIONS_SCREEN";
     public static final String NOTIFICATION_INFO_SCREEN = "NOTIFICATION_INFO_SCREEN";
@@ -64,7 +67,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
     public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
-
     public static final String MY_EVENT_LIST_SCREEN = "MY_EVENT_LIST_SCREEN";
     public static final String MY_EVENT_INFO_INPROGRESS_SCREEN = "MY_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String MY_EVENT_INFO_PENDING_SCREEN = "MY_EVENT_INFO_PENDING_SCREEN";
@@ -166,7 +168,13 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case ADD_EVENT_SCREEN:
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:
-                    return new EventListFragment();
+                    if(data!=null){
+                        return EventListFragment.getNewInstance((FiltersDto) data);
+                    } else {
+                        return new EventListFragment();
+                    }
+                case FILTERS_SCREEN:
+                    return new FiltersFragment();
                 case NOTIFICATIONS_SCREEN:
                     return new NotificationListFragment();
                 case NOTIFICATION_INFO_SCREEN:
