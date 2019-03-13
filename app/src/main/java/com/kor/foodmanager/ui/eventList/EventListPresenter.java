@@ -97,7 +97,7 @@ private EventListAdapter adapter;
                     if(filters==null) {
                         call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
                     } else {
-                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10); //TODO
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10, filters); //TODO
                     }
                 } else {
                     call = api.getListOfEventsInProgress(0, 10);

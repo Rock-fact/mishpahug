@@ -35,7 +35,6 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     private IToolbar iToolbar;
     private EventsInProgressRequestDto filters;
 
-
     public EventListFragment() {
 
     }
@@ -57,7 +56,6 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         addBtn=view.findViewById(R.id.add_btn);
         addBtn.setOnClickListener(v -> {
             if(v.getId()==R.id.add_btn) {
-                //Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
                 presenter.addEvent();
             }
         });
@@ -84,7 +82,11 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     @Override
     public void onStart() {
         super.onStart();
-         presenter.loadEventList();
+        if(filters==null) {
+            presenter.loadEventList();
+        } else {
+            presenter.loadEventList(filters);
+        }
 
     }
 

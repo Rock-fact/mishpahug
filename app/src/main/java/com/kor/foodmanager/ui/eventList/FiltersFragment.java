@@ -8,20 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class FiltersFragment extends Fragment {
-private Unbinder unbinder;
+public class FiltersFragment extends MvpAppCompatFragment implements IFilters {
+@InjectPresenter FiltersPresenter presenter;
+    private Unbinder unbinder;
 private StaticfieldsDto staticfields;
 
-@BindView(R.id.confession_spinner)
-    Spinner confessionSpinner;
+@BindView(R.id.confession_spinner) Spinner confessionSpinner;
+@BindView(R.id.holiday_spinner) Spinner holidaySpinner;
+@BindView(R.id.city_spinner) Spinner citySpinner;
+@BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
 
     public FiltersFragment() {
 
@@ -40,5 +46,10 @@ private StaticfieldsDto staticfields;
     public void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.apply_btn)
+    void apply(){
+
     }
 }
