@@ -14,6 +14,7 @@ import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.di.application.MainModule;
 import com.kor.foodmanager.ui.MainActivity;
@@ -70,6 +71,7 @@ private EventListAdapter adapter;
         private List<EventDto> tmp = new ArrayList<>();
         IAuthRepository tmpRepository = authRepository;
         Call<EventListDto> call;
+        FiltersDto filters = null;
 
 
         @Override
@@ -81,7 +83,11 @@ private EventListAdapter adapter;
         protected List<EventDto> doInBackground(Void... voids) {
             try {
                 if (tmpRepository.getToken()!=null){
-                    call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                    if(filters==null) {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                    } else {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10); //TODO
+                    }
                 } else {
                     call = api.getListOfEventsInProgress(0, 10);
                 }

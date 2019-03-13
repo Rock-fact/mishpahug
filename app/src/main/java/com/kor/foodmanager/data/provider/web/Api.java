@@ -3,6 +3,7 @@ package com.kor.foodmanager.data.provider.web;
 import com.kor.foodmanager.data.model.ErrorDto;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.InvitationStatusDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.NotificationListDto;
@@ -32,6 +33,10 @@ public interface Api {
 
     @POST("/event/allprogresslist")
     Call<EventListDto> getLoginedListOfEventsInProgress(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size);
+
+//    @POST("/event/allprogresslist")
+//    Call<EventListDto> getLoginedListOfEventsInProgress(@Header("Authorization") String token, @Query("page") int page, @Query("size") int size,
+//                                                        @Body EventsInProgressRequestDto requestDto);
 
 
     //Authorized requests
