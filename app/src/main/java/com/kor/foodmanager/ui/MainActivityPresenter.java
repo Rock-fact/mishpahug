@@ -22,25 +22,30 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     @Inject Router router;
     @Inject NavigatorHolder navigatorHolder;
     @Inject IAuthRepository authRepository;
+    private Boolean isStarted = false;
 
     public MainActivityPresenter(){
         App.get().mainComponent().inject(this);
     }
 
     public void startWork() {
-        if(authRepository.getToken()==null){
-            showLoginScreen();
-        }else {
-            showEventListScreen();
+        if(isStarted == false){
+            if(authRepository.getToken()==null){
+                isStarted = true;
+                showLoginScreen();
+            }else {
+                isStarted = true;
+                showEventListScreen();
+            }
         }
     }
 
     public void showLoginScreen(){
-        router.navigateTo(LOGIN_SCREEN);
+        router.newRootScreen(LOGIN_SCREEN);
     }
 
     public void showEventListScreen(){
-        router.navigateTo(EVENT_LIST_SCREEN);
+        router.newRootScreen(EVENT_LIST_SCREEN);
     }
 
     public void setNavigator(Navigator navigator) {

@@ -92,7 +92,7 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         protected void onPostExecute(String s) {
             getViewState().hideProgressFrame();
             if(isSuccess){
-                router.navigateTo(EVENT_LIST_SCREEN);
+                router.newRootScreen(EVENT_LIST_SCREEN);
             }else{
                 getViewState().showError(s);
             }
