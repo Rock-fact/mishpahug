@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
@@ -21,7 +22,7 @@ import butterknife.Unbinder;
 
 public class FiltersFragment extends MvpAppCompatFragment implements IFilters {
 @InjectPresenter FiltersPresenter presenter;
-    private Unbinder unbinder;
+private Unbinder unbinder;
 private StaticfieldsDto staticfields;
 
 @BindView(R.id.confession_spinner) Spinner confessionSpinner;
@@ -50,6 +51,26 @@ private StaticfieldsDto staticfields;
 
     @OnClick(R.id.apply_btn)
     void apply(){
+        presenter.apply();
+    }
+
+    @OnClick(R.id.reset_btn)
+    void reset(){
+        presenter.reset();
+    }
+
+    @Override
+    public void setStaticFields(StaticfieldsDto staticFields) {
+        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getConfession());
+        confessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        confessionSpinner.setAdapter(confessionAdapter);
+        ArrayAdapter<String> holidayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getHoliday());
+        holidayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holidaySpinner.setAdapter(holidayAdapter);
+        ArrayAdapter<String> foodPrefAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
+        foodPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        foodPrefSpinner.setAdapter(foodPrefAdapter);
+        //ArrayAdapter<String> cityAdapter = //TODO
 
     }
 }

@@ -115,7 +115,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.filter_btn){
-
+            presenter.filters();
         }
     }
 }
