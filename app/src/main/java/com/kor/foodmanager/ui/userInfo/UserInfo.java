@@ -106,7 +106,9 @@ public class UserInfo extends MvpAppCompatFragment {
         for (String item : list) {
             if (res == "") {
                 res = res + item;
-            } else res = res + ", " + item;
+            } else if (item!=""){
+                res = res + ", " + item;
+            }
         }
         return res;
     }

@@ -9,9 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -95,8 +97,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
+        
         navigationView.setNavigationItemSelectedListener(this);
 
         progressFrame.setOnClickListener(null);
@@ -133,9 +134,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 .show();
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 

@@ -45,6 +45,9 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
     }
     public void fillView(){
         getViewState().fillView();
+
+    }
+    public void viewMode(){
         getViewState().viewMode();
     }
 
