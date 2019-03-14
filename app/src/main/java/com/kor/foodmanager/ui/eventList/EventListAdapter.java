@@ -56,7 +56,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         Log.d("MY_TAG", "EventId: "+event.getEventId());
         Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
         myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-        if (event.getOwner().getPictureLink().get(0)!=null){
+        if (event.getOwner().getPictureLink().size()>0 && event.getOwner().getPictureLink().get(0)!=null){
             //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
             Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
         } else {

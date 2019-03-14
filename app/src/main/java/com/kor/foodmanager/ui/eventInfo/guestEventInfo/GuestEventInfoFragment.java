@@ -69,9 +69,11 @@ private IToolbar iToolbar;
             eventAddress.setText(event.getAddress().getCity());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
-            if(event.getOwner().getPictureLink()!=null) {
+            if(event.getOwner().getPictureLink()!=null && event.getOwner().getPictureLink().size()>=2) {
                 Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(1));
 //                Picasso.get().load(event.getOwner().getPictureLink().get(1)).into(eventImg); //TODO get 1 img
+                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+            }else {
                 Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }

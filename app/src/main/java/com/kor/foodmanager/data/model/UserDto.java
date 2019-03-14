@@ -45,7 +45,6 @@ public class UserDto {
         return isInvited;
     }
 
-
     public long getUserId() {
         return userId;
     }
