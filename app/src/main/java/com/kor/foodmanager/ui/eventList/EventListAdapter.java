@@ -56,14 +56,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.MyVi
         Log.d("MY_TAG", "EventId: "+event.getEventId());
         Log.d("MY_TAG", "Rate: "+event.getOwner().getRate());
         myViewHolder.ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-        if (event.getOwner().getPictureLink().get(0)!=null){
-            //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
-            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
-        } else {
-            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
-        }
-//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").placeholder(R.color.colorAccent)
-//                .error(R.color.colorBeige).into(myViewHolder.eventImg); //TODO
+//        if (event.getOwner().getPictureLink().get(0)!=null){
+//            //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
+//            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
+//        } else {
+//            Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(myViewHolder.eventImg);
+//        }
+
     }
 
     public void addEvent(EventDto event){
