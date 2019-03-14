@@ -11,6 +11,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">guestName</string>
     <string name="nav_header_subtitle"><u>My profile</u></string>
+    <string name="change"><b><u>Change</u></b></string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

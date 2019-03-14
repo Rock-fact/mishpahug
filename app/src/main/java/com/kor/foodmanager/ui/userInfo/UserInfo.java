@@ -22,6 +22,7 @@ import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoI
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.IGuestEventInfoInprogress;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,7 +75,7 @@ public class UserInfo extends MvpAppCompatFragment {
             fullName.setText(user.getFullName());
             confession.setText(user.getConfession());
             gender.setText(user.getGender());
-            if (user.getPhoneNumber()!=null) {
+            if (user.getPhoneNumber() != null) {
                 telephoneNumber.setText(user.getPhoneNumber());
             } else {
                 telephoneNumber.setVisibility(View.GONE);
@@ -88,7 +89,7 @@ public class UserInfo extends MvpAppCompatFragment {
 
             if (user.getPictureLink() != null) {
 //                Picasso.get().load(user.getPictureLink().get(0)).into(userImage);
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(userImage); //TODO get 1 img
+                Picasso.get().load("https://i.imgur.com/vaZKZcz.jpg").into(userImage); //TODO get 1 img
             }
         }
         return view;
@@ -100,7 +101,7 @@ public class UserInfo extends MvpAppCompatFragment {
         super.onDestroy();
     }
 
-    private String inLine(List<String> list) {
+    public static String inLine(List<String> list) {
         String res = "";
         for (String item : list) {
             if (res == "") {
@@ -108,5 +109,16 @@ public class UserInfo extends MvpAppCompatFragment {
             } else res = res + ", " + item;
         }
         return res;
+    }
+
+    public static List<String> inList(String str) {
+        List<String> list = new ArrayList<>();
+        String[] tmp;
+        tmp = str.split(", ");
+        for (String food : tmp
+        ) {
+            list.add(food);
+        }
+        return list;
     }
 }

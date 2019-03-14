@@ -21,6 +21,7 @@ import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoPresenter;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingPresenter;
 import com.kor.foodmanager.ui.eventList.EventListPresenter;
 import com.kor.foodmanager.ui.myEventList.MyEventListPresenter;
+import com.kor.foodmanager.ui.myProfile.MyProfilePresenter;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfilePresenter;
 import com.kor.foodmanager.ui.registration.RegistrationPresenter;
 
@@ -42,6 +43,7 @@ public interface MainComponent{
     void inject(ContactInfoPresenter presenter);
     void inject(EventListPresenter presenter);
     void inject(MyEventInfoPendingPresenter presenter);
+    void inject(MyProfilePresenter presenter);
     ParticipationListComponent plus(ParticipationListModule participationListModule);
     MyEventListComponent plus(MyEventListModule myEventListModule);
     MyEventInProgressComponent plus(MyEventInProgressModule myEventInProgressModule);
