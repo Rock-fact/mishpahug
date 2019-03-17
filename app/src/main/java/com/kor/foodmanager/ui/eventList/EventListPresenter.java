@@ -14,6 +14,8 @@ import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.di.application.MainModule;
 import com.kor.foodmanager.ui.MainActivity;
@@ -46,6 +48,10 @@ private EventListAdapter adapter;
         new LoadingList().execute();
     }
 
+    public void loadEventList(EventsInProgressRequestDto filters){
+        new LoadingList(filters).execute();
+    }
+
     public EventListAdapter getAdapter(){
         return adapter;
     }
@@ -54,6 +60,10 @@ private EventListAdapter adapter;
     public void eventInfo(int position){
         EventDto tmp = adapter.getEvents().get(position);
         router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp); }
+
+        public void filters(){
+        router.navigateTo(MainActivity.FILTERS_SCREEN);
+        }
 
     @Override
     public void onDestroy() {
@@ -66,7 +76,14 @@ private EventListAdapter adapter;
         private List<EventDto> tmp = new ArrayList<>();
         IAuthRepository tmpRepository = authRepository;
         Call<EventListDto> call;
+        EventsInProgressRequestDto filters;
 
+        public LoadingList() {
+        }
+
+        public LoadingList(EventsInProgressRequestDto filters) {
+            this.filters = filters;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -77,7 +94,11 @@ private EventListAdapter adapter;
         protected List<EventDto> doInBackground(Void... voids) {
             try {
                 if (tmpRepository.getToken()!=null){
-                    call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                    if(filters==null) {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                    } else {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10, filters); //TODO
+                    }
                 } else {
                     call = api.getListOfEventsInProgress(0, 10);
                 }
