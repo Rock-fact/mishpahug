@@ -48,6 +48,14 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         filters.getFilters().setFood(food);
     }
 
+    public void setDateFrom(String date) {
+        filters.getFilters().setDateFrom(date);
+    }
+
+    public void setDateTo(String date){
+        filters.getFilters().setDateTo(date);
+    }
+
     private Boolean filterFieldsFilled(){
         if(filters.getFilters().getDateFrom()!=null & filters.getFilters().getDateTo()!=null &
                 filters.getFilters().getConfession()!=null & filters.getFilters().getHolidays()!=null
@@ -64,12 +72,10 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     }
 
     public void apply(){
-
-        filters.getFilters().setDateFrom("2019-03-01");
-        filters.getFilters().setDateTo("2019-05-10");
-        //TODO delete
         if (filterFieldsFilled()) {
             router.navigateTo(MainActivity.EVENT_LIST_SCREEN, filters);
+        } else if (filters.getFilters()==null){
+            router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
         } else {
             router.showSystemMessage("All filters have to be selected");
             //router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
@@ -78,11 +84,19 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
 
     public void reset(){
         filters.getFilters().setDateFrom(null);
+        filters.getFilters().setDateTo(null);
+        filters.getFilters().setHolidays(null);
+        filters.getFilters().setFood(null);
+        filters.getFilters().setConfession(null);
+        filters.setLocation(baseLocation);
+        filters.setFilters(null);
     }
 
     public void setStaticFields(){
         new GetStaticFieldsTask().execute();
     }
+
+
 
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String> {
@@ -110,6 +124,9 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         protected void onPostExecute(String s) {
             if(successful){
                 getViewState().setStaticFields(staticFields);
+                if(filters.getFilters()!=null){
+                    getViewState().setFilters(filters.getFilters());
+                }
             }else{
                 router.showSystemMessage(s);
             }
