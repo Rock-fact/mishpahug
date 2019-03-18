@@ -10,6 +10,7 @@ import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.InvitationStatusDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
 
@@ -29,8 +30,9 @@ public class MyEventInfoPendingPresenter extends MvpPresenter<IMyEventInfoPendin
         adapter = new MyEventInfoPendingAdapter();
     }
 
-    public void userInfo(UserDto user) {
-        router.showSystemMessage("goToUserInfo");
+    public void userInfo(int adapterPosition) {
+        UserDto user=adapter.getListOfParticipants().get(adapterPosition);
+        router.navigateTo(MainActivity.USER_INFO_SCREEN, user);
     }
 
     public MyEventInfoPendingAdapter getAdapter() {

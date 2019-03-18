@@ -37,12 +37,12 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public void setInvited(Boolean invited) {
-        isInvited = invited;
-    }
-
     public Boolean getInvited() {
         return isInvited;
+    }
+
+    public void setInvited(Boolean isInvited) {
+        this.isInvited = isInvited;
     }
 
     public long getUserId() {

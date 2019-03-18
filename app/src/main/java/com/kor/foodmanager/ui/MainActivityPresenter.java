@@ -15,6 +15,7 @@ import static com.kor.foodmanager.ui.MainActivity.CALENDAR_FRAGMENT;
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_LIST_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_PROFILE_FRAGMENT_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.NOTIFICATIONS_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.PARTICIPATION_LIST_SCREEN;
 
@@ -74,7 +75,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void myProfile(){
-        router.showSystemMessage("profile screen");
+        router.navigateTo(MY_PROFILE_FRAGMENT_SCREEN,authRepository.getUser());
     }
 
     public void myEventList(){

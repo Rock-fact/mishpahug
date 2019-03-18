@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,13 +21,7 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
-
-
-import java.util.List;
-
-
 
 
 public class PersonalProfileFragment extends MvpAppCompatFragment implements IPersonalProfileFragment, View.OnClickListener {
@@ -65,8 +58,8 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.personal_profile, container, false);
-        firstName = view.findViewById(R.id.firstName);
-        lastName = view.findViewById(R.id.lastName);
+        firstName = view.findViewById(R.id.firstName_txt);
+        lastName = view.findViewById(R.id.secondName_txt);
         dateOfBirth = view.findViewById(R.id.dateOfBirth);
         confession = view.findViewById(R.id.confession);
         gender = view.findViewById(R.id.gender);

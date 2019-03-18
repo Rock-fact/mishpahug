@@ -18,6 +18,8 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
@@ -32,15 +34,16 @@ import com.kor.foodmanager.ui.eventInfo.myEventInfoDone.MyEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress.MyEventInfoInProgressFragment;
 import com.kor.foodmanager.ui.eventInfo.myEventInfoPending.MyEventInfoPendingFragment;
 import com.kor.foodmanager.ui.eventList.EventListFragment;
+import com.kor.foodmanager.ui.eventList.FiltersFragment;
 import com.kor.foodmanager.ui.login.LoginFragment;
 import com.kor.foodmanager.ui.myEventList.MyEventListFragment;
-import com.kor.foodmanager.ui.myEventList.TitleRow;
+import com.kor.foodmanager.ui.myProfile.MyProfileFragment;
 import com.kor.foodmanager.ui.notificationInfo.NotificationInfoFragment;
 import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
-
+import com.kor.foodmanager.ui.userInfo.UserInfo;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -51,6 +54,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
+    public static final String FILTERS_SCREEN = "FILTERS_SCREEN";
     public static final String EVENT_INFO_SCREEN = "EVENT_INFO_SCREEN";
     public static final String NOTIFICATIONS_SCREEN = "NOTIFICATIONS_SCREEN";
     public static final String NOTIFICATION_INFO_SCREEN = "NOTIFICATION_INFO_SCREEN";
@@ -70,6 +74,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
     public static final String GUEST_EVENT_INFO_INPROGRESS_SCREEN = "GUEST_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String GUEST_EVENT_INFO_DONE_SCREEN = "GUEST_EVENT_INFO_DONE_SCREEN";
+
+    public static final String USER_INFO_SCREEN = "USER_INFO_SCREEN";
+    public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
 
     public static final String TAG = "MY_TAG";
     @InjectPresenter MainActivityPresenter presenter;
@@ -164,7 +171,13 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case ADD_EVENT_SCREEN:
                     return new AddEventFragment();
                 case EVENT_LIST_SCREEN:
-                    return new EventListFragment();
+                    if(data!=null){
+                        return EventListFragment.getNewInstance((EventsInProgressRequestDto) data);
+                    } else {
+                        return new EventListFragment();
+                    }
+                case FILTERS_SCREEN:
+                    return new FiltersFragment();
                 case NOTIFICATIONS_SCREEN:
                     return new NotificationListFragment();
                 case NOTIFICATION_INFO_SCREEN:
@@ -189,17 +202,20 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case MY_EVENT_LIST_SCREEN:
                     return new MyEventListFragment();
                 case MY_EVENT_INFO_INPROGRESS_SCREEN:
-                    return MyEventInfoInProgressFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoInProgressFragment.getNewInstance((EventDto) data);
                 case MY_EVENT_INFO_PENDING_SCREEN:
-                    return MyEventInfoPendingFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoPendingFragment.getNewInstance((EventDto) data);
                 case MY_EVENT_INFO_DONE_SCREEN:
-                    return MyEventInfoDoneFragment.getNewInstance((TitleRow) data);
+                    return MyEventInfoDoneFragment.getNewInstance((EventDto) data);
 
                 case GUEST_EVENT_INFO_INPROGRESS_SCREEN:
                     return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
                 case GUEST_EVENT_INFO_DONE_SCREEN:
                     return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
-
+                case USER_INFO_SCREEN:
+                    return UserInfo.getNewInstance((UserDto) data);
+                case MY_PROFILE_FRAGMENT_SCREEN:
+                    return MyProfileFragment.getNewInstance((UserDto) data);
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }
