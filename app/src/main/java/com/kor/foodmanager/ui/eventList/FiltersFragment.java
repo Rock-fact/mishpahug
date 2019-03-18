@@ -134,7 +134,7 @@ private static final String FOOD = "--select food--";
         SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
         String date = formDate.format(calendar.getTime());
         presenter.setDateTo(date);
-        dateToTxt.setText(date);
+        dateToTxt.setText(" - "+date);
     };
 
 
