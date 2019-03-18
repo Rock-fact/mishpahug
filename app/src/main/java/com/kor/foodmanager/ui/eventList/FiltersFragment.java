@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
 @InjectPresenter FiltersPresenter presenter;
 private Unbinder unbinder;
 private Calendar calendar;
+private Long minDate;
 
 private static final String CONFESSION = "--select confession--";
 private static final String HOLIDAY = "--select holiday--";
@@ -61,7 +63,7 @@ private static final String FOOD = "--select food--";
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
-        calendar = Calendar.getInstance(); //TODO Provider maybe
+        //calendar = Calendar.getInstance(); //TODO Provider maybe
         //eventDateTxt.setVisibility(View.VISIBLE);
         presenter.setStaticFields();
         return view;
@@ -91,11 +93,14 @@ private static final String FOOD = "--select food--";
 
     @OnClick({R.id.event_date, R.id.date_from_txt})
     public void setDateFrom() {
-        new DatePickerDialog(getActivity(), dateFromCallback,
+        calendar=null;
+        calendar = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateFromCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-                .show();
+                calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dialog.show();
     }
 
 
@@ -113,15 +118,20 @@ private static final String FOOD = "--select food--";
             dateFromTxt.setVisibility(View.VISIBLE);
             dateToTxt.setVisibility(View.VISIBLE);
         }
+
+        setDateTo();
+
     };
 
-    @OnClick(R.id.date_to_txt)
+
+   // @OnClick(R.id.date_to_txt)
     public void setDateTo() {
-        new DatePickerDialog(getActivity(), dateToCallback,
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateToCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-                .show();
+                calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dialog.show();
     }
 
 
