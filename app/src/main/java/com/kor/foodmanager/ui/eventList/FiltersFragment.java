@@ -120,9 +120,7 @@ private static final String FOOD = "--select food--";
         }
 
         setDateTo();
-
     };
-
 
    // @OnClick(R.id.date_to_txt)
     public void setDateTo() {

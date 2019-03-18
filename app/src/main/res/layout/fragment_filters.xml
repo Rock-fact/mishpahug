@@ -15,8 +15,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:backgroundTint="#FFFFFF"
-            android:gravity="center"
+            android:gravity="start"
             android:text="--select date--"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
@@ -78,7 +79,7 @@
         android:dropDownWidth="wrap_content"
         android:gravity="center"
         android:spinnerMode="dropdown"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +99,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confession_spinner"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textSize="24sp"/>
 
     <Spinner
         android:id="@+id/city_spinner"
@@ -114,7 +115,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/holiday_spinner"
         android:gravity="center"
-        android:textSize="20sp"/>
+        android:textSize="24sp"/>
 
     <Spinner
         android:id="@+id/food_pref_spinner"
@@ -129,7 +130,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/city_spinner"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:gravity="center"
         />
 
