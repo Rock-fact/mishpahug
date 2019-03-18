@@ -27,7 +27,17 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
 
     public FiltersPresenter() {
         App.get().mainComponent().inject(this);
-       filters = new EventsInProgressRequestDto();
+//        filters = new EventsInProgressRequestDto();
+//        baseLocation = new LocationDto();
+//        baseLocation.setLat(32.109333);
+//        baseLocation.setLng(34.855499);
+//        baseLocation.setRadius(2000.00);
+//        filters.setLocation(baseLocation);
+//        filters.setFilters(new FiltersDto());
+    }
+
+    private void initFilters(){
+        filters = new EventsInProgressRequestDto();
         baseLocation = new LocationDto();
         baseLocation.setLat(32.109333);
         baseLocation.setLng(34.855499);
@@ -37,23 +47,40 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     }
 
     public void setConfession(String confession){
+        if(filters==null){
+            initFilters();
+        }
         filters.getFilters().setConfession(confession);
     }
 
     public void setHoliday(String holiday){
-        filters.getFilters().setHolidays(holiday);
+        if(filters==null){
+            initFilters();
+        }filters.getFilters().setHolidays(holiday);
     }
 
     public void setFood(String food){
-        filters.getFilters().setFood(food);
+        if(filters==null){
+            initFilters();
+        } filters.getFilters().setFood(food);
     }
 
-    public void setDateFrom(String date) {
+    public void setDateFrom(String date) {  if(filters==null){
+        initFilters();
+    }
         filters.getFilters().setDateFrom(date);
     }
 
     public void setDateTo(String date){
-        filters.getFilters().setDateTo(date);
+        if(filters==null){
+            initFilters();
+        } filters.getFilters().setDateTo(date);
+    }
+
+    public void setCity(Object city) { //TODO
+        if(filters==null){
+            initFilters();
+        }
     }
 
     private Boolean filterFieldsFilled(){
@@ -72,24 +99,25 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     }
 
     public void apply(){
-        if (filterFieldsFilled()) {
-            router.navigateTo(MainActivity.EVENT_LIST_SCREEN, filters);
-        } else if (filters.getFilters()==null){
-            router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
-        } else {
+       if (filters==null || filters.getFilters()==null){
+            router.backTo(MainActivity.EVENT_LIST_SCREEN);
+        }  else if (filterFieldsFilled()) {
+            router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
+        }  else {
             router.showSystemMessage("All filters have to be selected");
-            //router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
         }
     }
 
     public void reset(){
-        filters.getFilters().setDateFrom(null);
-        filters.getFilters().setDateTo(null);
-        filters.getFilters().setHolidays(null);
-        filters.getFilters().setFood(null);
-        filters.getFilters().setConfession(null);
-        filters.setLocation(baseLocation);
-        filters.setFilters(null);
+        if(filters!=null) {
+            filters.getFilters().setDateFrom(null);
+            filters.getFilters().setDateTo(null);
+            filters.getFilters().setHolidays(null);
+            filters.getFilters().setFood(null);
+            filters.getFilters().setConfession(null);
+            filters.setLocation(baseLocation);
+            filters.setFilters(null);
+        }
     }
 
     public void setStaticFields(){
@@ -124,8 +152,12 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         protected void onPostExecute(String s) {
             if(successful){
                 getViewState().setStaticFields(staticFields);
-                if(filters.getFilters()!=null){
-                    getViewState().setFilters(filters.getFilters());
+                if(filters!=null) {
+                    if (filters.getFilters() != null) {
+                        getViewState().setSpinners(filters.getFilters());
+                        if(filters.getFilters().getDateFrom()!=null)
+                        getViewState().setDates(filters.getFilters());
+                    }
                 }
             }else{
                 router.showSystemMessage(s);
