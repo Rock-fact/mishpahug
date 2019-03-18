@@ -68,27 +68,32 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
 
         iToolbar=(IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Event list",true);
-
-
         return view;
     }
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
         if(filters==null) {
             presenter.loadEventList();
         } else {
             presenter.loadEventList(filters);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        if(filters==null) {
+//            presenter.loadEventList();
+//        } else {
+//            presenter.loadEventList(filters);
+//        }
 
     }
+
 
     @Override
     public void onItemClick(int position) {
