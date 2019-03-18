@@ -20,10 +20,12 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.ui.IToolbar;
 
 
-public class EventListFragment extends MvpAppCompatFragment implements EventListAdapter.MyClickListener, IEventList {
+public class EventListFragment extends MvpAppCompatFragment implements EventListAdapter.MyClickListener, IEventList, View.OnClickListener {
     @InjectPresenter EventListPresenter presenter;
     private RecyclerView recyclerView;
     private EventListAdapter adapter;
@@ -31,22 +33,29 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     private FloatingActionButton addBtn;
     private ProgressBar progressBar;
     private IToolbar iToolbar;
-
+    private EventsInProgressRequestDto filters;
 
     public EventListFragment() {
 
     }
 
-    @Override
+    public static EventListFragment getNewInstance(EventsInProgressRequestDto filters) {
+        EventListFragment eventListFragment = new EventListFragment();
+        eventListFragment.filters = filters;
+        return eventListFragment;
+    }
+
+
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         filtersBtn = view.findViewById(R.id.filter_btn);
+        filtersBtn.setOnClickListener(this);
         progressBar = view.findViewById(R.id.progressBar);
         addBtn=view.findViewById(R.id.add_btn);
         addBtn.setOnClickListener(v -> {
             if(v.getId()==R.id.add_btn) {
-                //Toast.makeText(App.get(), "Yeey", Toast.LENGTH_SHORT).show();
                 presenter.addEvent();
             }
         });
@@ -73,7 +82,11 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     @Override
     public void onStart() {
         super.onStart();
-         presenter.loadEventList();
+        if(filters==null) {
+            presenter.loadEventList();
+        } else {
+            presenter.loadEventList(filters);
+        }
 
     }
 
@@ -99,4 +112,10 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         addBtn.setClickable(true);
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.filter_btn){
+            presenter.filters();
+        }
+    }
 }
