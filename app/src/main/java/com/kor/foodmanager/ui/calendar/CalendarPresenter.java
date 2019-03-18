@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -24,6 +25,12 @@ import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_DONE_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_INPROGRESS_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_DONE_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_INPROGRESS_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_PENDING_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
@@ -32,6 +39,9 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     ICalendarInteractor interactor;
     @Inject
     Router router;
+    private Collection<CalendarDay> myEvents = new HashSet<>();
+    private Collection<CalendarDay> subscribedEvents = new HashSet<>();
+    HashMap<CalendarDay,EventDto> eventsMap = new HashMap<>();
 
     public CalendarPresenter() {
         App.get().calendarComponent().inject(this);
@@ -48,6 +58,35 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     }
 
     public void onDateSelected(CalendarDay date) {
+        if(myEvents.contains(date)){
+            EventDto event = eventsMap.get(date);
+            switch (event.getStatus()){
+                case "Pending":
+                    router.navigateTo(MY_EVENT_INFO_PENDING_SCREEN, event);
+                    break;
+                case "In progress":
+                    router.navigateTo(MY_EVENT_INFO_INPROGRESS_SCREEN, event);
+                    break;
+                case "Done":
+                    router.navigateTo(MY_EVENT_INFO_DONE_SCREEN, event);
+                    break;
+            }
+        }else if(subscribedEvents.contains(date)){
+            EventDto event = eventsMap.get(date);
+            switch (event.getStatus()){
+                case "Pending":
+                    router.navigateTo(GUEST_EVENT_INFO_PENDING_SCREEN, event);
+                    break;
+                case "In progress":
+                    router.navigateTo(GUEST_EVENT_INFO_INPROGRESS_SCREEN, event);
+                    break;
+                case "Done":
+                    router.navigateTo(GUEST_EVENT_INFO_DONE_SCREEN, event);
+                    break;
+            }
+        }else {
+            router.showSystemMessage("Empty day!");
+        }
     }
 
     private class GetEventsForCalendarTask extends AsyncTask<Void, Void, EventListDto> {
@@ -87,17 +126,15 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
             if (isSuccess) {
                 List<EventDto> myEventsDto = res.getMyEvents();
                 List<EventDto> subscribedEventsDto = res.getSubscribedEvents();
-                Collection<CalendarDay> myEvents = new HashSet<>();
-                Collection<CalendarDay> subscribedEvents = new HashSet<>();
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                 for (EventDto eventDto :
                         myEventsDto) {
                     try {
-                        myEvents.add(CalendarDay.from(format.parse(eventDto.getDate())));
-                        Log.d(TAG, "myEvent: "+eventDto.getDate());
+                        CalendarDay day = CalendarDay.from(format.parse(eventDto.getDate()));
+                        myEvents.add(day);
+                        eventsMap.put(day,eventDto);
                     } catch (ParseException e) {
-                        Log.d(TAG, "parse error: " + e.getMessage());
                         router.showSystemMessage(e.getMessage());
                     }
                 }

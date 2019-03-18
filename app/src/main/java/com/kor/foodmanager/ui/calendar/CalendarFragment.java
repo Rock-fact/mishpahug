@@ -68,7 +68,8 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         calendarView.setOnMonthChangedListener((widget, date) -> {
             presenter.showMonth(date.getMonth());
                 });
-        calendarView.setDateSelected(Calendar.getInstance(),true);
+//        calendarView.setDateSelected(Calendar.getInstance(),true);        
+        // TODO: 19.03.2019 something strange in behavior, if i select current date 
     }
 
     @Override
