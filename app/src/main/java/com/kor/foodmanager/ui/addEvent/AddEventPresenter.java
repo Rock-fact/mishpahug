@@ -67,14 +67,6 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         router.showSystemMessage(string);
     }
 
-    private void setCityFromParsedAddress(){
-        // TODO: 14.03.2019 here is a kostil just for testing
-        String s = "Undefined";
-        addressDto.setCity(s);
-        cityIsCorrect = true;
-        Log.d(TAG, "City name: "+s);
-    }
-
     public SupportPlaceAutocompleteFragment showAutocomplete() {
         SupportPlaceAutocompleteFragment fragment = new SupportPlaceAutocompleteFragment();
         fragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -178,8 +170,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
                 cityIsCorrect = true;
                 Log.d(TAG, "City name: "+s);
             }else{
-                router.showSystemMessage(s+", we are still trying to add event");
-                setCityFromParsedAddress();
+                router.showSystemMessage(s);
             }
         }
     }

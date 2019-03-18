@@ -11,6 +11,7 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.CALENDAR_FRAGMENT;
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_LIST_SCREEN;
@@ -65,7 +66,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void calendar(){
-        router.showSystemMessage("calendar screen");
+        router.navigateTo(CALENDAR_FRAGMENT);
     }
 
     public void participation(){

@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,6 +22,7 @@ import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
+import com.kor.foodmanager.ui.calendar.CalendarFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
@@ -40,8 +40,6 @@ import com.kor.foodmanager.ui.notificationList.NotificationListFragment;
 import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +62,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String REGISTRATION_FRAGMENT = "REGISTRATION_FRAGMENT_NEW";
     public static final String PARTICIPATION_LIST_SCREEN = "PARTICIPATION_LIST_SCREEN";
     public static final String GUEST_EVENT_INFO_PENDING_SCREEN = "GUEST_EVENT_INFO_PENDING_SCREEN";
-
+    public static final String CALENDAR_FRAGMENT = "CALENDAR_FRAGMENT";
     public static final String MY_EVENT_LIST_SCREEN = "MY_EVENT_LIST_SCREEN";
     public static final String MY_EVENT_INFO_INPROGRESS_SCREEN = "MY_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String MY_EVENT_INFO_PENDING_SCREEN = "MY_EVENT_INFO_PENDING_SCREEN";
@@ -173,6 +171,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return NotificationInfoFragment.newInstance((NotificationDto)data);
                 case REGISTRATION_FRAGMENT:
                     return new RegistrationFragment();
+                case CALENDAR_FRAGMENT:
+                    return new CalendarFragment();
                 case ABOUTMYSELF_FRAGMENT_NEW:
                     return AboutMyselfFragment.getNewInstance((UserDto)data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:
