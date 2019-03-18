@@ -99,23 +99,25 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     }
 
     public void apply(){
-       if (filters.getFilters()==null){
-            router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
+       if (filters==null || filters.getFilters()==null){
+            router.backTo(MainActivity.EVENT_LIST_SCREEN);
         }  else if (filterFieldsFilled()) {
-            router.navigateTo(MainActivity.EVENT_LIST_SCREEN, filters);
+            router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
         }  else {
             router.showSystemMessage("All filters have to be selected");
         }
     }
 
     public void reset(){
-        filters.getFilters().setDateFrom(null);
-        filters.getFilters().setDateTo(null);
-        filters.getFilters().setHolidays(null);
-        filters.getFilters().setFood(null);
-        filters.getFilters().setConfession(null);
-        filters.setLocation(baseLocation);
-        filters.setFilters(null);
+        if(filters!=null) {
+            filters.getFilters().setDateFrom(null);
+            filters.getFilters().setDateTo(null);
+            filters.getFilters().setHolidays(null);
+            filters.getFilters().setFood(null);
+            filters.getFilters().setConfession(null);
+            filters.setLocation(baseLocation);
+            filters.setFilters(null);
+        }
     }
 
     public void setStaticFields(){
@@ -152,7 +154,9 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
                 getViewState().setStaticFields(staticFields);
                 if(filters!=null) {
                     if (filters.getFilters() != null) {
-                        getViewState().setFilters(filters.getFilters());
+                        getViewState().setSpinners(filters.getFilters());
+                        if(filters.getFilters().getDateFrom()!=null)
+                        getViewState().setDates(filters.getFilters());
                     }
                 }
             }else{

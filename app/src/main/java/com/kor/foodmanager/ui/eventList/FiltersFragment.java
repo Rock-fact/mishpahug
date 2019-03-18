@@ -34,13 +34,11 @@ import butterknife.Unbinder;
 public class FiltersFragment extends MvpAppCompatFragment implements IFilters, AdapterView.OnItemSelectedListener {
 @InjectPresenter FiltersPresenter presenter;
 private Unbinder unbinder;
-private ArrayList<String> cities;
 private Calendar calendar;
 
 private static final String CONFESSION = "--select confession--";
 private static final String HOLIDAY = "--select holiday--";
 private static final String FOOD = "--select food--";
-//private static final String CITY = "--select city--";
 
 @BindView(R.id.event_date) TextView eventDateTxt;
 @BindView(R.id.date_from_txt) TextView dateFromTxt;
@@ -64,7 +62,7 @@ private static final String FOOD = "--select food--";
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
         calendar = Calendar.getInstance(); //TODO Provider maybe
-        eventDateTxt.setVisibility(View.VISIBLE);
+        //eventDateTxt.setVisibility(View.VISIBLE);
         presenter.setStaticFields();
         return view;
     }
@@ -166,13 +164,19 @@ private static final String FOOD = "--select food--";
     }
 
     @Override
-    public void setFilters(FiltersDto filters) {
-//        eventDateTxt.setVisibility(View.GONE);
-//        dateToTxt.setText(filters.getDateTo());
-//        dateToTxt.setVisibility(View.VISIBLE);
-//        dateFromTxt.setText(filters.getDateFrom());
-//        dateFromTxt.setVisibility(View.VISIBLE);
+    public void setSpinners(FiltersDto filters) {
+        //TODO
+    }
 
+    @Override
+    public void setDates(FiltersDto filters) {
+        eventDateTxt.setVisibility(View.GONE);
+        dateToTxt.setVisibility(View.VISIBLE);
+        dateFromTxt.setVisibility(View.VISIBLE);
+        dateFromTxt.setText(filters.getDateFrom());
+        if(filters.getDateTo()!=null){
+            dateToTxt.setText(filters.getDateTo());
+        }
     }
 
 

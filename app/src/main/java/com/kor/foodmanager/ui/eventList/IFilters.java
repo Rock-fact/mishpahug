@@ -10,5 +10,6 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface IFilters extends MvpView {
     void setStaticFields(StaticfieldsDto staticFields);
-    void setFilters(FiltersDto filters);
+    void setSpinners(FiltersDto filters);
+    void setDates(FiltersDto filters);
 }
