@@ -139,7 +139,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
         iToolbar=(IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("My profile",false);
-        
+
 
         changeBtn.setOnClickListener(v -> {
             if (wrapperForInput.getVisibility() == View.GONE) {
@@ -147,8 +147,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
                 presenter.fillInput();
             } else {
                 presenter.fillView();
-
-
             }
         });
 
