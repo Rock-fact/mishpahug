@@ -48,7 +48,7 @@ private static final String FOOD = "--select food--";
 @BindView(R.id.confession_spinner) Spinner confessionSpinner;
 @BindView(R.id.holiday_spinner) Spinner holidaySpinner;
 @BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
-//@BindView(R.id.city_spinner) Spinner citySpinner;
+@BindView(R.id.city_spinner) Spinner citySpinner;
 
 
 
@@ -145,19 +145,24 @@ private static final String FOOD = "--select food--";
         confessionAdapter.insert(CONFESSION, 0);
         confessionSpinner.setAdapter(confessionAdapter);
         confessionSpinner.setOnItemSelectedListener(this);
+
         ArrayAdapter<String> holidayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getHoliday());
         holidayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holidayAdapter.insert(HOLIDAY, 0);
         holidaySpinner.setAdapter(holidayAdapter);
         holidaySpinner.setOnItemSelectedListener(this);
+
         ArrayAdapter<String> foodPrefAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
         foodPrefAdapter.insert(FOOD, 0);
         foodPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         foodPrefSpinner.setAdapter(foodPrefAdapter);
         foodPrefSpinner.setOnItemSelectedListener(this);
-//        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cities);
-//        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        citySpinner.setAdapter(cityAdapter);
+
+        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.cities, android.R.layout.simple_spinner_item);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(cityAdapter);
+        citySpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -186,6 +191,11 @@ private static final String FOOD = "--select food--";
         if(parent.getId()==R.id.food_pref_spinner){
             if(foodPrefSpinner.getSelectedItemPosition()!=0) {
                 presenter.setFood(foodPrefSpinner.getSelectedItem().toString());
+            }
+        }
+        if(parent.getId()==R.id.city_spinner){ //TODO
+            if(citySpinner.getSelectedItemPosition()!=0){
+                presenter.setCity(citySpinner.getSelectedItem());
             }
         }
     }

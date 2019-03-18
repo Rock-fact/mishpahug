@@ -36,7 +36,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     private EventsInProgressRequestDto filters;
 
     public EventListFragment() {
-
+        filters = null;
     }
 
     public static EventListFragment getNewInstance(EventsInProgressRequestDto filters) {

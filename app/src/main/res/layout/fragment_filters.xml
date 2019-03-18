@@ -113,7 +113,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/holiday_spinner"
         android:textAlignment="center"
-        android:visibility="gone"
         android:textSize="20dp"/>
 
     <Spinner
