@@ -2,9 +2,11 @@ package com.kor.foodmanager.ui.addEvent;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,18 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,10 +34,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.kor.foodmanager.ui.MainActivity.TAG;
+
 // TODO: 06.03.2019 for future improvement we need to replace current fragment with custom. for example:
 // https://stackoverflow.com/questions/36999647/how-to-customize-placeautocomplete-widget-dialog-design-to-list-places
 // https://techstricks.com/custom-google-place-autocomplete-android/
-public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent {
+public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent, OnDateSelectedListener {
     private static final int REQUEST_SELECT_PLACE = 1000;
     @InjectPresenter
     AddEventPresenter presenter;
@@ -66,7 +76,6 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         unbinder = ButterKnife.bind(this, view);
-        dateAndTime = Calendar.getInstance();
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Add event", true);
         placesAutocomplete(view);
@@ -75,11 +84,12 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
 
     @OnClick(R.id.textDate)
     public void setDate() {
-        new DatePickerDialog(getActivity(), dateCallback,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
-                .show();
+        presenter.showDatePicker(this);
+//        new DatePickerDialog(getActivity(), dateCallback,
+//                dateAndTime.get(Calendar.YEAR),
+//                dateAndTime.get(Calendar.MONTH),
+//                dateAndTime.get(Calendar.DAY_OF_MONTH))
+//                .show();
     }
 
     public void setTime() {
@@ -138,13 +148,13 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
         return event;
     }
 
-    //обработчик выбора даты
-    DatePickerDialog.OnDateSetListener dateCallback = (view, year, month, dayOfMonth) -> {
-        dateAndTime.set(Calendar.YEAR, year);
-        dateAndTime.set(Calendar.MONTH, month);
-        dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        setTime();
-    };
+//    //обработчик выбора даты
+//    DatePickerDialog.OnDateSetListener dateCallback = (view, year, month, dayOfMonth) -> {
+//        dateAndTime.set(Calendar.YEAR, year);
+//        dateAndTime.set(Calendar.MONTH, month);
+//        dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//        setTime();
+//    };
 
     //обработчик выбора времени
     TimePickerDialog.OnTimeSetListener timeCallback = (view, hourOfDay, minute) -> {
@@ -155,4 +165,14 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent 
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_TIME));
         setDuration();
     };
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        presenter.hideDatePicker();
+        dateAndTime = Calendar.getInstance();
+        dateAndTime.set(Calendar.YEAR, date.getYear());
+        dateAndTime.set(Calendar.MONTH, date.getMonth());
+        dateAndTime.set(Calendar.DAY_OF_MONTH, date.getDay());
+        setTime();
+    }
 }

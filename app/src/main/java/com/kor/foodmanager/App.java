@@ -8,6 +8,8 @@ import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressModule;
 import com.kor.foodmanager.di.application.DaggerMainComponent;
 import com.kor.foodmanager.di.application.MainComponent;
 import com.kor.foodmanager.di.application.MainModule;
+import com.kor.foodmanager.di.calendar.CalendarComponent;
+import com.kor.foodmanager.di.calendar.CalendarModule;
 import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
@@ -31,6 +33,7 @@ public class App extends Application {
     private ParticipationListComponent participationListComponent;
     private MyEventListComponent myEventListComponent;
     private MyEventInProgressComponent myEventInProgressComponent;
+    private CalendarComponent calendarComponent;
 
     public App(){
         app = this;
@@ -127,6 +130,17 @@ public class App extends Application {
     }
     public void clearMyEventInProgressComponent(){
         myEventInProgressComponent=null;
+    }
+
+    public CalendarComponent calendarComponent(){
+        if(calendarComponent == null){
+            calendarComponent = mainComponent.plus(new CalendarModule());
+        }
+        return calendarComponent;
+    }
+
+    public void clearCalendarComponent(){
+        calendarComponent = null;
     }
 
 }

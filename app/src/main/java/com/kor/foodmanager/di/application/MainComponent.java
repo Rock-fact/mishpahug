@@ -2,6 +2,8 @@ package com.kor.foodmanager.di.application;
 
 import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressComponent;
 import com.kor.foodmanager.di.MyEventInProgress.MyEventInProgressModule;
+import com.kor.foodmanager.di.calendar.CalendarComponent;
+import com.kor.foodmanager.di.calendar.CalendarModule;
 import com.kor.foodmanager.di.event.EventComponent;
 import com.kor.foodmanager.di.event.EventModule;
 import com.kor.foodmanager.di.eventInfo.GuestEventInfoComponent;
@@ -49,5 +51,6 @@ public interface MainComponent{
     ParticipationListComponent plus(ParticipationListModule participationListModule);
     MyEventListComponent plus(MyEventListModule myEventListModule);
     MyEventInProgressComponent plus(MyEventInProgressModule myEventInProgressModule);
+    CalendarComponent plus(CalendarModule module);
     //void inject(GuestEventInfoPresenter presenter);
 }

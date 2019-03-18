@@ -44,6 +44,8 @@ import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -185,7 +187,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case REGISTRATION_FRAGMENT:
                     return new RegistrationFragment();
                 case CALENDAR_FRAGMENT:
-                    return new CalendarFragment();
+                    if(data!=null){
+                        try{
+                            return CalendarFragment.getDatePicker((OnDateSelectedListener) data);
+                        }catch (ClassCastException e){
+                            showSystemMessage(e.getMessage());
+                        }
+                    }else {
+                        return new CalendarFragment();
+                    }
                 case ABOUTMYSELF_FRAGMENT_NEW:
                     return AboutMyselfFragment.getNewInstance((UserDto)data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:

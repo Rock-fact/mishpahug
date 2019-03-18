@@ -18,9 +18,14 @@ import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.LocationDto;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import java.io.IOException;
 import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
+
+import static com.kor.foodmanager.ui.MainActivity.ADD_EVENT_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.CALENDAR_FRAGMENT;
 import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
 import static com.kor.foodmanager.ui.MainActivity.SHOW_PROGRESS;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
@@ -89,6 +94,14 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
             }
         });
         return fragment;
+    }
+
+    public void showDatePicker(OnDateSelectedListener listener) {
+        router.navigateTo(CALENDAR_FRAGMENT, listener);
+    }
+
+    public void hideDatePicker() {
+        router.backTo(ADD_EVENT_SCREEN);
     }
 
     private class AddEventTask extends AsyncTask<Void,Void,String> {
