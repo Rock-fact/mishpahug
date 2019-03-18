@@ -32,7 +32,7 @@ public class MyEventInfoPendingPresenter extends MvpPresenter<IMyEventInfoPendin
 
     public void userInfo(int adapterPosition) {
         UserDto user=adapter.getListOfParticipants().get(adapterPosition);
-        router.navigateTo(MainActivity.USER_INFO_SCREEN, user);
+        router.navigateTo(MainActivity.USER_INFO_SCREEN_PENDING, user);
     }
 
     public MyEventInfoPendingAdapter getAdapter() {

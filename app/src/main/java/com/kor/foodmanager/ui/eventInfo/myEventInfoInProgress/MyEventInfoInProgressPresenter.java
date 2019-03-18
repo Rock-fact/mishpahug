@@ -45,7 +45,7 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
 
     public void userInfo(int adapterPosition){
         UserDto user=adapter.getListOfParticipants().get(adapterPosition);
-        router.navigateTo(MainActivity.USER_INFO_SCREEN, user);
+        router.navigateTo(MainActivity.USER_INFO_SCREEN_PROGRESS, user);
     }
 
     private class InviteToEvent extends AsyncTask<Void, Void, InvitationStatusDto> {
