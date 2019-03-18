@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -52,7 +53,7 @@ import butterknife.Unbinder;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar, NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar, NavigationView.OnNavigationItemSelectedListener {
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
@@ -76,7 +77,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String GUEST_EVENT_INFO_INPROGRESS_SCREEN = "GUEST_EVENT_INFO_INPROGRESS_SCREEN";
     public static final String GUEST_EVENT_INFO_DONE_SCREEN = "GUEST_EVENT_INFO_DONE_SCREEN";
 
-    public static final String USER_INFO_SCREEN = "USER_INFO_SCREEN";
+    public static final String USER_INFO_SCREEN_PROGRESS = "USER_INFO_SCREEN_PROGRESS";
+    public static final String USER_INFO_SCREEN_PENDING = "USER_INFO_SCREEN_PENDING";
     public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
 
     public static final String TAG = "MY_TAG";
@@ -85,6 +87,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.back_btn_toolbar)
+    ImageButton backBtnToolbar;
+    @BindView(R.id.toolbar_title) TextView toolbarTitle;
     ActionBarDrawerToggle toggle;
     private Unbinder unbinder;
 
@@ -93,14 +98,16 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setSupportActionBar(toolbar);
         unbinder = ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        
+
+
+
         navigationView.setNavigationItemSelectedListener(this);
 
         progressFrame.setOnClickListener(null);
@@ -210,8 +217,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                     return GuestEventInfoInprogressFragment.getNewInstance((EventDto) data);
                 case GUEST_EVENT_INFO_DONE_SCREEN:
                     return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
-                case USER_INFO_SCREEN:
-                    return UserInfo.getNewInstance((UserDto) data);
+                case USER_INFO_SCREEN_PROGRESS:
+                    return UserInfo.getNewInstance((UserDto) data,false);
+                case USER_INFO_SCREEN_PENDING:
+                    return UserInfo.getNewInstance((UserDto) data,true);
                 case MY_PROFILE_FRAGMENT_SCREEN:
                     return MyProfileFragment.getNewInstance((UserDto) data);
                 default:
@@ -259,7 +268,17 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
     @Override
     public void setTitleToolbarEnable(String title, Boolean isEnable) {
-        toolbar.setTitle(title);
+        toolbarTitle.setText(title);
         toggle.setDrawerIndicatorEnabled(isEnable);
+        if (!isEnable) {
+            backBtnToolbar.setVisibility(View.VISIBLE);
+            backBtnToolbar.setOnClickListener(v->{
+                onBackPressed();
+            });
+        } else {
+            backBtnToolbar.setVisibility(View.GONE);
+        }
     }
+
+
 }

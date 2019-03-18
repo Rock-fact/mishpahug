@@ -26,6 +26,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 
 import java.util.ArrayList;
@@ -48,8 +49,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     private UserDto user;
     private StaticfieldsDto staticFields;
-    @BindView(R.id.back_btn)
-    ImageView backBtn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.avatar)
@@ -101,6 +100,8 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     TextView foodPreferences_view;
     @BindView(R.id.allergy_view)
     TextView allergy_view;
+    private IToolbar iToolbar;
+
 
 
     Unbinder unbinder;
@@ -136,10 +137,9 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         spinnerFoodPreferences.setOnItemSelectedListener(this);
         spinnerConfession.setOnItemSelectedListener(this);
 
+        iToolbar=(IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("My profile",false);
 
-        backBtn.setOnClickListener(v -> {
-            presenter.back();
-        });
 
         changeBtn.setOnClickListener(v -> {
             if (wrapperForInput.getVisibility() == View.GONE) {
@@ -147,8 +147,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
                 presenter.fillInput();
             } else {
                 presenter.fillView();
-
-
             }
         });
 

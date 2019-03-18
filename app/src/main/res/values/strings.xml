@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mishpahug</string>
+    <string name="app_name"></string>
     <string name="title_registration">Registration</string>
     <string name="change_name"><u>Change name</u></string>
     <string name="family">Family</string>
