@@ -242,7 +242,7 @@ private static final String FOOD = "--select food--";
         }
         if(parent.getId()==R.id.city_spinner){ //TODO
             if(citySpinner.getSelectedItemPosition()!=0){
-                presenter.setCity(citySpinner.getSelectedItem());
+                presenter.setCity(citySpinner.getSelectedItem().toString());
             }
         }
     }

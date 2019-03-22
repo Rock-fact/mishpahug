@@ -1,11 +1,14 @@
 package com.kor.foodmanager.ui.eventList;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.google.android.gms.location.places.Place;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
@@ -13,6 +16,10 @@ import com.kor.foodmanager.data.model.LocationDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -24,6 +31,7 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     @Inject IUserDataRepository dataRepository;
     private EventsInProgressRequestDto filters;
     private LocationDto baseLocation;
+    private String citySelected;
 
     public FiltersPresenter() {
         App.get().mainComponent().inject(this);
@@ -77,10 +85,24 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         } filters.getFilters().setDateTo(date);
     }
 
-    public void setCity(Object city) { //TODO
+    public void setCity(String city) { //TODO
         if(filters==null){
             initFilters();
+        } citySelected = city;
+        Geocoder geocoder = new Geocoder(App.get());
+        List<Address> location = new ArrayList<>();
+        try {
+            location = geocoder.getFromLocationName(city+", Israel", 1);
+            Log.d("MY_TAG", "setCity: "+geocoder.getFromLocationName(city+", Israel", 1));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        if(location.get(0)!=null){
+            filters.getLocation().setLng(location.get(0).getLongitude());
+            filters.getLocation().setLat(location.get(0).getLatitude());
+            Log.d("MY_TAG", "coordinates: "+filters.getLocation().toString());
+        }
+
     }
 
     private Boolean filterFieldsFilled(){
@@ -101,12 +123,12 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     public void apply(){
        if (filters==null || filters.getFilters()==null){
            new LocationGetterTask().execute(); //TODO Del
-            router.backTo(MainActivity.EVENT_LIST_SCREEN);
+            router.replaceScreen(MainActivity.EVENT_LIST_SCREEN);
         }  else if (!filterFieldsFilled()) {
            router.showSystemMessage("Select all filters or push the reset button!");
         }  else {
-           new LocationGetterTask().execute();
-           //router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
+           //new LocationGetterTask().execute();
+           router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
         }
     }
 
@@ -168,19 +190,24 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
     }
 
     private class LocationGetterTask extends AsyncTask<Void, Void, String>{
+        private String city;
 
         @Override
         protected void onPreExecute() {
             getViewState().showProgressFrame();
+            city = citySelected;
+
         }
 
         @Override
         protected String doInBackground(Void... voids) {
+            //Geocoder geocoder = new Geocoder()
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
+            Log.d("MY_TAG", "city location: "+s);
             getViewState().hideProgressFrame();
         }
     }
