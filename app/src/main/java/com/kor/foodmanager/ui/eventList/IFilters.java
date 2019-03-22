@@ -12,4 +12,6 @@ public interface IFilters extends MvpView {
     void setStaticFields(StaticfieldsDto staticFields);
     void setSpinners(FiltersDto filters);
     void setDates(FiltersDto filters);
+    void showProgressFrame();
+    void hideProgressFrame();
 }

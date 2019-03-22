@@ -100,11 +100,13 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
 
     public void apply(){
        if (filters==null || filters.getFilters()==null){
+           new LocationGetterTask().execute(); //TODO Del
             router.backTo(MainActivity.EVENT_LIST_SCREEN);
-        }  else if (filterFieldsFilled()) {
-            router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
+        }  else if (!filterFieldsFilled()) {
+           router.showSystemMessage("Select all filters or push the reset button!");
         }  else {
-            router.showSystemMessage("All filters have to be selected");
+           new LocationGetterTask().execute();
+           //router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
         }
     }
 
@@ -162,6 +164,24 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             }else{
                 router.showSystemMessage(s);
             }
+        }
+    }
+
+    private class LocationGetterTask extends AsyncTask<Void, Void, String>{
+
+        @Override
+        protected void onPreExecute() {
+            getViewState().showProgressFrame();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            getViewState().hideProgressFrame();
         }
     }
 

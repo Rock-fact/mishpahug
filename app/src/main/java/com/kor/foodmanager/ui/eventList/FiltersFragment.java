@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,8 +27,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -49,7 +53,10 @@ private static final String FOOD = "--select food--";
 @BindView(R.id.holiday_spinner) Spinner holidaySpinner;
 @BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
 @BindView(R.id.city_spinner) Spinner citySpinner;
-
+@BindView(R.id.progressBar) ProgressBar progressBar;
+@BindViews({R.id.confession_spinner, R.id.holiday_spinner, R.id.food_pref_spinner, R.id.city_spinner}) List<Spinner> spinners;
+@BindViews({R.id.apply_btn, R.id.reset_btn}) List<Button> buttons;
+@BindViews({R.id.event_date, R.id.date_from_txt, R.id.date_to_txt}) List<TextView> textViews;
 
 
 
@@ -186,6 +193,34 @@ private static final String FOOD = "--select food--";
             dateToTxt.setText(filters.getDateTo());
         }
     }
+
+    @Override
+    public void showProgressFrame() {
+        progressBar.setVisibility(View.VISIBLE);
+        ButterKnife.apply(spinners, HIDE);
+        ButterKnife.apply(buttons, HIDE);
+        ButterKnife.apply(textViews, HIDE);
+    }
+
+    @Override
+    public void hideProgressFrame() {
+        progressBar.setVisibility(View.GONE);
+        ButterKnife.apply(spinners, SHOW);
+        ButterKnife.apply(buttons, SHOW);
+        ButterKnife.apply(textViews, SHOW);
+    }
+
+    static final ButterKnife.Action<View> HIDE = new ButterKnife.Action<View>() {
+        @Override public void apply(View view, int index) {
+            view.setVisibility(View.GONE);
+        }
+    };
+
+    static final ButterKnife.Action<View> SHOW = new ButterKnife.Action<View>() {
+        @Override public void apply(View view, int index) {
+            view.setVisibility(View.VISIBLE);
+        }
+    };
 
 
     @Override
