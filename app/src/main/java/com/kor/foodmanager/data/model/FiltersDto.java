@@ -46,6 +46,17 @@ public class FiltersDto {
     public void setFood(String food) {
         this.food = food;
     }
+
+    @Override
+    public String toString() {
+        return "FiltersDto{" +
+                "dateFrom='" + dateFrom + '\'' +
+                ", dateTo='" + dateTo + '\'' +
+                ", holidays='" + holidays + '\'' +
+                ", confession='" + confession + '\'' +
+                ", food='" + food + '\'' +
+                '}';
+    }
 }
 
 

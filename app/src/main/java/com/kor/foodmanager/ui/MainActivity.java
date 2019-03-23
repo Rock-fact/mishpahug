@@ -187,7 +187,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                         return new EventListFragment();
                     }
                 case FILTERS_SCREEN:
-                    return new FiltersFragment();
+                    if(data!=null){
+                        return FiltersFragment.getNewInstance((EventsInProgressRequestDto) data);
+                    } else {
+                        return new FiltersFragment();
+                    }
                 case NOTIFICATIONS_SCREEN:
                     return new NotificationListFragment();
                 case NOTIFICATION_INFO_SCREEN:
