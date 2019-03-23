@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bordered">
+    android:background="@drawable/bordered"
+    android:layout_marginTop="10dp">
 
     <ImageView
         android:id="@+id/subscriber_picture"

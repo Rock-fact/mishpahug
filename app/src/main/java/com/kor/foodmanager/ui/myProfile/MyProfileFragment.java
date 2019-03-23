@@ -1,5 +1,6 @@
 package com.kor.foodmanager.ui.myProfile;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Binder;
 import android.os.Bundle;
@@ -25,9 +26,12 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -45,8 +49,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     private UserDto user;
     private StaticfieldsDto staticFields;
-    @BindView(R.id.back_btn)
-    ImageView backBtn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.avatar)
@@ -98,6 +100,8 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     TextView foodPreferences_view;
     @BindView(R.id.allergy_view)
     TextView allergy_view;
+    private IToolbar iToolbar;
+
 
 
     Unbinder unbinder;
@@ -128,9 +132,14 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
         allergy_view.setText("Allergy"); //TODO add allergy
 
-        backBtn.setOnClickListener(v->{
-            presenter.back();
-        });
+        spinnerMaritalStatus.setOnItemSelectedListener(this);
+        spinnerGender.setOnItemSelectedListener(this);
+        spinnerFoodPreferences.setOnItemSelectedListener(this);
+        spinnerConfession.setOnItemSelectedListener(this);
+
+        iToolbar=(IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("My profile",false);
+
 
         changeBtn.setOnClickListener(v -> {
             if (wrapperForInput.getVisibility() == View.GONE) {
@@ -138,14 +147,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
                 presenter.fillInput();
             } else {
                 presenter.fillView();
-                user.setFirstName(firstName_view.getText().toString());
-                user.setLastName(secondName_view.getText().toString());
-                user.setConfession(confession_view.getText().toString());
-                user.setGender(gender_view.getText().toString());
-                user.setPhoneNumber(telephoneNumber_view.getText().toString());
-                user.setMaritalStatus(maritalStatus_view.getText().toString());
-                user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
-                presenter.updateUserProfile(user);
             }
         });
 
@@ -190,14 +191,53 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     @Override
     public void fillView() {
-        firstName_view.setText(firstName.getText().toString());
-        secondName_view.setText(secondName.getText().toString());
-        confession_view.setText(confession.getText().toString());
-        gender_view.setText(gender.getText().toString());
-        telephoneNumber_view.setText(telephoneNumber.getText().toString());
-        maritalStatus_view.setText(maritalStatus.getText().toString());
-        foodPreferences_view.setText(foodPreferences.getText().toString());
-        allergy_view.setText(allergy.getText().toString());
+        String str="";
+        List<String> list=new ArrayList<>();
+        if (firstName.getText().toString().equals("")){
+        list.add("firstName");}
+        if (secondName.getText().toString().equals("")){
+            list.add("secondName");}
+        if (confession.getText().toString().equals("")){
+            list.add("confession");}
+        if (gender.getText().toString().equals("")){
+            list.add("gender");}
+        if (telephoneNumber.getText().toString().equals("")){
+            list.add("telephoneNumber");}
+        if (maritalStatus.getText().toString().equals("")){
+            list.add("maritalStatus");}
+        if (foodPreferences.getText().toString().equals("")){
+            list.add("foodPreferences");}
+        if (allergy.getText().toString().equals("")){
+            list.add("allergy");}
+            str=UserInfo.inLine(list);
+        if (str.equals("")) {
+
+            firstName_view.setText(firstName.getText().toString());
+            secondName_view.setText(secondName.getText().toString());
+            confession_view.setText(confession.getText().toString());
+            gender_view.setText(gender.getText().toString());
+            telephoneNumber_view.setText(telephoneNumber.getText().toString());
+            maritalStatus_view.setText(maritalStatus.getText().toString());
+            foodPreferences_view.setText(foodPreferences.getText().toString());
+            allergy_view.setText(allergy.getText().toString());
+            presenter.viewMode();
+
+            user.setFirstName(firstName_view.getText().toString());
+            user.setLastName(secondName_view.getText().toString());
+            user.setConfession(confession_view.getText().toString());
+            user.setGender(gender_view.getText().toString());
+            user.setPhoneNumber(telephoneNumber_view.getText().toString());
+            user.setMaritalStatus(maritalStatus_view.getText().toString());
+            user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
+            presenter.updateUserProfile(user);
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Fill the further fields")
+                    .setMessage(str)
+                    .setPositiveButton("Ok",null)
+                    .create()
+                    .show();
+        }
     }
 
     @Override
@@ -211,6 +251,11 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     }
 
     private void updateSpinersValues() {
+        staticFields.getConfession().add(0, "");
+        staticFields.getFoodPreferences().add(0, "");
+        staticFields.getMaritalStatus().add(0, "");
+        staticFields.getGender().add(0, "");
+
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getGender());
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
@@ -224,11 +269,14 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         spinnerMaritalStatus.setAdapter(maritalStatusAdapter);
 
 
-        staticFields.getFoodPreferences().add(0,"");
         ArrayAdapter<String> foodPreferencesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
         foodPreferencesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFoodPreferences.setAdapter(foodPreferencesAdapter);
 
+        spinnerMaritalStatus.setSelection(0);
+        spinnerFoodPreferences.setSelection(0);
+        spinnerGender.setSelection(0);
+        spinnerConfession.setSelection(0);
     }
 
 
@@ -240,33 +288,50 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getId() == spinnerConfession.getId()) {
-            confession.setText(parent.getSelectedItem().toString());
 
+        if (parent.getId() == spinnerConfession.getId()) {
+            if (position != 0) {
+                confession.setText(spinnerConfession.getSelectedItem().toString());
+                spinnerConfession.setSelection(0);
+            }
         } else if (parent.getId() == spinnerGender.getId()) {
-            gender.setText(spinnerGender.getSelectedItem().toString());
+            if (position != 0) {
+                gender.setText(spinnerGender.getSelectedItem().toString());
+                spinnerGender.setSelection(0);
+            }
         } else if (parent.getId() == spinnerMaritalStatus.getId()) {
-            maritalStatus.setText(spinnerMaritalStatus.getSelectedItem().toString());
+            if (position != 0) {
+                maritalStatus.setText(spinnerMaritalStatus.getSelectedItem().toString());
+                spinnerMaritalStatus.setSelection(0);
+            }
         } else if (parent.getId() == spinnerFoodPreferences.getId()) {
-            if (foodPreferences.getText().equals("")) {
-                foodPreferences.setText(spinnerFoodPreferences.getSelectedItem().toString());
-            } else {
-                foodPreferences.setText(", " + spinnerFoodPreferences.getSelectedItem().toString());
+            if (position != 0) {
+                if (foodPreferences.getText().toString().equals("")||foodPreferences.getText()==null) {
+                    foodPreferences.setText(spinnerFoodPreferences.getSelectedItem().toString());
+                } else {
+                    if (foodPreferences.getText().toString().contains(spinnerFoodPreferences.getSelectedItem().toString())) {
+                        foodPreferences.setText(spinnerFoodPreferences.getSelectedItem().toString());
+                    } else {
+                        foodPreferences.setText(foodPreferences.getText().toString() + ", " + spinnerFoodPreferences.getSelectedItem().toString());
+                    }
+                }
+                spinnerFoodPreferences.setSelection(0);
             }
         }
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        if (parent.getId() == spinnerConfession.getId()) {
-            confession.setText("");
-        } else if (parent.getId() == spinnerGender.getId()) {
-            gender.setText("");
-        } else if (parent.getId() == spinnerMaritalStatus.getId()) {
-            maritalStatus.setText("");
-        } else if (parent.getId() == spinnerFoodPreferences.getId()) {
-                foodPreferences.setText("");
-            }
-        }
+//        if (parent.getId() == spinnerConfession.getId()) {
+//            confession.setText("");
+//        } else if (parent.getId() == spinnerGender.getId()) {
+//            gender.setText("");
+//        } else if (parent.getId() == spinnerMaritalStatus.getId()) {
+//            maritalStatus.setText("");
+//        } else if (parent.getId() == spinnerFoodPreferences.getId()) {
+//            foodPreferences.setText("");
+//        }
+    }
 
 }

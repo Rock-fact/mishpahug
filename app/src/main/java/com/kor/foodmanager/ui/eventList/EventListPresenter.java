@@ -37,6 +37,8 @@ public class EventListPresenter extends MvpPresenter<IEventList> {
     @Inject Api api;
     @Inject IAuthRepository authRepository;
 
+    EventsInProgressRequestDto listFilters;
+
 private EventListAdapter adapter;
 
     public EventListPresenter() {
@@ -62,6 +64,9 @@ private EventListAdapter adapter;
         router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp); }
 
         public void filters(){
+        if(listFilters!=null){
+            router.backTo(MainActivity.FILTERS_SCREEN);
+        }
         router.navigateTo(MainActivity.FILTERS_SCREEN);
         }
 
@@ -119,6 +124,9 @@ private EventListAdapter adapter;
         @Override
         protected void onPostExecute(List<EventDto> list) {
            getViewState().hideProgressFrame();
+           if(filters!=null){
+               listFilters=filters;
+           }
             if (list!=null) {
                 adapter.removeAll();
                 for(int i=0; i<list.size(); i++){

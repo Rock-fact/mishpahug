@@ -57,9 +57,9 @@ public class UserInfo extends MvpAppCompatFragment {
     public UserInfo() {
     }
 
-    public static UserInfo getNewInstance(UserDto user) {
+    public static UserInfo getNewInstance(UserDto user, boolean isPending) {
         UserInfo userInfo = new UserInfo();
-//        userInfo.isPending = isPending;
+        userInfo.isPending = isPending;
         userInfo.user = user;
         return userInfo;
     }
@@ -75,7 +75,7 @@ public class UserInfo extends MvpAppCompatFragment {
             fullName.setText(user.getFullName());
             confession.setText(user.getConfession());
             gender.setText(user.getGender());
-            if (user.getPhoneNumber() != null) {
+            if (isPending) {
                 telephoneNumber.setText(user.getPhoneNumber());
             } else {
                 telephoneNumber.setVisibility(View.GONE);
@@ -106,7 +106,9 @@ public class UserInfo extends MvpAppCompatFragment {
         for (String item : list) {
             if (res == "") {
                 res = res + item;
-            } else res = res + ", " + item;
+            } else if (item!=""){
+                res = res + ", " + item;
+            }
         }
         return res;
     }

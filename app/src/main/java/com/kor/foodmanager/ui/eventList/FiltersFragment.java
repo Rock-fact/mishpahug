@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +35,12 @@ import butterknife.Unbinder;
 public class FiltersFragment extends MvpAppCompatFragment implements IFilters, AdapterView.OnItemSelectedListener {
 @InjectPresenter FiltersPresenter presenter;
 private Unbinder unbinder;
-private ArrayList<String> cities;
 private Calendar calendar;
+private Long minDate;
 
 private static final String CONFESSION = "--select confession--";
 private static final String HOLIDAY = "--select holiday--";
 private static final String FOOD = "--select food--";
-//private static final String CITY = "--select city--";
 
 @BindView(R.id.event_date) TextView eventDateTxt;
 @BindView(R.id.date_from_txt) TextView dateFromTxt;
@@ -48,7 +48,7 @@ private static final String FOOD = "--select food--";
 @BindView(R.id.confession_spinner) Spinner confessionSpinner;
 @BindView(R.id.holiday_spinner) Spinner holidaySpinner;
 @BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
-//@BindView(R.id.city_spinner) Spinner citySpinner;
+@BindView(R.id.city_spinner) Spinner citySpinner;
 
 
 
@@ -63,8 +63,8 @@ private static final String FOOD = "--select food--";
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
-        calendar = Calendar.getInstance(); //TODO Provider maybe
-        eventDateTxt.setVisibility(View.VISIBLE);
+        //calendar = Calendar.getInstance(); //TODO Provider maybe
+        //eventDateTxt.setVisibility(View.VISIBLE);
         presenter.setStaticFields();
         return view;
     }
@@ -93,11 +93,14 @@ private static final String FOOD = "--select food--";
 
     @OnClick({R.id.event_date, R.id.date_from_txt})
     public void setDateFrom() {
-        new DatePickerDialog(getActivity(), dateFromCallback,
+        calendar=null;
+        calendar = Calendar.getInstance();
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateFromCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-                .show();
+                calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dialog.show();
     }
 
 
@@ -115,15 +118,18 @@ private static final String FOOD = "--select food--";
             dateFromTxt.setVisibility(View.VISIBLE);
             dateToTxt.setVisibility(View.VISIBLE);
         }
+
+        setDateTo();
     };
 
-    @OnClick(R.id.date_to_txt)
+   // @OnClick(R.id.date_to_txt)
     public void setDateTo() {
-        new DatePickerDialog(getActivity(), dateToCallback,
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateToCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH))
-                .show();
+                calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dialog.show();
     }
 
 
@@ -145,29 +151,40 @@ private static final String FOOD = "--select food--";
         confessionAdapter.insert(CONFESSION, 0);
         confessionSpinner.setAdapter(confessionAdapter);
         confessionSpinner.setOnItemSelectedListener(this);
+
         ArrayAdapter<String> holidayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getHoliday());
         holidayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holidayAdapter.insert(HOLIDAY, 0);
         holidaySpinner.setAdapter(holidayAdapter);
         holidaySpinner.setOnItemSelectedListener(this);
+
         ArrayAdapter<String> foodPrefAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
         foodPrefAdapter.insert(FOOD, 0);
         foodPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         foodPrefSpinner.setAdapter(foodPrefAdapter);
         foodPrefSpinner.setOnItemSelectedListener(this);
-//        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cities);
-//        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        citySpinner.setAdapter(cityAdapter);
+
+        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.cities, android.R.layout.simple_spinner_item);
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(cityAdapter);
+        citySpinner.setOnItemSelectedListener(this);
     }
 
     @Override
-    public void setFilters(FiltersDto filters) {
-//        eventDateTxt.setVisibility(View.GONE);
-//        dateToTxt.setText(filters.getDateTo());
-//        dateToTxt.setVisibility(View.VISIBLE);
-//        dateFromTxt.setText(filters.getDateFrom());
-//        dateFromTxt.setVisibility(View.VISIBLE);
+    public void setSpinners(FiltersDto filters) {
+        //TODO
+    }
 
+    @Override
+    public void setDates(FiltersDto filters) {
+        eventDateTxt.setVisibility(View.GONE);
+        dateToTxt.setVisibility(View.VISIBLE);
+        dateFromTxt.setVisibility(View.VISIBLE);
+        dateFromTxt.setText(filters.getDateFrom());
+        if(filters.getDateTo()!=null){
+            dateToTxt.setText(filters.getDateTo());
+        }
     }
 
 
@@ -186,6 +203,11 @@ private static final String FOOD = "--select food--";
         if(parent.getId()==R.id.food_pref_spinner){
             if(foodPrefSpinner.getSelectedItemPosition()!=0) {
                 presenter.setFood(foodPrefSpinner.getSelectedItem().toString());
+            }
+        }
+        if(parent.getId()==R.id.city_spinner){ //TODO
+            if(citySpinner.getSelectedItemPosition()!=0){
+                presenter.setCity(citySpinner.getSelectedItem());
             }
         }
     }
