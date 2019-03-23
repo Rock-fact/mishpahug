@@ -79,7 +79,7 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         } filters.getFilters().setDateTo(date);
     }
 
-    public void setCity(String city) { //TODO
+    public void setCity(String city) {
         if(filters==null){
             initFilters();
         } citySelected = city;
@@ -99,6 +99,7 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             filters.getLocation().setLng(location.get(0).getLongitude());
             filters.getLocation().setLat(location.get(0).getLatitude());
             Log.d("MY_TAG", "coordinates: "+filters.getLocation().toString());
+            //TODO radius
         }
     }
 
@@ -108,11 +109,11 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
                 & filters.getFilters().getFood()!=null & filters.getLocation()!=null) {
             return true;
         } else {
-            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getDateFrom());
-            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getDateTo());
-            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getHolidays());
-            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getFood());
-            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getConfession());
+//            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getDateFrom());
+//            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getDateTo());
+//            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getHolidays());
+//            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getFood());
+//            Log.d("MY_TAG", "filterFieldsFilled: "+filters.getFilters().getConfession());
             return false;
         }
     }
@@ -135,8 +136,9 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             filters.getFilters().setHolidays(null);
             filters.getFilters().setFood(null);
             filters.getFilters().setConfession(null);
-            filters.setLocation(baseLocation);
+            filters.setLocation(null);
             filters.setFilters(null);
+            filters=null;
         }
     }
 
@@ -144,16 +146,24 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         new GetStaticFieldsTask().execute();
     }
 
-
+    public void setStaticFields(EventsInProgressRequestDto filters) {
+        new GetStaticFieldsTask(filters).execute();
+    }
 
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String> {
 
         private boolean successful;
         private StaticfieldsDto staticFields;
+        private EventsInProgressRequestDto fieldsFilters;
 
         public GetStaticFieldsTask() {
             successful = true;
+            fieldsFilters = null;
+        }
+        public GetStaticFieldsTask(EventsInProgressRequestDto filters) {
+            successful = true;
+            fieldsFilters = filters;
         }
 
         @Override
@@ -178,11 +188,12 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             if(successful){
                 getViewState().setStaticFields(staticFields);
                 getViewState().hideProgressFrame();
-                if(filters!=null) {
-                    if (filters.getFilters() != null) {
-                        getViewState().setSpinners(filters.getFilters());
-                        if(filters.getFilters().getDateFrom()!=null)
-                        getViewState().setDates(filters.getFilters());
+                if(fieldsFilters!=null) {
+                    if (fieldsFilters.getFilters() != null) {
+                        Log.d("MY_TAG", "onPostExecute: "+fieldsFilters.getFilters().toString());
+                        getViewState().setDates(fieldsFilters.getFilters());
+                        //getViewState().setSpinners(fieldsFilters.getFilters());
+                        Log.d("MY_TAG", "onPostExecute: done");
                     }
                 }
             }else{

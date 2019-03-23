@@ -24,4 +24,12 @@ public class EventsInProgressRequestDto {
     public void setFilters(FiltersDto filters) {
         this.filters = filters;
     }
+
+    @Override
+    public String toString() {
+        return "EventsInProgressRequestDto{" +
+                "location=" + location +
+                ", filters=" + filters +
+                '}';
+    }
 }

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 
@@ -40,7 +41,7 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
 @InjectPresenter FiltersPresenter presenter;
 private Unbinder unbinder;
 private Calendar calendar;
-private Long minDate;
+private EventsInProgressRequestDto filters;
 
 private static final String CONFESSION = "--select confession--";
 private static final String HOLIDAY = "--select holiday--";
@@ -56,9 +57,16 @@ private static final String FOOD = "--select food--";
 @BindViews({R.id.apply_btn, R.id.reset_btn}) List<Button> buttons;
 
 
-
     public FiltersFragment() {
+        filters=null;
+    }
 
+    public static FiltersFragment getNewInstance(EventsInProgressRequestDto filters) {
+        Log.d("MY_TAG", "Filters getNewInstance: ");
+        FiltersFragment fragment = new FiltersFragment();
+        fragment.filters = filters;
+        Log.d("MY_TAG", "Filters getNewInstance: "+ filters.toString());
+        return fragment;
     }
 
 
@@ -67,11 +75,10 @@ private static final String FOOD = "--select food--";
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
-        //calendar = Calendar.getInstance(); //TODO Provider maybe
-        //eventDateTxt.setVisibility(View.VISIBLE);
-        presenter.setStaticFields();
-        if(presenter.filters!=null) {
-            Log.d("MY_TAG", "onCreateView: " + presenter.filters);
+        if(filters!=null) {
+            presenter.setStaticFields(filters);
+        } else {
+            presenter.setStaticFields();
         }
         return view;
     }
@@ -177,9 +184,10 @@ private static final String FOOD = "--select food--";
 
     @Override
     public void setDates(FiltersDto filters) {
-        eventDateTxt.setText(filters.getDateFrom());
-        if(filters.getDateTo()!=null){
-            eventDateTxt.setText(eventDateTxt.getText()+" - "+filters.getDateTo());
+        Log.d("MY_TAG", "setDates: working");
+        if(filters.getDateTo()!=null & filters.getDateFrom()!=null){
+
+            eventDateTxt.setText(filters.getDateFrom()+" - "+filters.getDateTo());
         }
     }
 

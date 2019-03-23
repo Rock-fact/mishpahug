@@ -65,9 +65,11 @@ private EventListAdapter adapter;
 
         public void filters(){
         if(listFilters!=null){
-            router.backTo(MainActivity.FILTERS_SCREEN);
+            Log.d("MY_TAG", "listFilters!=null "+listFilters.toString());
+            router.navigateTo(MainActivity.FILTERS_SCREEN, listFilters);
+        } else {
+            router.navigateTo(MainActivity.FILTERS_SCREEN);
         }
-        router.navigateTo(MainActivity.FILTERS_SCREEN);
         }
 
     @Override
