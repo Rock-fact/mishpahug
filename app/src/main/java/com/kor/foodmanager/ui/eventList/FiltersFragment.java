@@ -22,6 +22,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
+import com.kor.foodmanager.data.model.SpinnerPositionDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +47,7 @@ private EventsInProgressRequestDto filters;
 private static final String CONFESSION = "--select confession--";
 private static final String HOLIDAY = "--select holiday--";
 private static final String FOOD = "--select food--";
+private static final String EVENTDATE = "--select date--";
 
 @BindView(R.id.event_date) TextView eventDateTxt;
 @BindView(R.id.confession_spinner) Spinner confessionSpinner;
@@ -100,6 +102,8 @@ private static final String FOOD = "--select food--";
         confessionSpinner.setSelection(0);
         holidaySpinner.setSelection(0);
         foodPrefSpinner.setSelection(0);
+        citySpinner.setSelection(0);
+        eventDateTxt.setText(EVENTDATE);
     }
 
     @OnClick(R.id.event_date)
@@ -178,15 +182,17 @@ private static final String FOOD = "--select food--";
     }
 
     @Override
-    public void setSpinners(FiltersDto filters) {
-        //TODO
+    public void setSpinners(SpinnerPositionDto positions) {
+        confessionSpinner.setSelection(positions.getConfession());
+        holidaySpinner.setSelection(positions.getHoliday());
+        foodPrefSpinner.setSelection(positions.getFood());
+        citySpinner.setSelection(positions.getCity());
     }
 
     @Override
     public void setDates(FiltersDto filters) {
         Log.d("MY_TAG", "setDates: working");
         if(filters.getDateTo()!=null & filters.getDateFrom()!=null){
-
             eventDateTxt.setText(filters.getDateFrom()+" - "+filters.getDateTo());
         }
     }
@@ -224,22 +230,23 @@ private static final String FOOD = "--select food--";
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if(parent.getId()==R.id.confession_spinner){
             if(confessionSpinner.getSelectedItemPosition()!=0) {
-                presenter.setConfession(confessionSpinner.getSelectedItem().toString());
+                presenter.setConfession(confessionSpinner.getSelectedItem().toString(),
+                        position);
             }
         }
         if(parent.getId()==R.id.holiday_spinner){
             if(holidaySpinner.getSelectedItemPosition()!=0) {
-                presenter.setHoliday(holidaySpinner.getSelectedItem().toString());
+                presenter.setHoliday(holidaySpinner.getSelectedItem().toString(), holidaySpinner.getSelectedItemPosition());
             }
         }
         if(parent.getId()==R.id.food_pref_spinner){
             if(foodPrefSpinner.getSelectedItemPosition()!=0) {
-                presenter.setFood(foodPrefSpinner.getSelectedItem().toString());
+                presenter.setFood(foodPrefSpinner.getSelectedItem().toString(), foodPrefSpinner.getSelectedItemPosition());
             }
         }
-        if(parent.getId()==R.id.city_spinner){ //TODO
+        if(parent.getId()==R.id.city_spinner){
             if(citySpinner.getSelectedItemPosition()!=0){
-                presenter.setCity(citySpinner.getSelectedItem().toString());
+                presenter.setCity(citySpinner.getSelectedItem().toString(), citySpinner.getSelectedItemPosition());
             }
         }
     }

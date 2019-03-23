@@ -48,23 +48,26 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         filters.setFilters(new FiltersDto());
     }
 
-    public void setConfession(String confession){
+    public void setConfession(String confession, int position){
         if(filters==null){
             initFilters();
         }
         filters.getFilters().setConfession(confession);
+        filters.getSpinnerPositions().setConfession(position);
     }
 
-    public void setHoliday(String holiday){
+    public void setHoliday(String holiday, int position){
         if(filters==null){
             initFilters();
         }filters.getFilters().setHolidays(holiday);
+        filters.getSpinnerPositions().setHoliday(position);
     }
 
-    public void setFood(String food){
+    public void setFood(String food, int position){
         if(filters==null){
             initFilters();
         } filters.getFilters().setFood(food);
+        filters.getSpinnerPositions().setFood(position);
     }
 
     public void setDateFrom(String date) {  if(filters==null){
@@ -79,10 +82,11 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         } filters.getFilters().setDateTo(date);
     }
 
-    public void setCity(String city) {
+    public void setCity(String city, int position) {
         if(filters==null){
             initFilters();
         } citySelected = city;
+        filters.getSpinnerPositions().setCity(position);
 
     }
 
@@ -155,15 +159,16 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
 
         private boolean successful;
         private StaticfieldsDto staticFields;
-        private EventsInProgressRequestDto fieldsFilters;
+       // private EventsInProgressRequestDto fieldsFilters;
 
         public GetStaticFieldsTask() {
             successful = true;
-            fieldsFilters = null;
+            //fieldsFilters = null;
         }
-        public GetStaticFieldsTask(EventsInProgressRequestDto filters) {
+        public GetStaticFieldsTask(EventsInProgressRequestDto f) {
             successful = true;
-            fieldsFilters = filters;
+            //fieldsFilters = f;
+            filters = f;
         }
 
         @Override
@@ -188,12 +193,12 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             if(successful){
                 getViewState().setStaticFields(staticFields);
                 getViewState().hideProgressFrame();
-                if(fieldsFilters!=null) {
-                    if (fieldsFilters.getFilters() != null) {
-                        Log.d("MY_TAG", "onPostExecute: "+fieldsFilters.getFilters().toString());
-                        getViewState().setDates(fieldsFilters.getFilters());
-                        //getViewState().setSpinners(fieldsFilters.getFilters());
-                        Log.d("MY_TAG", "onPostExecute: done");
+                if(filters!=null) {
+                    if (filters.getFilters() != null) {
+                        getViewState().setDates(filters.getFilters());
+                    }
+                    if(filters.getSpinnerPositions()!=null){
+                        getViewState().setSpinners(filters.getSpinnerPositions());
                     }
                 }
             }else{
