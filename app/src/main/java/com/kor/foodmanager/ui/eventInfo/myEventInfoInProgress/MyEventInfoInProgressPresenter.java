@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -18,6 +19,8 @@ import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.TAG;
+
 @InjectViewState
 public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInProgress> {
     @Inject
@@ -30,6 +33,7 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
     public MyEventInfoInProgressPresenter() {
         App.get().myEventInProgressComponent().inject(this);
         adapter = new MyEventInfoInProgressAdapter();
+        Log.d(TAG, "MyEventInfoInProgressPresenter: ");
     }
 
     public void inviteToEvent(Long eventId, int adapterPosition) {

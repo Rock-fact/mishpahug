@@ -31,6 +31,8 @@ import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_PENDING_SCREE
 import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_DONE_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_INPROGRESS_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_INFO_PENDING_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_LIST_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.PARTICIPATION_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
@@ -41,14 +43,14 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     Router router;
     private Collection<CalendarDay> myEvents = new HashSet<>();
     private Collection<CalendarDay> subscribedEvents = new HashSet<>();
-    HashMap<CalendarDay,EventDto> eventsMap = new HashMap<>();
+    HashMap<CalendarDay, EventDto> eventsMap = new HashMap<>();
 
     public CalendarPresenter() {
         App.get().calendarComponent().inject(this);
     }
 
     public void showMonth(int month) {
-        new GetEventsForCalendarTask(month+1).execute();
+        new GetEventsForCalendarTask(month + 1).execute();
     }
 
     @Override
@@ -58,33 +60,11 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     }
 
     public void onDateSelected(CalendarDay date) {
-        if(myEvents.contains(date)){
-            EventDto event = eventsMap.get(date);
-            switch (event.getStatus()){
-                case "Pending":
-                    router.navigateTo(MY_EVENT_INFO_PENDING_SCREEN, event);
-                    break;
-                case "In progress":
-                    router.navigateTo(MY_EVENT_INFO_INPROGRESS_SCREEN, event);
-                    break;
-                case "Done":
-                    router.navigateTo(MY_EVENT_INFO_DONE_SCREEN, event);
-                    break;
-            }
-        }else if(subscribedEvents.contains(date)){
-            EventDto event = eventsMap.get(date);
-            switch (event.getStatus()){
-                case "Pending":
-                    router.navigateTo(GUEST_EVENT_INFO_PENDING_SCREEN, event);
-                    break;
-                case "In progress":
-                    router.navigateTo(GUEST_EVENT_INFO_INPROGRESS_SCREEN, event);
-                    break;
-                case "Done":
-                    router.navigateTo(GUEST_EVENT_INFO_DONE_SCREEN, event);
-                    break;
-            }
-        }else {
+        if (myEvents.contains(date)) {
+            router.navigateTo(MY_EVENT_LIST_SCREEN);
+        } else if (subscribedEvents.contains(date)) {
+            router.navigateTo(PARTICIPATION_LIST_SCREEN);
+        } else {
             router.showSystemMessage("Empty day!");
         }
     }
@@ -133,7 +113,7 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                     try {
                         CalendarDay day = CalendarDay.from(format.parse(eventDto.getDate()));
                         myEvents.add(day);
-                        eventsMap.put(day,eventDto);
+                        eventsMap.put(day, eventDto);
                     } catch (ParseException e) {
                         router.showSystemMessage(e.getMessage());
                     }
@@ -143,14 +123,14 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                         subscribedEventsDto) {
                     try {
                         subscribedEvents.add(CalendarDay.from(format.parse(eventDto.getDate())));
-                        Log.d(TAG, "subscribedEvent: "+eventDto.getDate());
+                        Log.d(TAG, "subscribedEvent: " + eventDto.getDate());
                     } catch (ParseException e) {
                         Log.d(TAG, "parse error: " + e.getMessage());
                         router.showSystemMessage(e.getMessage());
                     }
                 }
                 getViewState().showCalendar(myEvents, subscribedEvents);
-            }else {
+            } else {
                 router.showSystemMessage(error);
             }
         }
