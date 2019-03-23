@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,8 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,6 +46,7 @@ import static com.kor.foodmanager.ui.MainActivity.TAG;
 // https://techstricks.com/custom-google-place-autocomplete-android/
 public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent, OnDateSelectedListener {
     private static final int REQUEST_SELECT_PLACE = 1000;
+    private static final String CHOOSE_HOLIDAY = "Choose holiday";
     @InjectPresenter
     AddEventPresenter presenter;
     private Unbinder unbinder;
@@ -52,14 +58,16 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     TextView inputDescription;
     @BindView(R.id.createBtn)
     Button createBtn;
-    @BindView(R.id.inputHoliday)
-    TextView inputHoliday;
     @BindView(R.id.duration_picker)
     NumberPicker durationPicker;
     @BindView(R.id.pickerFrame)
     FrameLayout pickerFrame;
     @BindView(R.id.confirm_duration)
     Button confirmDuration;
+    @BindView(R.id.holiday_spinner)
+    Spinner holidaySpinner;
+    ArrayAdapter<String> spinnerAdapter;
+    int selectedHolidayPos;
     SupportPlaceAutocompleteFragment autocompleteFragment;
     private static final String COUNTRY_CODE = "IL";
 
@@ -80,6 +88,18 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
         iToolbar.setTitleToolbarEnable("Add event", true);
         placesAutocomplete(view);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.startWork();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        holidaySpinner.setSelection(selectedHolidayPos);
     }
 
     @OnClick(R.id.textDate)
@@ -135,7 +155,8 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     public EventDto createEvent() {
         EventDto event = new EventDto();
         event.setTitle(inputTitle.getText().toString());
-        event.setHoliday(inputHoliday.getText().toString());                // TODO: 05.03.2019 options 
+        Log.d(TAG, "createEvent: "+holidaySpinner.getSelectedItem().toString());
+        event.setHoliday(holidaySpinner.getSelectedItem().toString());
         event.setDescription(inputDescription.getText().toString());
         SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
         Date dateTime = dateAndTime.getTime();
@@ -174,5 +195,25 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
         dateAndTime.set(Calendar.MONTH, date.getMonth());
         dateAndTime.set(Calendar.DAY_OF_MONTH, date.getDay());
         setTime();
+    }
+
+    @Override
+    public void setHolidaySpinner(List<String> holiday) {
+        spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item,holiday);
+        spinnerAdapter.insert(CHOOSE_HOLIDAY, 0);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holidaySpinner.setAdapter(spinnerAdapter);
+        holidaySpinner.setSelection(selectedHolidayPos);
+        holidaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedHolidayPos=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }

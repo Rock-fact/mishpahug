@@ -18,6 +18,8 @@ import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.AddressDto;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.LocationDto;
+import com.kor.foodmanager.data.model.StaticfieldsDto;
+import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
     @Inject Router router;
     @Inject IEventInteractor interactor;
     @Inject Context context;
+    @Inject IUserDataRepository dataRepository;
     AddressDto addressDto;
     private Boolean cityIsCorrect = false;
     private String API_KEY;
@@ -102,6 +105,10 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
 
     public void hideDatePicker() {
         router.backTo(ADD_EVENT_SCREEN);
+    }
+
+    public void startWork() {
+        new GetStaticFieldsTask().execute();
     }
 
     private class AddEventTask extends AsyncTask<Void,Void,String> {
@@ -182,6 +189,33 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
                 addressDto.setCity(s);
                 cityIsCorrect = true;
                 Log.d(TAG, "City name: "+s);
+            }else{
+                router.showSystemMessage(s);
+            }
+        }
+    }
+
+    private class GetStaticFieldsTask extends AsyncTask<Void, Void, String> {
+        private boolean isSuccess;
+        private StaticfieldsDto staticFields;
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            try{
+                staticFields = dataRepository.staticFields();
+                isSuccess = true;
+                return "OK";
+            } catch (Exception e) {
+                e.printStackTrace();
+                isSuccess = false;
+                return e.getMessage();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(isSuccess){
+                getViewState().setHolidaySpinner(staticFields.getHoliday());
             }else{
                 router.showSystemMessage(s);
             }
