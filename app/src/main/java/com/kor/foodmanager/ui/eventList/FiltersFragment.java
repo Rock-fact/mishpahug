@@ -1,7 +1,9 @@
 package com.kor.foodmanager.ui.eventList;
 
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -39,35 +42,45 @@ import butterknife.Unbinder;
 
 
 public class FiltersFragment extends MvpAppCompatFragment implements IFilters, AdapterView.OnItemSelectedListener {
-@InjectPresenter FiltersPresenter presenter;
-private Unbinder unbinder;
-private Calendar calendar;
-private EventsInProgressRequestDto filters;
+    @InjectPresenter
+    FiltersPresenter presenter;
+    private Unbinder unbinder;
+    private Calendar calendar;
+    private EventsInProgressRequestDto filters;
+    private ViewGroup container;
 
-private static final String CONFESSION = "--select confession--";
-private static final String HOLIDAY = "--select holiday--";
-private static final String FOOD = "--select food--";
-private static final String EVENTDATE = "--select date--";
+    private static final String CONFESSION = "--select confession--";
+    private static final String HOLIDAY = "--select holiday--";
+    private static final String FOOD = "--select food--";
+    private static final String EVENTDATE = "--select date--";
 
-@BindView(R.id.event_date) TextView eventDateTxt;
-@BindView(R.id.confession_spinner) Spinner confessionSpinner;
-@BindView(R.id.holiday_spinner) Spinner holidaySpinner;
-@BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
-@BindView(R.id.city_spinner) Spinner citySpinner;
-@BindView(R.id.progressBar) ProgressBar progressBar;
-@BindViews({R.id.confession_spinner, R.id.holiday_spinner, R.id.food_pref_spinner, R.id.city_spinner}) List<Spinner> spinners;
-@BindViews({R.id.apply_btn, R.id.reset_btn}) List<Button> buttons;
+    @BindView(R.id.event_date)
+    TextView eventDateTxt;
+    @BindView(R.id.confession_spinner)
+    Spinner confessionSpinner;
+    @BindView(R.id.holiday_spinner)
+    Spinner holidaySpinner;
+    @BindView(R.id.food_pref_spinner)
+    Spinner foodPrefSpinner;
+    @BindView(R.id.city_spinner)
+    Spinner citySpinner;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindViews({R.id.confession_spinner, R.id.holiday_spinner, R.id.food_pref_spinner, R.id.city_spinner})
+    List<Spinner> spinners;
+    @BindViews({R.id.apply_btn, R.id.reset_btn})
+    List<Button> buttons;
 
 
     public FiltersFragment() {
-        filters=null;
+        filters = null;
     }
 
     public static FiltersFragment getNewInstance(EventsInProgressRequestDto filters) {
         Log.d("MY_TAG", "Filters getNewInstance: ");
         FiltersFragment fragment = new FiltersFragment();
         fragment.filters = filters;
-        Log.d("MY_TAG", "Filters getNewInstance: "+ filters.toString());
+        Log.d("MY_TAG", "Filters getNewInstance: " + filters.toString());
         return fragment;
     }
 
@@ -77,7 +90,8 @@ private static final String EVENTDATE = "--select date--";
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
-        if(filters!=null) {
+        this.container = container;
+        if (filters != null) {
             presenter.setStaticFields(filters);
         } else {
             presenter.setStaticFields();
@@ -92,12 +106,12 @@ private static final String EVENTDATE = "--select date--";
     }
 
     @OnClick(R.id.apply_btn)
-    void apply(){
+    void apply() {
         presenter.apply();
     }
 
     @OnClick(R.id.reset_btn)
-    void reset(){
+    void reset() {
         presenter.reset();
         confessionSpinner.setSelection(0);
         holidaySpinner.setSelection(0);
@@ -106,17 +120,18 @@ private static final String EVENTDATE = "--select date--";
         eventDateTxt.setText(EVENTDATE);
     }
 
+
     @OnClick(R.id.event_date)
     public void setDateFrom() {
-        calendar=null;
+        calendar = null;
         calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateFromCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
-                dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-                dialog.setTitle("Select date from");
-                dialog.show();
+        dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dialog.setTitle(R.string.date_from_title);
+        dialog.show();
     }
 
 
@@ -137,8 +152,8 @@ private static final String EVENTDATE = "--select date--";
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.setTitle("Select date to");
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        dialog.setTitle("Select date to");
         dialog.show();
     }
 
@@ -150,7 +165,7 @@ private static final String EVENTDATE = "--select date--";
         SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
         String date = formDate.format(calendar.getTime());
         presenter.setDateTo(date);
-        eventDateTxt.setText(eventDateTxt.getText()+" - "+date);
+        eventDateTxt.setText(eventDateTxt.getText() + " - " + date);
     };
 
 
@@ -192,8 +207,8 @@ private static final String EVENTDATE = "--select date--";
     @Override
     public void setDates(FiltersDto filters) {
         Log.d("MY_TAG", "setDates: working");
-        if(filters.getDateTo()!=null & filters.getDateFrom()!=null){
-            eventDateTxt.setText(filters.getDateFrom()+" - "+filters.getDateTo());
+        if (filters.getDateTo() != null & filters.getDateFrom() != null) {
+            eventDateTxt.setText(filters.getDateFrom() + " - " + filters.getDateTo());
         }
     }
 
@@ -214,13 +229,15 @@ private static final String EVENTDATE = "--select date--";
     }
 
     static final ButterKnife.Action<View> HIDE = new ButterKnife.Action<View>() {
-        @Override public void apply(View view, int index) {
+        @Override
+        public void apply(View view, int index) {
             view.setVisibility(View.GONE);
         }
     };
 
     static final ButterKnife.Action<View> SHOW = new ButterKnife.Action<View>() {
-        @Override public void apply(View view, int index) {
+        @Override
+        public void apply(View view, int index) {
             view.setVisibility(View.VISIBLE);
         }
     };
@@ -228,24 +245,24 @@ private static final String EVENTDATE = "--select date--";
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId()==R.id.confession_spinner){
-            if(confessionSpinner.getSelectedItemPosition()!=0) {
+        if (parent.getId() == R.id.confession_spinner) {
+            if (confessionSpinner.getSelectedItemPosition() != 0) {
                 presenter.setConfession(confessionSpinner.getSelectedItem().toString(),
                         position);
             }
         }
-        if(parent.getId()==R.id.holiday_spinner){
-            if(holidaySpinner.getSelectedItemPosition()!=0) {
+        if (parent.getId() == R.id.holiday_spinner) {
+            if (holidaySpinner.getSelectedItemPosition() != 0) {
                 presenter.setHoliday(holidaySpinner.getSelectedItem().toString(), holidaySpinner.getSelectedItemPosition());
             }
         }
-        if(parent.getId()==R.id.food_pref_spinner){
-            if(foodPrefSpinner.getSelectedItemPosition()!=0) {
+        if (parent.getId() == R.id.food_pref_spinner) {
+            if (foodPrefSpinner.getSelectedItemPosition() != 0) {
                 presenter.setFood(foodPrefSpinner.getSelectedItem().toString(), foodPrefSpinner.getSelectedItemPosition());
             }
         }
-        if(parent.getId()==R.id.city_spinner){
-            if(citySpinner.getSelectedItemPosition()!=0){
+        if (parent.getId() == R.id.city_spinner) {
+            if (citySpinner.getSelectedItemPosition() != 0) {
                 presenter.setCity(citySpinner.getSelectedItem().toString(), citySpinner.getSelectedItemPosition());
             }
         }
