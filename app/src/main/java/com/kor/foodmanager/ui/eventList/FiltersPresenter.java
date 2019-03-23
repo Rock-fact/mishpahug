@@ -29,19 +29,13 @@ import ru.terrakok.cicerone.Router;
 public class FiltersPresenter extends MvpPresenter<IFilters> {
     @Inject Router router;
     @Inject IUserDataRepository dataRepository;
-    private EventsInProgressRequestDto filters;
+    public EventsInProgressRequestDto filters;
     private LocationDto baseLocation;
     private String citySelected;
 
+
     public FiltersPresenter() {
         App.get().mainComponent().inject(this);
-//        filters = new EventsInProgressRequestDto();
-//        baseLocation = new LocationDto();
-//        baseLocation.setLat(32.109333);
-//        baseLocation.setLng(34.855499);
-//        baseLocation.setRadius(2000.00);
-//        filters.setLocation(baseLocation);
-//        filters.setFilters(new FiltersDto());
     }
 
     private void initFilters(){
@@ -89,11 +83,15 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         if(filters==null){
             initFilters();
         } citySelected = city;
+
+    }
+
+    private void applyCity(){
         Geocoder geocoder = new Geocoder(App.get());
-        List<Address> location = new ArrayList<>();
+        List <Address> location = new ArrayList<>();
         try {
-            location = geocoder.getFromLocationName(city+", Israel", 1);
-            Log.d("MY_TAG", "setCity: "+geocoder.getFromLocationName(city+", Israel", 1));
+            location = geocoder.getFromLocationName(citySelected+", Israel", 1);
+            Log.d("MY_TAG", "setCity: "+geocoder.getFromLocationName(citySelected+", Israel", 1));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,7 +100,6 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             filters.getLocation().setLat(location.get(0).getLatitude());
             Log.d("MY_TAG", "coordinates: "+filters.getLocation().toString());
         }
-
     }
 
     private Boolean filterFieldsFilled(){
@@ -122,12 +119,11 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
 
     public void apply(){
        if (filters==null || filters.getFilters()==null){
-           new LocationGetterTask().execute(); //TODO Del
             router.replaceScreen(MainActivity.EVENT_LIST_SCREEN);
         }  else if (!filterFieldsFilled()) {
            router.showSystemMessage("Select all filters or push the reset button!");
         }  else {
-           //new LocationGetterTask().execute();
+           applyCity();
            router.newRootScreen(MainActivity.EVENT_LIST_SCREEN, filters);
         }
     }
@@ -161,6 +157,11 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         }
 
         @Override
+        protected void onPreExecute() {
+            getViewState().showProgressFrame();
+        }
+
+        @Override
         protected String doInBackground(Void... voids) {
             try{
                 staticFields = dataRepository.staticFields();
@@ -176,6 +177,7 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         protected void onPostExecute(String s) {
             if(successful){
                 getViewState().setStaticFields(staticFields);
+                getViewState().hideProgressFrame();
                 if(filters!=null) {
                     if (filters.getFilters() != null) {
                         getViewState().setSpinners(filters.getFilters());
@@ -186,29 +188,6 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
             }else{
                 router.showSystemMessage(s);
             }
-        }
-    }
-
-    private class LocationGetterTask extends AsyncTask<Void, Void, String>{
-        private String city;
-
-        @Override
-        protected void onPreExecute() {
-            getViewState().showProgressFrame();
-            city = citySelected;
-
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            //Geocoder geocoder = new Geocoder()
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            Log.d("MY_TAG", "city location: "+s);
-            getViewState().hideProgressFrame();
         }
     }
 

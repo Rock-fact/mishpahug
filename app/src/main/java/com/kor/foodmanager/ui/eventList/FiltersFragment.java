@@ -47,8 +47,6 @@ private static final String HOLIDAY = "--select holiday--";
 private static final String FOOD = "--select food--";
 
 @BindView(R.id.event_date) TextView eventDateTxt;
-@BindView(R.id.date_from_txt) TextView dateFromTxt;
-@BindView(R.id.date_to_txt) TextView dateToTxt;
 @BindView(R.id.confession_spinner) Spinner confessionSpinner;
 @BindView(R.id.holiday_spinner) Spinner holidaySpinner;
 @BindView(R.id.food_pref_spinner) Spinner foodPrefSpinner;
@@ -56,7 +54,6 @@ private static final String FOOD = "--select food--";
 @BindView(R.id.progressBar) ProgressBar progressBar;
 @BindViews({R.id.confession_spinner, R.id.holiday_spinner, R.id.food_pref_spinner, R.id.city_spinner}) List<Spinner> spinners;
 @BindViews({R.id.apply_btn, R.id.reset_btn}) List<Button> buttons;
-@BindViews({R.id.event_date, R.id.date_from_txt, R.id.date_to_txt}) List<TextView> textViews;
 
 
 
@@ -73,6 +70,9 @@ private static final String FOOD = "--select food--";
         //calendar = Calendar.getInstance(); //TODO Provider maybe
         //eventDateTxt.setVisibility(View.VISIBLE);
         presenter.setStaticFields();
+        if(presenter.filters!=null) {
+            Log.d("MY_TAG", "onCreateView: " + presenter.filters);
+        }
         return view;
     }
 
@@ -93,12 +93,9 @@ private static final String FOOD = "--select food--";
         confessionSpinner.setSelection(0);
         holidaySpinner.setSelection(0);
         foodPrefSpinner.setSelection(0);
-        dateFromTxt.setVisibility(View.GONE);
-        dateToTxt.setVisibility(View.GONE);
-        eventDateTxt.setVisibility(View.VISIBLE);
     }
 
-    @OnClick({R.id.event_date, R.id.date_from_txt})
+    @OnClick(R.id.event_date)
     public void setDateFrom() {
         calendar=null;
         calendar = Calendar.getInstance();
@@ -107,6 +104,7 @@ private static final String FOOD = "--select food--";
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
                 dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                dialog.setTitle("Select date from");
                 dialog.show();
     }
 
@@ -119,22 +117,16 @@ private static final String FOOD = "--select food--";
         Date dateTime = calendar.getTime();
         String date = formDate.format(dateTime);
         presenter.setDateFrom(date);
-        dateFromTxt.setText(date);
-        if(eventDateTxt.getVisibility()==View.VISIBLE) {
-            eventDateTxt.setVisibility(View.GONE);
-            dateFromTxt.setVisibility(View.VISIBLE);
-            dateToTxt.setVisibility(View.VISIBLE);
-        }
-
+        eventDateTxt.setText(date);
         setDateTo();
     };
 
-   // @OnClick(R.id.date_to_txt)
-    public void setDateTo() {
+    private void setDateTo() {
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), dateToCallback,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.setTitle("Select date to");
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         dialog.show();
     }
@@ -147,33 +139,33 @@ private static final String FOOD = "--select food--";
         SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
         String date = formDate.format(calendar.getTime());
         presenter.setDateTo(date);
-        dateToTxt.setText(" - "+date);
+        eventDateTxt.setText(eventDateTxt.getText()+" - "+date);
     };
 
 
     @Override
     public void setStaticFields(StaticfieldsDto staticFields) {
-        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getConfession());
-        confessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner_dropdown_item, staticFields.getConfession());
+        confessionAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         confessionAdapter.insert(CONFESSION, 0);
         confessionSpinner.setAdapter(confessionAdapter);
         confessionSpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> holidayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getHoliday());
-        holidayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> holidayAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner_dropdown_item, staticFields.getHoliday());
+        holidayAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         holidayAdapter.insert(HOLIDAY, 0);
         holidaySpinner.setAdapter(holidayAdapter);
         holidaySpinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> foodPrefAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
+        ArrayAdapter<String> foodPrefAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner_dropdown_item, staticFields.getFoodPreferences());
         foodPrefAdapter.insert(FOOD, 0);
-        foodPrefAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        foodPrefAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         foodPrefSpinner.setAdapter(foodPrefAdapter);
         foodPrefSpinner.setOnItemSelectedListener(this);
 
         ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.cities, android.R.layout.simple_spinner_item);
-        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.cities, R.layout.my_spinner_dropdown_item);
+        cityAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         citySpinner.setAdapter(cityAdapter);
         citySpinner.setOnItemSelectedListener(this);
     }
@@ -185,12 +177,9 @@ private static final String FOOD = "--select food--";
 
     @Override
     public void setDates(FiltersDto filters) {
-        eventDateTxt.setVisibility(View.GONE);
-        dateToTxt.setVisibility(View.VISIBLE);
-        dateFromTxt.setVisibility(View.VISIBLE);
-        dateFromTxt.setText(filters.getDateFrom());
+        eventDateTxt.setText(filters.getDateFrom());
         if(filters.getDateTo()!=null){
-            dateToTxt.setText(filters.getDateTo());
+            eventDateTxt.setText(eventDateTxt.getText()+" - "+filters.getDateTo());
         }
     }
 
@@ -199,7 +188,7 @@ private static final String FOOD = "--select food--";
         progressBar.setVisibility(View.VISIBLE);
         ButterKnife.apply(spinners, HIDE);
         ButterKnife.apply(buttons, HIDE);
-        ButterKnife.apply(textViews, HIDE);
+        eventDateTxt.setVisibility(View.GONE);
     }
 
     @Override
@@ -207,7 +196,7 @@ private static final String FOOD = "--select food--";
         progressBar.setVisibility(View.GONE);
         ButterKnife.apply(spinners, SHOW);
         ButterKnife.apply(buttons, SHOW);
-        ButterKnife.apply(textViews, SHOW);
+        eventDateTxt.setVisibility(View.VISIBLE);
     }
 
     static final ButterKnife.Action<View> HIDE = new ButterKnife.Action<View>() {
