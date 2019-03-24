@@ -29,6 +29,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BaseSpinner">
+        <item name="android:popupBackground">@drawable/background_gradient</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
     <style name="CalendarTextAppearance" parent="TextAppearance.MaterialCalendarWidget.Date">
         <item name="android:textColor">@color/mcv_text_date_dark</item>
     </style>
