@@ -17,7 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/eventList_rv"
+        app:layout_constraintBottom_toBottomOf="@+id/swipeRefresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/filter_btn" />
@@ -35,8 +35,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/eventList_rv"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -46,7 +47,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/filter_btn" >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/eventList_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_btn"

@@ -9,11 +9,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -46,6 +48,7 @@ import com.kor.foodmanager.ui.participationList.ParticipationListFragment;
 import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +93,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     @BindView(R.id.back_btn_toolbar)
     ImageButton backBtnToolbar;
     @BindView(R.id.toolbar_title) TextView toolbarTitle;
+    TextView guestName;
+    ImageView imageView;
     ActionBarDrawerToggle toggle;
     private Unbinder unbinder;
 
@@ -102,7 +107,20 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                guestName=drawerView.findViewById(R.id.guestName);
+                UserDto userDto=presenter.authRepository.getUser();
+                String fullName=userDto.getFirstName()+" "+userDto.getLastName();
+                Log.d("VOVA", "onDrawerOpened: "+fullName);
+                guestName.setText(fullName);
+                Log.d("VOVA", "onDrawerOpened: "+guestName.getText());
+                imageView=drawerView.findViewById(R.id.imageView);
+                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -113,6 +131,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
         progressFrame.setOnClickListener(null);
         presenter.startWork();
     }
+
+
 
     @Override
     public void onBackPressed() {
