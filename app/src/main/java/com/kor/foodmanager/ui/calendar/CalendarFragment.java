@@ -12,6 +12,8 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
@@ -65,6 +67,21 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
+        calendarView.addDecorator(new DayViewDecorator() {
+            @Override
+            public boolean shouldDecorate(CalendarDay day) {
+                if(day.isBefore(CalendarDay.today())){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+
+            @Override
+            public void decorate(DayViewFacade view) {
+                view.setDaysDisabled(true);
+            }
+        });
         calendarView.setOnMonthChangedListener((widget, date) -> {
             presenter.showMonth(date.getMonth());
                 });
