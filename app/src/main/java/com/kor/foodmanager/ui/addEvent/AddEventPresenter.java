@@ -9,9 +9,12 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.event.IEventInteractor;
 import com.kor.foodmanager.data.event.ServerException;
@@ -41,6 +44,7 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
     AddressDto addressDto;
     private Boolean cityIsCorrect = false;
     private String API_KEY;
+//    public static final LatLngBounds location = new LatLngBounds(new LatLng(29.4533796, 34.2674994), new LatLng(33.3356317, 35.8950234));
 
     public AddEventPresenter(){
         App.get().eventComponent().inject(this);
@@ -96,6 +100,9 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
                 router.showSystemMessage(status.getStatusMessage());
             }
         });
+
+//        fragment.setBoundsBias(location);
+        fragment.setFilter(new AutocompleteFilter.Builder().setCountry("IL").build());
         return fragment;
     }
 
