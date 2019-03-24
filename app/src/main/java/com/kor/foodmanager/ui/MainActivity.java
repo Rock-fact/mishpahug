@@ -118,7 +118,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 guestName.setText(fullName);
                 Log.d("VOVA", "onDrawerOpened: "+guestName.getText());
                 imageView=drawerView.findViewById(R.id.imageView);
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
+                Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
             }
         };
         drawer.addDrawerListener(toggle);

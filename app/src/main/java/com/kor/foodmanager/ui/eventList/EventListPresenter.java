@@ -98,7 +98,7 @@ private EventListAdapter adapter;
 
         @Override
         protected void onPreExecute() {
-            getViewState().showProgressFrame();
+           if (currentPage==0)getViewState().showProgressFrame();
         }
 
         @Override
@@ -129,7 +129,7 @@ private EventListAdapter adapter;
 
         @Override
         protected void onPostExecute(List<EventDto> list) {
-           getViewState().hideProgressFrame();
+          if (currentPage==0)getViewState().hideProgressFrame();
            if(filters!=null){
                listFilters=filters;
            }
@@ -142,6 +142,7 @@ private EventListAdapter adapter;
                 else getViewState().isLastPage();
                 getViewState().isLoading();
             }
+            if (list==null || list.size()==0) adapter.removeLoading();
 
         }
     }
