@@ -61,7 +61,7 @@ public class MyEventInfoDoneFragment extends MvpAppCompatFragment {
         eventDescription.setText(event.getDescription());
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable(event.getTitle(), true);
+        iToolbar.setTitleToolbarEnable(event.getTitle(), false,true,false);
         return view;
     }
 

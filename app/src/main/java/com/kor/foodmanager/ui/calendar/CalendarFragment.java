@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.ui.IToolbar;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -31,6 +32,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     @BindView(R.id.mySubCount) TextView mySubCount;
     private Unbinder unbinder;
     private OnDateSelectedListener listener;
+    private IToolbar iToolbar;
 
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
@@ -45,6 +47,9 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         unbinder = ButterKnife.bind(this,view);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Calendar",false,true,false);
+
         presenter.showMonth(calendarView.getCurrentDate().getMonth());
         return view;
     }

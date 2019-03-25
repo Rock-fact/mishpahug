@@ -90,7 +90,7 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable(event.getTitle(), true);
+        iToolbar.setTitleToolbarEnable(event.getTitle(), false,true,false);
         date.setText(event.getDate());
         eventDescription.setText(event.getDescription());
 

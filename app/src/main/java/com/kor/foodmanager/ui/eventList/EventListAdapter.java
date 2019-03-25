@@ -100,15 +100,16 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public void removeLoading() {
-        isLoaderVisible = false;
         int position = events.size() - 1;
-        Log.d("VOVA", "removeLoading: "+(position+1));
-
+        if (position >= 0) {
+        Log.d("VOVA", "removeLoading: " + (position + 1));
+        isLoaderVisible = false;
         EventDto event = getItem(position);
         if (event != null) {
             events.remove(position);
             notifyItemRemoved(position);
         }
+    }
     }
 
     public void clear() {

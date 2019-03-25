@@ -114,7 +114,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         });
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Event list", true);
+        iToolbar.setTitleToolbarEnable("Event list", true,false,false);
         return view;
     }
 

@@ -69,7 +69,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         saveBtn.setOnClickListener(this);
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("About myself",true);
+        iToolbar.setTitleToolbarEnable("About myself",false,true,false);
 
         return view;
     }

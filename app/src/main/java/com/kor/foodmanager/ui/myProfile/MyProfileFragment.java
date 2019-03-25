@@ -138,7 +138,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         spinnerConfession.setOnItemSelectedListener(this);
 
         iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("My profile",false);
+        iToolbar.setTitleToolbarEnable("My profile",false,true,false);
 
 
         changeBtn.setOnClickListener(v -> {

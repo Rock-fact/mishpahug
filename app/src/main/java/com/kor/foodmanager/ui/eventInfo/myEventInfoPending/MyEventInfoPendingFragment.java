@@ -76,7 +76,7 @@ public class MyEventInfoPendingFragment extends MvpAppCompatFragment implements 
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable(event.getTitle(), true);
+        iToolbar.setTitleToolbarEnable(event.getTitle(), false,true,false);
         return view;
     }
 

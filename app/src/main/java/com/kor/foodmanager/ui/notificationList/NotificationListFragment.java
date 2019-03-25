@@ -12,6 +12,8 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.NotificationDto;
+import com.kor.foodmanager.ui.IToolbar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -22,6 +24,7 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
     @BindView(R.id.notificationList) RecyclerView notificationList;
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
     private Unbinder unbinder;
+    private IToolbar iToolbar;
 
     public NotificationListFragment() {
     }
@@ -38,6 +41,8 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
         unbinder = ButterKnife.bind(this,view);
         progressFrame.setOnClickListener(null);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Notice",false,true,false);
         return view;
     }
 

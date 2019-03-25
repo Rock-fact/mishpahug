@@ -49,7 +49,7 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
         date.setText(formatDate.format(notification.getDate()));
         presenter.startWork(notification.getNotificationId());
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Notification Info",true);
+        iToolbar.setTitleToolbarEnable("Notification Info",false,true,false);
         return view;
     }
 

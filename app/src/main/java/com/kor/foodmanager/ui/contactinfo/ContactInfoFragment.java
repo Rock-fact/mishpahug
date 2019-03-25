@@ -46,7 +46,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         nextBtn.setOnClickListener(this);
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Contact Info",true);
+        iToolbar.setTitleToolbarEnable("Contact Info",false,true,false);
 
         return view;
     }
