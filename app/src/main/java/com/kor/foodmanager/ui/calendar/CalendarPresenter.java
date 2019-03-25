@@ -10,6 +10,7 @@ import com.kor.foodmanager.buissness.calendar.ICalendarInteractor;
 import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.HebcalDto;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.IOException;
@@ -51,6 +52,10 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
 
     public void showMonth(int month) {
         new GetEventsForCalendarTask(month + 1).execute();
+    }
+
+    public void decorateMonth(int month) {
+        new GetIsrHolidays(month).execute();
     }
 
     @Override
@@ -109,6 +114,17 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                 for (EventDto eventDto :
+                        subscribedEventsDto) {
+                    try {
+                        subscribedEvents.add(CalendarDay.from(format.parse(eventDto.getDate())));
+                        Log.d(TAG, "subscribedEvent: " + eventDto.getDate());
+                    } catch (ParseException e) {
+                        Log.d(TAG, "parse error: " + e.getMessage());
+                        router.showSystemMessage(e.getMessage());
+                    }
+                }
+
+                for (EventDto eventDto :
                         myEventsDto) {
                     try {
                         CalendarDay day = CalendarDay.from(format.parse(eventDto.getDate()));
@@ -119,17 +135,47 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                     }
                 }
 
-                for (EventDto eventDto :
-                        subscribedEventsDto) {
-                    try {
-                        subscribedEvents.add(CalendarDay.from(format.parse(eventDto.getDate())));
-                        Log.d(TAG, "subscribedEvent: " + eventDto.getDate());
-                    } catch (ParseException e) {
-                        Log.d(TAG, "parse error: " + e.getMessage());
-                        router.showSystemMessage(e.getMessage());
-                    }
-                }
                 getViewState().showCalendar(myEvents, subscribedEvents);
+                decorateMonth(month);
+
+            } else {
+                router.showSystemMessage(error);
+            }
+        }
+    }
+
+    private class GetIsrHolidays extends AsyncTask<Void, Void, HebcalDto> {
+        private int month;
+        private Boolean isSuccess;
+        private String error;
+
+        public GetIsrHolidays(int month) {
+            this.month = month;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            getViewState().showProgressFrame();
+        }
+
+        @Override
+        protected HebcalDto doInBackground(Void... voids) {
+            HebcalDto res = null;
+            try {
+                res = interactor.getIsrHolidays(month);
+                isSuccess = true;
+            } catch (IOException e) {
+                error = "Connection failed!";
+                isSuccess = false;
+            }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(HebcalDto res) {
+            getViewState().hideProgressFrame();
+            if (isSuccess) {
+                getViewState().decorateCalendar(res);
             } else {
                 router.showSystemMessage(error);
             }
