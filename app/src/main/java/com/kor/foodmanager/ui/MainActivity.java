@@ -9,8 +9,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -204,13 +206,27 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                         return new EventListFragment();
                     }
                 case FILTERS_SCREEN:
-                    return new FiltersFragment();
+                    if(data!=null){
+                        return FiltersFragment.getNewInstance((EventsInProgressRequestDto) data);
+                    } else {
+                        return new FiltersFragment();
+                    }
                 case NOTIFICATIONS_SCREEN:
                     return new NotificationListFragment();
                 case NOTIFICATION_INFO_SCREEN:
                     return NotificationInfoFragment.newInstance((NotificationDto)data);
                 case REGISTRATION_FRAGMENT:
                     return new RegistrationFragment();
+                case CALENDAR_FRAGMENT:
+                    if(data!=null){
+                        try{
+                            return CalendarFragment.getDatePicker((OnDateSelectedListener) data);
+                        }catch (ClassCastException e){
+                            showSystemMessage(e.getMessage());
+                        }
+                    }else {
+                        return new CalendarFragment();
+                    }
                 case ABOUTMYSELF_FRAGMENT_NEW:
                     return AboutMyselfFragment.getNewInstance((UserDto)data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:
