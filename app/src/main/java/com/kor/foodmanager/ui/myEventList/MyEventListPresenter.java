@@ -84,7 +84,8 @@ public class MyEventListPresenter extends MvpPresenter<IMyEventList> {
 
         @Override
         protected void onPostExecute(List<EventDto> list) {
-            Collections.sort(list, (lhs, rhs) ->
+            if (list!=null && list.size()>1)
+                Collections.sort(list, (lhs, rhs) ->
                     getStatusPriority(lhs.getStatus()) > getStatusPriority(rhs.getStatus()) ? -1
                             : (getStatusPriority(lhs.getStatus()) < getStatusPriority(rhs.getStatus())) ? 1 : 0);
             getViewState().hideProgressFrame();
