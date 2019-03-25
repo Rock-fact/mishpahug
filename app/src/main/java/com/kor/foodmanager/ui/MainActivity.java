@@ -9,8 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+<<<<<<< Updated upstream
 import android.util.Log;
 import android.view.Menu;
+=======
+>>>>>>> Stashed changes
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -20,11 +23,9 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
-import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.NotificationDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
