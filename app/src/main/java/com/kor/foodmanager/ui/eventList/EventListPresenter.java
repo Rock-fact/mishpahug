@@ -46,12 +46,12 @@ private EventListAdapter adapter;
         adapter = new EventListAdapter();
     }
 
-    public void loadEventList(){
-        new LoadingList().execute();
+    public void loadEventList(int currentPage, int totalPage){
+        new LoadingList(currentPage,totalPage).execute();
     }
 
-    public void loadEventList(EventsInProgressRequestDto filters){
-        new LoadingList(filters).execute();
+    public void loadEventList(EventsInProgressRequestDto filters,int currentPage, int totalPage){
+        new LoadingList(filters,currentPage,totalPage).execute();
     }
 
     public EventListAdapter getAdapter(){
@@ -84,17 +84,23 @@ private EventListAdapter adapter;
         IAuthRepository tmpRepository = authRepository;
         Call<EventListDto> call;
         EventsInProgressRequestDto filters;
+        int currentPage;
+        int totalPage;
 
-        public LoadingList() {
+        public LoadingList(int currentPage,int totalPage) {
+            this.currentPage=currentPage;
+            this.totalPage=totalPage;
         }
 
-        public LoadingList(EventsInProgressRequestDto filters) {
+        public LoadingList(EventsInProgressRequestDto filters,int currentPage,int totalPage) {
             this.filters = filters;
+            this.currentPage=currentPage;
+            this.totalPage=totalPage;
         }
 
         @Override
         protected void onPreExecute() {
-            getViewState().showProgressFrame();
+           if (currentPage==0)getViewState().showProgressFrame();
         }
 
         @Override
@@ -102,12 +108,12 @@ private EventListAdapter adapter;
             try {
                 if (tmpRepository.getToken()!=null){
                     if(filters==null) {
-                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), currentPage, totalPage);
                     } else {
-                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10, filters); //TODO
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), currentPage, totalPage, filters); //TODO
                     }
                 } else {
-                    call = api.getListOfEventsInProgress(0, 10);
+                    call = api.getListOfEventsInProgress(currentPage, totalPage);
                 }
                 retrofit2.Response<EventListDto> response = call.execute();
                 if(response.isSuccessful()){
@@ -125,18 +131,21 @@ private EventListAdapter adapter;
 
         @Override
         protected void onPostExecute(List<EventDto> list) {
-           getViewState().hideProgressFrame();
+          if (currentPage==0)getViewState().hideProgressFrame();
            if(filters!=null){
                listFilters=filters;
            }
-            if (list!=null) {
-                adapter.removeAll();
-                for(int i=0; i<list.size(); i++){
-                        adapter.addEvent(list.get(i));
-
-                }
-
+            Log.d("VOVA", "onPostExecute: listsize"+list.size());
+            if (list!=null && list.size()!=0) {
+                if (currentPage != EventListFragment.PAGE_START) adapter.removeLoading();
+                adapter.addAll(list);
+                getViewState().swipeRefresh();
+                if (!(list.size() < totalPage)) adapter.addLoading();
+                else getViewState().isLastPage();
+                getViewState().isLoading();
             }
+            if (list==null || list.size()==0) adapter.removeLoading();
+
         }
     }
 }
