@@ -130,7 +130,11 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-        dialog.setTitle(R.string.date_from_title);
+        //dialog.setTitle(R.string.date_from_title);
+        TextView title = new TextView(getActivity());
+        title.setText(R.string.date_from_title);
+        title.setBackgroundResource(R.color.colorPrimaryDark);
+        dialog.setCustomTitle(title);
         dialog.show();
     }
 
@@ -153,7 +157,11 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-        dialog.setTitle("Select date to");
+        //dialog.setTitle("Select date to");
+        TextView title = new TextView(getActivity());
+        title.setText("Select date to");
+        title.setBackgroundResource(R.color.colorPrimaryDark);
+        dialog.setCustomTitle(title);
         dialog.show();
     }
 
