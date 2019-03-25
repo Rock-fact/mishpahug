@@ -43,13 +43,16 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification_info, container, false);
         unbinder = ButterKnife.bind(this, view);
-        title.setText(notification.getTitle());
-        message.setText(notification.getMessage());
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-        date.setText(formatDate.format(notification.getDate()));
-        presenter.startWork(notification.getNotificationId());
-        iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Notification Info",true);
+        if(notification!=null){
+            title.setText(notification.getTitle());
+            message.setText(notification.getMessage());
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+            date.setText(formatDate.format(notification.getDate()));
+            presenter.startWork(notification.getNotificationId());
+            iToolbar = (IToolbar) getActivity();
+            iToolbar.setTitleToolbarEnable("Notification Info",true);
+        }
+
         return view;
     }
 
