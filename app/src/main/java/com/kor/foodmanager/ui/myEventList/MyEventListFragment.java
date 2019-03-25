@@ -46,7 +46,7 @@ public class MyEventListFragment extends MvpAppCompatFragment implements MyEvent
         recyclerView.setAdapter(adapter);
 
         iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("My events",true);
+        iToolbar.setTitleToolbarEnable("My events",false);
 
         return view;
     }

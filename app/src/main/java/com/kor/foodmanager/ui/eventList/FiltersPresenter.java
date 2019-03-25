@@ -43,7 +43,7 @@ public class FiltersPresenter extends MvpPresenter<IFilters> {
         baseLocation = new LocationDto();
         baseLocation.setLat(32.109333);
         baseLocation.setLng(34.855499);
-        baseLocation.setRadius(500.00);
+        baseLocation.setRadius(2000.00);
         filters.setLocation(baseLocation);
         filters.setFilters(new FiltersDto());
     }

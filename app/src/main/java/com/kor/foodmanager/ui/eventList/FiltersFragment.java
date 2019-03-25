@@ -26,6 +26,7 @@ import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.model.SpinnerPositionDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
+import com.kor.foodmanager.ui.IToolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +48,8 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
     private Unbinder unbinder;
     private Calendar calendar;
     private EventsInProgressRequestDto filters;
-    private ViewGroup container;
+    private IToolbar iToolbar;
+
 
     private static final String CONFESSION = "--select confession--";
     private static final String HOLIDAY = "--select holiday--";
@@ -90,7 +92,8 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
-        this.container = container;
+        iToolbar=(IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Filters",false);
         if (filters != null) {
             presenter.setStaticFields(filters);
         } else {
