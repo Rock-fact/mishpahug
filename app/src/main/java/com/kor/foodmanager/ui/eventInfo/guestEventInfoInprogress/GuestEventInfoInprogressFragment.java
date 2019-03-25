@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -59,6 +60,19 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
         GuestEventInfoInprogressFragment fragment = new GuestEventInfoInprogressFragment();
         fragment.event = data;
         return fragment;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
     }
 
 

@@ -48,10 +48,20 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         return fragment;
     }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
+        if (savedInstanceState!=null){
+            user=(UserDto) savedInstanceState.getSerializable("user");
+            isNew=savedInstanceState.getBoolean("isNew");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user",user);
+        outState.putBoolean("isNew",isNew);
     }
 
     @Nullable

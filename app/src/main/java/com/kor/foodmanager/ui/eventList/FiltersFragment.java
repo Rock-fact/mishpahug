@@ -84,6 +84,19 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            filters=(EventsInProgressRequestDto) savedInstanceState.getSerializable("filters");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("filters",filters);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

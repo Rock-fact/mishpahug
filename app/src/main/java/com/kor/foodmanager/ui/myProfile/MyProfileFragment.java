@@ -116,6 +116,15 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
+        if (savedInstanceState!=null){
+            user=(UserDto) savedInstanceState.getSerializable("user");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user", user);
     }
 
     @Nullable

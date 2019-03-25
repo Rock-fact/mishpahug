@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfo;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +52,19 @@ private IToolbar iToolbar;
         GuestEventInfoFragment guestEventInfoFragment = new GuestEventInfoFragment();
         guestEventInfoFragment.event = event;
         return guestEventInfoFragment;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
     }
 
 

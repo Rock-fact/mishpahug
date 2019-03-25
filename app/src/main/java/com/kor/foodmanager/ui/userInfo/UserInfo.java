@@ -17,6 +17,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressPresenter;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.IGuestEventInfoInprogress;
@@ -62,6 +63,20 @@ public class UserInfo extends MvpAppCompatFragment {
         userInfo.isPending = isPending;
         userInfo.user = user;
         return userInfo;
+    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            user=(UserDto) savedInstanceState.getSerializable("user");
+            isPending=savedInstanceState.getBoolean("isPending");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user",user);
+        outState.putBoolean("isNew",isPending);
     }
 
 

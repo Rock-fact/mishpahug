@@ -4,6 +4,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfoPending;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -57,6 +58,19 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
         GuestEventInfoPendingFragment fragment = new GuestEventInfoPendingFragment();
         fragment.event = data;
         return fragment;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
     }
 
 
