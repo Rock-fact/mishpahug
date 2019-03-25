@@ -9,11 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-<<<<<<< Updated upstream
 import android.util.Log;
 import android.view.Menu;
-=======
->>>>>>> Stashed changes
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -135,6 +132,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
         progressFrame.setOnClickListener(null);
         presenter.startWork();
     }
+
+
 
     @Override
     public void onBackPressed() {
