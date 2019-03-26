@@ -167,8 +167,8 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     }
 
     @Override
-    public void isLastPage() {
-        isLastPage = true;
+    public void isLastPage(boolean isLast) {
+        isLastPage = isLast;
     }
 
     @Override

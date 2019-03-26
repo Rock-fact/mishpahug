@@ -150,6 +150,7 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(getAdapterPosition());
@@ -162,18 +163,22 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
             EventDto event = events.get(position);
-            familyName.setText(event.getOwner().getFullName());
-            eventTitle.setText(event.getTitle());
-            eventDate.setText(event.getDate().toString());
-            Log.d("MY_TAG", "EventId: " + event.getEventId());
-            Log.d("MY_TAG", "Rate: " + event.getOwner().getRate());
-            ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-            if (event.getOwner().getPictureLink().size() > 0 && event.getOwner().getPictureLink().get(0) != null) {
-                //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
-            } else {
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
-            }
+            Log.d("MY_TAG", "onBind: "+(event.getOwner()!=null));
+
+                familyName.setText(event.getOwner().getFullName());
+                eventTitle.setText(event.getTitle());
+                eventDate.setText(event.getDate().toString());
+                Log.d("MY_TAG", "EventId: " + event.getEventId());
+                Log.d("MY_TAG", "Rate: " + event.getOwner().getRate());
+
+                ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
+                if (event.getOwner().getPictureLink().size() > 0 && event.getOwner().getPictureLink().get(0) != null) {
+                    //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
+                    Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                } else {
+                    Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                }
+
             progressBar.setVisibility(View.INVISIBLE);
 
         }
