@@ -106,7 +106,7 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Filters",false);
+        iToolbar.setTitleToolbarEnable("Filters",false,true,false);
         if (filters != null) {
             presenter.setStaticFields(filters);
         } else {
