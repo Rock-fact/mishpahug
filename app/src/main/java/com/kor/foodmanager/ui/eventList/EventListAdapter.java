@@ -191,19 +191,19 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class FooterHolder extends BaseViewHolder {
 
-        @BindView(R.id.progressBar)
-        ProgressBar progressBar;
+//        @BindView(R.id.progressBar)
+//        ProgressBar progressBar;
 
 
         FooterHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+//            ButterKnife.bind(this, itemView);
         }
 
         @Override
         public void onBind(int position) {
             super.onBind(position);
-            progressBar.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
