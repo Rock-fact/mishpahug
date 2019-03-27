@@ -136,16 +136,19 @@ private EventListAdapter adapter;
                listFilters=filters;
            }
             Log.d("VOVA", "onPostExecute: listsize"+list.size());
-            if (list!=null && list.size()!=0) {
+            if (list!=null) {
                 if (currentPage != EventListFragment.PAGE_START) adapter.removeLoading();
+                else
+                    {
+                        adapter.clear();
+                        getViewState().isLastPage(false);
+                    }
                 adapter.addAll(list);
                 getViewState().swipeRefresh();
                 if (!(list.size() < totalPage)) adapter.addLoading();
-                else getViewState().isLastPage();
+                else getViewState().isLastPage(true);
                 getViewState().isLoading();
             }
-            if (list==null || list.size()==0) adapter.removeLoading();
-
         }
     }
 }

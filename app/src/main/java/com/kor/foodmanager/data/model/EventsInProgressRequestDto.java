@@ -1,6 +1,8 @@
 package com.kor.foodmanager.data.model;
 
-public class EventsInProgressRequestDto {
+import java.io.Serializable;
+
+public class EventsInProgressRequestDto implements Serializable {
     private LocationDto location;
     private FiltersDto filters;
     private SpinnerPositionDto spinnerPositions;

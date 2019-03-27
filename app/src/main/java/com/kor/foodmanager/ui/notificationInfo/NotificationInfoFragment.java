@@ -39,6 +39,20 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            notification=(NotificationDto) savedInstanceState.getSerializable("notification");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("notification",notification);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification_info, container, false);
@@ -49,7 +63,7 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
         date.setText(formatDate.format(notification.getDate()));
         presenter.startWork(notification.getNotificationId());
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Notification Info",true);
+        iToolbar.setTitleToolbarEnable("Notification Info",false,true,false);
         return view;
     }
 

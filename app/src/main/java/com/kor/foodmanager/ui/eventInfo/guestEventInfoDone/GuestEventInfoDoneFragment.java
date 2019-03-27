@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -55,6 +56,19 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         fragment.event = data;
         return fragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
+    }
 
 
     @Override
@@ -65,7 +79,7 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         progressBar.setVisibility(View.GONE);
         if (event!=null) {
             iToolbar=(IToolbar) getActivity();
-            iToolbar.setTitleToolbarEnable(event.getTitle(),true);
+            iToolbar.setTitleToolbarEnable(event.getTitle(),false,true,false);
             familyName.setText(event.getOwner().getLastName());
             Log.d("MY_TAG", "FamilyName: " + event.getOwner().getFullName());
             eventDate.setText(event.getDate());

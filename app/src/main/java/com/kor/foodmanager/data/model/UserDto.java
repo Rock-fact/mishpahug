@@ -1,9 +1,10 @@
 package com.kor.foodmanager.data.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDto {
+public class UserDto implements Serializable {
     private String firstName, lastName, fullName, gender, maritalStatus, confession, phoneNumber, description;
     private String dateOfBirth;
     private List<String> pictureLink, foodPreferences, languages;

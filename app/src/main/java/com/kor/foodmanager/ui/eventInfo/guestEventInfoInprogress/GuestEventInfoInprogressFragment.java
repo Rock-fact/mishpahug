@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -60,6 +61,19 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
         fragment.event = data;
         return fragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
+    }
 
 
     @Override
@@ -70,7 +84,7 @@ public class GuestEventInfoInprogressFragment extends MvpAppCompatFragment imple
         progressBar.setVisibility(View.GONE);
         if (event!=null) {
             iToolbar=(IToolbar) getActivity();
-            iToolbar.setTitleToolbarEnable(event.getTitle(),true);
+            iToolbar.setTitleToolbarEnable(event.getTitle(),false,true,false);
             familyName.setText(event.getOwner().getLastName());
             Log.d("MY_TAG", "FamilyName: " + event.getOwner().getFullName());
             eventDate.setText(event.getDate());

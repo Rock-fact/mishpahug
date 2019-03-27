@@ -1,10 +1,11 @@
 package com.kor.foodmanager.data.model;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-public class EventDto {
+public class EventDto implements Serializable {
     private String title, status, holiday, confession, description;
     private int duration;
     private long eventId;
