@@ -49,7 +49,7 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 .inflate(R.layout.event_in_list, viewGroup, false));
             case VIEW_TYPE_LOADING:
                 return new FooterHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.event_in_list, viewGroup, false));
+                        .inflate(R.layout.progress_frame, viewGroup, false));
             default:
                 return null;
         }
