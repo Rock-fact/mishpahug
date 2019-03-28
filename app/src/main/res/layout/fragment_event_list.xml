@@ -56,8 +56,6 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_btn"
         android:layout_width="wrap_content"
@@ -67,6 +65,8 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:src="@drawable/ic_action_addevent"
+        android:background="@color/colorPrimaryDark"
+        />
 
 </android.support.constraint.ConstraintLayout>
