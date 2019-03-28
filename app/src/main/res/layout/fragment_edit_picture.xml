@@ -45,7 +45,8 @@ for change"
         app:layout_constraintBottom_toTopOf="@+id/event_banner_txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@tools:sample/avatars[0]" />
+        tools:src="@tools:sample/avatars[0]"
+        />
 
     <TextView
         android:id="@+id/event_banner_txt"

@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.editPicture;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -120,6 +121,7 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
 //                }
 //
 //                startActivityForResult(intent, CROP_REQUEST);
+
                 RequestCreator rc = Picasso.get().load(picUri);
                 rc.fetch();
                 switch (requestCode) {
