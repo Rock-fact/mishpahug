@@ -37,16 +37,15 @@ for change"
 
     <ImageView
         android:id="@+id/event_img"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="170dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/event_banner_txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:src="@tools:sample/avatars[0]"
-       />
+        tools:src="@tools:sample/avatars[0]" />
 
     <TextView
         android:id="@+id/event_banner_txt"
