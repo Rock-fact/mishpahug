@@ -1,10 +1,13 @@
 package com.kor.foodmanager.ui.editPicture;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import javax.xml.transform.Result;
 
@@ -51,8 +55,9 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
         Picasso.get().load("http://i.imgur.com/DvpvklR.png")
                 .transform(new CropCircleTransformation())
                 .into(avatar);
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png").fit()
-                .into(eventBanner);
+        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventBanner);
+//        Picasso.get().load("http://i.imgur.com/DvpvklR.png").fit()
+//                .into(eventBanner);
         avatar.setOnClickListener(this);
         eventBanner.setOnClickListener(this);
         return view;
@@ -66,13 +71,26 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        if (v.getId() == R.id.avatar_img) {
-            startActivityForResult(photoPickerIntent, AVATAR_EDIT_REQUEST);
-        } else if (v.getId() == R.id.event_img) {
-            startActivityForResult(photoPickerIntent, EVENT_BANNER_EDIT_REQUEST);
-        }
+        new AlertDialog.Builder(getActivity()).setMessage("What do you want to do?")
+                .setNegativeButton("Delete picture", (dialog, which) -> {
+                    RequestCreator rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+                    if (v.getId() == R.id.avatar_img) {
+                        rc.transform(new CropCircleTransformation()).into(avatar);
+                    } else {
+                        rc.into(eventBanner);
+                    }
+                })
+                .setPositiveButton("Edit picture", (dialog, which) -> {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK); //ACTION_GET_CONTENT
+                    photoPickerIntent.setType("image/*");
+                    if (v.getId() == R.id.avatar_img) {
+                        startActivityForResult(photoPickerIntent, AVATAR_EDIT_REQUEST);
+                    } else if (v.getId() == R.id.event_img) {
+                        startActivityForResult(photoPickerIntent, EVENT_BANNER_EDIT_REQUEST);
+                    }
+                })
+                .show();
+
     }
 
     @Override
@@ -81,12 +99,14 @@ public class EditPictureFragment extends Fragment implements View.OnClickListene
         if (resultCode == RESULT_OK) {
             Uri picUri = data.getData();
             if (picUri != null) {
+                RequestCreator rc = Picasso.get().load(picUri);
+                rc.fetch();
                 switch (requestCode) {
                     case AVATAR_EDIT_REQUEST:
-                        Picasso.get().load(picUri).into(avatar);
+                        rc.transform(new CropCircleTransformation()).into(avatar);
                         break;
                     case EVENT_BANNER_EDIT_REQUEST:
-                        Picasso.get().load(picUri).into(eventBanner);
+                        rc.into(eventBanner); //TODO fit()
                         break;
                 }
 
