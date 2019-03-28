@@ -28,6 +28,7 @@ import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.calendar.CalendarFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
+import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressFragment;
@@ -83,6 +84,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     public static final String USER_INFO_SCREEN_PROGRESS = "USER_INFO_SCREEN_PROGRESS";
     public static final String USER_INFO_SCREEN_PENDING = "USER_INFO_SCREEN_PENDING";
     public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
+    public static final String EDIT_PIC_FRAGMENT_SCREEN = "EDIT_PIC_FRAGMENT_SCREEN";
 
     public static final String TAG = "MY_TAG";
     @InjectPresenter
@@ -261,6 +263,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     return UserInfo.getNewInstance((UserDto) data, true);
                 case MY_PROFILE_FRAGMENT_SCREEN:
                     return MyProfileFragment.getNewInstance((UserDto) data);
+                case EDIT_PIC_FRAGMENT_SCREEN:
+                    return new EditPictureFragment();
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }

@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import ru.terrakok.cicerone.Router;
 
@@ -293,6 +294,11 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     public void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.avatar)
+    public void editAvatar(){
+        presenter.editAvatar();
     }
 
     @Override
