@@ -1,7 +1,9 @@
 package com.kor.foodmanager.ui.calendar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.HebcalDto;
 import com.kor.foodmanager.data.model.HebcalItemDto;
 import com.kor.foodmanager.ui.IToolbar;
@@ -32,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +53,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     private OnDateSelectedListener listener;
     private IToolbar iToolbar;
 
+
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
         fragment.listener = pickerListener;
@@ -63,6 +68,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         presenter.showMonth(calendarView.getCurrentDate().getMonth());
         iToolbar=(IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Calendar",true);
+        progressFrame.setOnClickListener(null);
         return view;
     }
 
@@ -74,13 +80,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
     @Override
     public void showCalendar(Collection<CalendarDay> myEvents, Collection<CalendarDay> subscribedEvents){
-        if(listener!=null){
-            calendarView.setOnDateChangedListener(listener);
-        }else {
-            calendarView.setOnDateChangedListener((widget, date, selected) -> {
-                presenter.onDateSelected(date);
-            });
-        }
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
         calendarView.addDecorator(new DayViewDecorator() {
@@ -134,6 +133,17 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     }
 
     @Override
+    public void addCalendarListener(){
+        if(listener!=null){
+            calendarView.setOnDateChangedListener(listener);
+        }else {
+            calendarView.setOnDateChangedListener((widget, date, selected) -> {
+                presenter.onDateSelected(date);
+            });
+        }
+    }
+
+    @Override
     public void decorateCalendar(HebcalDto hebcalDto){
         Collection<CalendarDay> isrHolidays = new HashSet<>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -160,4 +170,34 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         progressFrame.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showDateDialog(CalendarDay date, String stringDate, String message, List<EventDto> myEventsDto, List<EventDto> subscribedEventsDto) {
+        Bundle args = new Bundle();
+        args.putString("TITLE", stringDate);
+        args.putString("MESSAGE", message);
+        if(myEventsDto.size()!=0){
+            args.putString("MY_EVENTS","You have " + myEventsDto.size() + " event today");
+        }
+        if(subscribedEventsDto.size()!=0){
+            args.putString("MY_SUBS","You subscribe " + myEventsDto.size() + " event today");
+        }
+        CalendarDialog dialog = CalendarDialog.newInstance(args);
+        dialog.show(getChildFragmentManager(), "DIALOG");
+
+//        new AlertDialog.Builder(getActivity())
+//                .setView(R.layout.calendar_dialog)
+//                .setTitle(stringDate)
+//                .setMessage(message)
+//                .setPositiveButton("Add new event", (dialog, which) -> {
+//                    presenter.goToAddEventScreen(date.getCalendar());
+//                })
+//                .setNeutralButton("Find event", ((dialog, which) -> {
+//                    presenter.goToEventListScreen();
+//                    // TODO: 27.03.2019 constructor + date for filter
+//                }))
+//                .setNegativeButton("Cancel",null)
+//                .setCancelable(true)
+//                .create()
+//                .show();
+    }
 }

@@ -24,9 +24,9 @@ public class ExternalRepository implements IExternalRepository {
     @Override
     public HebcalDto getIsrHolidays(int month) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("https://www.hebcal.com/hebcal/?")
-                .append("v=1&cfg=json&maj=on&min=off&mod=off&nx=on&year=now")
+                .append("v=1&cfg=json&maj=on&min=on&mod=on&nx=on&year=now")
                 .append("&month=").append(month)
-                .append("&ss=off&mf=off&c=off&s=off&d=off");
+                .append("&ss=on&mf=off&c=off&s=off&d=off");
         String url = urlBuilder.toString();
         Request request = new Request.Builder()
                 .url(url)

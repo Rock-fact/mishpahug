@@ -1,6 +1,9 @@
 package com.kor.foodmanager.ui.calendar;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
@@ -11,12 +14,15 @@ import com.kor.foodmanager.data.event.ServerException;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.HebcalDto;
+import com.kor.foodmanager.data.model.HebcalItemDto;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +32,8 @@ import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.ADD_EVENT_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_DONE_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_INPROGRESS_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.GUEST_EVENT_INFO_PENDING_SCREEN;
@@ -44,18 +52,22 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     Router router;
     private Collection<CalendarDay> myEvents = new HashSet<>();
     private Collection<CalendarDay> subscribedEvents = new HashSet<>();
+    List<EventDto> myEventsDto;
+    List<EventDto> subscribedEventsDto;
     HashMap<CalendarDay, EventDto> eventsMap = new HashMap<>();
+    private List<HebcalItemDto> isrHolidaysList;
+    private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 
     public CalendarPresenter() {
         App.get().calendarComponent().inject(this);
     }
 
     public void showMonth(int month) {
+        getViewState().showProgressFrame();
         new GetEventsForCalendarTask(month + 1).execute();
-    }
-
-    public void decorateMonth(int month) {
-        new GetIsrHolidays(month).execute();
+        new GetIsrHolidays(month + 1).execute();
+        getViewState().addCalendarListener();
     }
 
     @Override
@@ -65,13 +77,29 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     }
 
     public void onDateSelected(CalendarDay date) {
-        if (myEvents.contains(date)) {
-            router.navigateTo(MY_EVENT_LIST_SCREEN);
-        } else if (subscribedEvents.contains(date)) {
-            router.navigateTo(PARTICIPATION_LIST_SCREEN);
-        } else {
-            router.showSystemMessage("Empty day!");
+        String message = "Today is: ";
+        String stringDate = format.format(date.getDate());
+        Log.d(TAG, "dateSelectedDialog: " + stringDate);
+        for (HebcalItemDto itemDto : isrHolidaysList
+        ) {
+            Log.d(TAG, "isr holiday: " + itemDto.getDate() + ", " + itemDto.getMemo());
+            if (itemDto.getDate().equals(stringDate)) {
+                Log.d(TAG, "dateSelectedDialog: " + itemDto.getMemo());
+                message = message + itemDto.getMemo();
+            }
         }
+        if (message.equals("Today is: ")) {
+            message = "No holidays today";
+        }
+        getViewState().showDateDialog(date, stringDate, message, myEventsDto, subscribedEventsDto);
+    }
+
+    public void goToAddEventScreen(Calendar calendar) {
+        router.navigateTo(ADD_EVENT_SCREEN, calendar);
+    }
+
+    public void goToEventListScreen() {
+        router.navigateTo(EVENT_LIST_SCREEN);
     }
 
     private class GetEventsForCalendarTask extends AsyncTask<Void, Void, EventListDto> {
@@ -81,11 +109,6 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
 
         public GetEventsForCalendarTask(int month) {
             this.month = month;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            getViewState().showProgressFrame();
         }
 
         @Override
@@ -109,10 +132,8 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
             getViewState().hideProgressFrame();
 
             if (isSuccess) {
-                List<EventDto> myEventsDto = res.getMyEvents();
-                List<EventDto> subscribedEventsDto = res.getSubscribedEvents();
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+                myEventsDto = res.getMyEvents();
+                subscribedEventsDto = res.getSubscribedEvents();
                 for (EventDto eventDto :
                         subscribedEventsDto) {
                     try {
@@ -129,6 +150,7 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                     try {
                         CalendarDay day = CalendarDay.from(format.parse(eventDto.getDate()));
                         myEvents.add(day);
+                        Log.d(TAG, "myEvent: " + eventDto.getDate());
                         eventsMap.put(day, eventDto);
                     } catch (ParseException e) {
                         router.showSystemMessage(e.getMessage());
@@ -136,8 +158,6 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                 }
 
                 getViewState().showCalendar(myEvents, subscribedEvents);
-                decorateMonth(month);
-
             } else {
                 router.showSystemMessage(error);
             }
@@ -151,11 +171,6 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
 
         public GetIsrHolidays(int month) {
             this.month = month;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            getViewState().showProgressFrame();
         }
 
         @Override
@@ -175,6 +190,12 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         protected void onPostExecute(HebcalDto res) {
             getViewState().hideProgressFrame();
             if (isSuccess) {
+                isrHolidaysList = res.getItems();
+                Log.d(TAG, "onPostExecute: " + isrHolidaysList.size());
+                for (HebcalItemDto itemDto : isrHolidaysList
+                ) {
+                    Log.d(TAG, "holiday : " + itemDto.getDate() + itemDto.getMemo());
+                }
                 getViewState().decorateCalendar(res);
             } else {
                 router.showSystemMessage(error);

@@ -75,8 +75,16 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     Object data;
     private IToolbar iToolbar;
     private int duration = 0;
+    Boolean isDateAlreadyChosen = false;
 
     public AddEventFragment() {
+    }
+
+    public static AddEventFragment newInstance(Calendar date){
+        AddEventFragment fragment = new AddEventFragment();
+        fragment.dateAndTime = date;
+        fragment.isDateAlreadyChosen = true;
+        return fragment;
     }
 
     @Override
@@ -94,6 +102,9 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     public void onStart() {
         super.onStart();
         presenter.startWork();
+        if(isDateAlreadyChosen==true){
+            setTime();
+        }
     }
 
     @Override

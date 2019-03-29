@@ -50,6 +50,8 @@ import com.kor.foodmanager.ui.userInfo.UserInfo;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -197,7 +199,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case LOGIN_SCREEN:
                     return new LoginFragment();
                 case ADD_EVENT_SCREEN:
-                    return new AddEventFragment();
+                    if(data!=null){
+                        return AddEventFragment.newInstance((Calendar) data);
+                    }else {
+                        return new AddEventFragment();
+                    }
                 case EVENT_LIST_SCREEN:
                     if(data!=null){
                         return EventListFragment.getNewInstance((EventsInProgressRequestDto) data);
