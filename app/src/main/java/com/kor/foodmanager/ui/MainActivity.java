@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.cloudinary.android.MediaManager;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
@@ -49,6 +50,9 @@ import com.kor.foodmanager.ui.registration.RegistrationFragment;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -112,6 +116,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
+
+
+//        Map config = new HashMap();
+//        config.put("cloud_name", "newmishpahug");
+//        config.put("api_key", "893573575281754");
+//        config.put("api_secret","aYACgLcWNlBuKjxd5_McsRkf4pQ");
+//        MediaManager.init(getActivity(), config);
+
+        MediaManager.init(this);
 
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
