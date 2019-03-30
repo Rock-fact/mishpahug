@@ -29,6 +29,8 @@ public class AuthRepository implements IAuthRepository{
     public String getToken() {
         return context.getSharedPreferences(SP_AUTH, context.MODE_PRIVATE)
                 .getString(AUTH_CURRENT, null);
+        // TODO: 29.03.2019 Dima's backend test 
+//        return "test1";
     }
 
     @Override
