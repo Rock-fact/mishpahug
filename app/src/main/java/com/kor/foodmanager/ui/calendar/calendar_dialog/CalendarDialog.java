@@ -1,4 +1,4 @@
-package com.kor.foodmanager.ui.calendar;
+package com.kor.foodmanager.ui.calendar.calendar_dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.kor.foodmanager.R;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 public class CalendarDialog extends DialogFragment implements View.OnClickListener {
-    private TextView todaysHolidays, myEvents, mySubs;
+    private TextView todaysHolidays, myEvents, mySubs, dialogTitle;
     private Button showEventsBtn, addNewEventBtn;
 
     public static CalendarDialog newInstance(Bundle args) {
@@ -43,6 +43,7 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
         mySubs = view.findViewById(R.id.mySubs);
         addNewEventBtn = view.findViewById(R.id.addNewEventBtn);
         showEventsBtn = view.findViewById(R.id.showEventsBtn);
+        dialogTitle = view.findViewById(R.id.DialogTitle);
         Bundle bundle = getArguments();
         addNewEventBtn.setOnClickListener(this);
         showEventsBtn.setOnClickListener(this);
@@ -62,7 +63,7 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
             myEvents.setText(bundle.getString("MY_SUBS"));
         }
         if(getArguments().getString("TITLE")!=null){
-            getDialog().setTitle(getArguments().getString("TITLE"));
+            dialogTitle.setText(bundle.getString("TITLE"));
         }
         Log.d(TAG, "DIALOG" + bundle.getString("MESSAGE"));
 

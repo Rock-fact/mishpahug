@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bordered">
+    android:background="@drawable/bordered"
+    android:minWidth="260dp">
 
     <TextView
         android:id="@+id/DialogTitle"
@@ -16,7 +18,8 @@
         android:padding="8dp"
         android:text="YYYY-MM-DD"
         android:textAlignment="textEnd"
-        android:textSize="30sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,14 +28,14 @@
     <TextView
         android:id="@+id/TodaysHolidays"
         android:layout_width="0dp"
-        android:layout_height="46dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:padding="8dp"
         android:text="Holidays"
-        android:textSize="24sp"
-        android:visibility="visible"
+        android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/DialogTitle" />
@@ -48,7 +51,7 @@
         android:padding="8dp"
         android:text="Your events:"
         android:textSize="24sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/TodaysHolidays" />
@@ -64,7 +67,7 @@
         android:padding="8dp"
         android:text="Your subscriptions:"
         android:textSize="24sp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/MyEvents" />

@@ -134,6 +134,15 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
             if (isSuccess) {
                 myEventsDto = res.getMyEvents();
                 subscribedEventsDto = res.getSubscribedEvents();
+
+                // TODO: 30.03.2019 kostil, remove after Dimas backend fix
+                if(myEventsDto == null){
+                    myEventsDto = new ArrayList<>();
+                }
+                if(subscribedEventsDto == null){
+                    subscribedEventsDto = new ArrayList<>();
+                }
+
                 for (EventDto eventDto :
                         subscribedEventsDto) {
                     try {

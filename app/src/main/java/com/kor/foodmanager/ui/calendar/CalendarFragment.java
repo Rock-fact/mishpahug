@@ -1,16 +1,13 @@
 package com.kor.foodmanager.ui.calendar;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -19,20 +16,19 @@ import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.HebcalDto;
 import com.kor.foodmanager.data.model.HebcalItemDto;
 import com.kor.foodmanager.ui.IToolbar;
+import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
-import com.prolificinteractive.materialcalendarview.format.MonthArrayTitleFormatter;
 import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -181,6 +177,8 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
             args.putString("MY_SUBS","You subscribe " + myEventsDto.size() + " event today");
         }
         CalendarDialog dialog = CalendarDialog.newInstance(args);
+        Log.d(TAG, "showDateDialog: "+stringDate+", "+message);
+        dialog.setCancelable(true);
         dialog.show(getChildFragmentManager(), "DIALOG");
 
 //        new AlertDialog.Builder(getActivity())
