@@ -77,22 +77,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     public void showCalendar(Collection<CalendarDay> myEvents, Collection<CalendarDay> subscribedEvents){
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
-        calendarView.addDecorator(new DayViewDecorator() {
-            @Override
-            public boolean shouldDecorate(CalendarDay day) {
-                if(day.isBefore(CalendarDay.today())){
-                    return true;
-                }else {
-                    return false;
-                }
-            }
-
-            @Override
-            public void decorate(DayViewFacade view) {
-                view.setDaysDisabled(true);
-            }
-        });
-
         TitleFormatter customTitleFormatter = new TitleFormatter() {
             @Override
             public CharSequence format(CalendarDay day) {
@@ -152,7 +136,23 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
             }
         }
         calendarView.addDecorator(new HolidayDecorator(ContextCompat.getColor(getActivity(), R.color.colorAccent), isrHolidays));
+        calendarView.addDecorator(new DayViewDecorator() {
+            @Override
+            public boolean shouldDecorate(CalendarDay day) {
+                if(day.isBefore(CalendarDay.today())){
+                    return true;
+                }else {
+                    return false;
+                }
+            }
 
+            @Override
+            public void decorate(DayViewFacade view) {
+                view.setDaysDisabled(true);
+            }
+        });
+        calendarView.setAllowClickDaysOutsideCurrentMonth(false);
+        calendarView.setDynamicHeightEnabled(true);
     }
 
     @Override

@@ -56,7 +56,6 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     private Collection<CalendarDay> subscribedEvents = new HashSet<>();
     List<EventDto> myEventsDto;
     List<EventDto> subscribedEventsDto;
-    HashMap<CalendarDay, EventDto> eventsMap = new HashMap<>();
     private List<HebcalItemDto> isrHolidaysList;
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -102,11 +101,28 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         args.putString("TITLE", stringDate);
         args.putString("MESSAGE", message);
         args.putSerializable("DATE", date.getCalendar());
-        if(myEventsDto.size()!=0){
-            args.putString("MY_EVENTS","You have " + myEventsDto.size() + " event today");
+        int myEventsCount = 0;
+        int mySubsCount = 0;
+
+        for (EventDto event: myEventsDto
+             ) {
+            if(event.getDate().equals(stringDate)){
+                myEventsCount++;
+            }
         }
-        if(subscribedEventsDto.size()!=0){
-            args.putString("MY_SUBS","You subscribe " + myEventsDto.size() + " event today");
+
+        for (EventDto event: subscribedEventsDto
+        ) {
+            if(event.getDate().equals(stringDate)){
+                mySubsCount++;
+            }
+        }
+
+        if(myEventsCount!=0){
+            args.putString("MY_EVENTS","You have " + myEventsCount + " event today");
+        }
+        if(mySubsCount!=0){
+            args.putString("MY_SUBS","You subscribe " + mySubsCount + " event today");
         }
         CalendarDialog dialog = CalendarDialog.newInstance(args);
         dialog.setCancelable(true);
@@ -171,7 +187,6 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                         CalendarDay day = CalendarDay.from(format.parse(eventDto.getDate()));
                         myEvents.add(day);
                         Log.d(TAG, "myEvent: " + eventDto.getDate());
-                        eventsMap.put(day, eventDto);
                     } catch (ParseException e) {
                         router.showSystemMessage(e.getMessage());
                     }
