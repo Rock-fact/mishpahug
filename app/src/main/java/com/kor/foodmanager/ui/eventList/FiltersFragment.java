@@ -86,6 +86,19 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            filters=(EventsInProgressRequestDto) savedInstanceState.getSerializable("filters");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("filters",filters);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +106,7 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
         View view = inflater.inflate(R.layout.fragment_filters, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Filters",false);
+        iToolbar.setTitleToolbarEnable("Filters",false,true,false);
         if (filters != null) {
             presenter.setStaticFields(filters);
         } else {

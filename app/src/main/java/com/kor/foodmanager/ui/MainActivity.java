@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -58,7 +57,7 @@ import butterknife.Unbinder;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
-public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends MvpAppCompatActivity implements IMain, IToolbar, NavigationView.OnNavigationItemSelectedListener {
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
@@ -88,14 +87,20 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
 
     public static final String TAG = "MY_TAG";
-    @InjectPresenter MainActivityPresenter presenter;
-    @BindView(R.id.progressFrame) FrameLayout progressFrame;
-    @BindView(R.id.nav_view) NavigationView navigationView;
-    @BindView(R.id.drawer_layout) DrawerLayout drawer;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @InjectPresenter
+    MainActivityPresenter presenter;
+    @BindView(R.id.progressFrame)
+    FrameLayout progressFrame;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.back_btn_toolbar)
     ImageButton backBtnToolbar;
-    @BindView(R.id.toolbar_title) TextView toolbarTitle;
+    @BindView(R.id.toolbar_title)
+    TextView toolbarTitle;
     TextView guestName;
     ImageView imageView;
     ActionBarDrawerToggle toggle;
@@ -110,17 +115,17 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                guestName=drawerView.findViewById(R.id.guestName);
-                UserDto userDto=presenter.authRepository.getUser();
-                String fullName=userDto.getFirstName()+" "+userDto.getLastName();
-                Log.d("VOVA", "onDrawerOpened: "+fullName);
+                guestName = drawerView.findViewById(R.id.guestName);
+                UserDto userDto = presenter.authRepository.getUser();
+                String fullName = userDto.getFirstName() + " " + userDto.getLastName();
+                Log.d("VOVA", "onDrawerOpened: " + fullName);
                 guestName.setText(fullName);
-                Log.d("VOVA", "onDrawerOpened: "+guestName.getText());
-                imageView=drawerView.findViewById(R.id.imageView);
+                Log.d("VOVA", "onDrawerOpened: " + guestName.getText());
+                imageView = drawerView.findViewById(R.id.imageView);
                 Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
             }
         };
@@ -128,13 +133,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
         toggle.syncState();
 
 
-
         navigationView.setNavigationItemSelectedListener(this);
 
         progressFrame.setOnClickListener(null);
         presenter.startWork();
     }
-
 
 
     @Override
@@ -192,10 +195,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
         return true;
     }
 
-    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),R.id.root) {
+    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(), R.id.root) {
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
-            switch (screenKey){
+            switch (screenKey) {
                 case LOGIN_SCREEN:
                     return new LoginFragment();
                 case ADD_EVENT_SCREEN:
@@ -205,13 +208,13 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                         return new AddEventFragment();
                     }
                 case EVENT_LIST_SCREEN:
-                    if(data!=null){
+                    if (data != null) {
                         return EventListFragment.getNewInstance((EventsInProgressRequestDto) data);
                     } else {
                         return new EventListFragment();
                     }
                 case FILTERS_SCREEN:
-                    if(data!=null){
+                    if (data != null) {
                         return FiltersFragment.getNewInstance((EventsInProgressRequestDto) data);
                     } else {
                         return new FiltersFragment();
@@ -219,21 +222,21 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case NOTIFICATIONS_SCREEN:
                     return new NotificationListFragment();
                 case NOTIFICATION_INFO_SCREEN:
-                    return NotificationInfoFragment.newInstance((NotificationDto)data);
+                    return NotificationInfoFragment.newInstance((NotificationDto) data);
                 case REGISTRATION_FRAGMENT:
                     return new RegistrationFragment();
                 case CALENDAR_FRAGMENT:
-                    if(data!=null){
-                        try{
+                    if (data != null) {
+                        try {
                             return CalendarFragment.getDatePicker((OnDateSelectedListener) data);
-                        }catch (ClassCastException e){
+                        } catch (ClassCastException e) {
                             showSystemMessage(e.getMessage());
                         }
-                    }else {
+                    } else {
                         return new CalendarFragment();
                     }
                 case ABOUTMYSELF_FRAGMENT_NEW:
-                    return AboutMyselfFragment.getNewInstance((UserDto)data, true);
+                    return AboutMyselfFragment.getNewInstance((UserDto) data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:
                     return PersonalProfileFragment.getNewInstance((UserDto) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
@@ -259,9 +262,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
                 case GUEST_EVENT_INFO_DONE_SCREEN:
                     return GuestEventInfoDoneFragment.getNewInstance((EventDto) data);
                 case USER_INFO_SCREEN_PROGRESS:
-                    return UserInfo.getNewInstance((UserDto) data,false);
+                    return UserInfo.getNewInstance((UserDto) data, false);
                 case USER_INFO_SCREEN_PENDING:
-                    return UserInfo.getNewInstance((UserDto) data,true);
+                    return UserInfo.getNewInstance((UserDto) data, true);
                 case MY_PROFILE_FRAGMENT_SCREEN:
                     return MyProfileFragment.getNewInstance((UserDto) data);
                 default:
@@ -271,15 +274,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
 
         @Override
         protected void showSystemMessage(String message) {
-            switch (message){
+            switch (message) {
                 case SHOW_PROGRESS:
                     showProgressFrame();
                     break;
                 case HIDE_PROGRESS:
                     hideProgressFrame();
                     break;
-                    default:
-                        showError(message);
+                default:
+                    showError(message);
             }
         }
 
@@ -308,18 +311,26 @@ public class MainActivity extends MvpAppCompatActivity implements IMain,IToolbar
     }
 
     @Override
-    public void setTitleToolbarEnable(String title, Boolean isEnable) {
+    public void setTitleToolbarEnable(String title, Boolean isEnableHamburger, Boolean isEnableBack,Boolean toEventList) {
         toolbarTitle.setText(title);
-        toggle.setDrawerIndicatorEnabled(isEnable);
-        if (!isEnable) {
-            backBtnToolbar.setVisibility(View.VISIBLE);
-            backBtnToolbar.setOnClickListener(v->{
-                onBackPressed();
-            });
-        } else {
-            backBtnToolbar.setVisibility(View.GONE);
+        backBtnToolbar.setVisibility(View.GONE);
+
+        toggle.setDrawerIndicatorEnabled(isEnableHamburger);
+        if (!isEnableHamburger) {
+            if (isEnableBack) {
+                backBtnToolbar.setVisibility(View.VISIBLE);
+                if (toEventList) {
+                    backBtnToolbar.setOnClickListener(v -> {
+                        presenter.eventList();
+                    });
+                } else {
+                    backBtnToolbar.setOnClickListener(v -> {
+                        onBackPressed();
+                    });
+                }
+            } else {
+                backBtnToolbar.setVisibility(View.GONE);
+            }
         }
     }
-
-
 }

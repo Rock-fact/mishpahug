@@ -52,6 +52,17 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
+        if (savedInstanceState!=null){
+            user=(UserDto) savedInstanceState.getSerializable("user");
+            isNew=savedInstanceState.getBoolean("isNew");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user",user);
+        outState.putBoolean("isNew",isNew);
     }
 
     @Nullable
@@ -69,7 +80,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         saveBtn.setOnClickListener(this);
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("About myself",true);
+        iToolbar.setTitleToolbarEnable("About myself",false,true,false);
 
         return view;
     }

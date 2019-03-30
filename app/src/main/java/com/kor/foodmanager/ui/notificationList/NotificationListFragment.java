@@ -41,8 +41,8 @@ public class NotificationListFragment extends MvpAppCompatFragment implements IN
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
         unbinder = ButterKnife.bind(this,view);
         progressFrame.setOnClickListener(null);
-        iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Notifications",true);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Notice",false,true,false);
         return view;
     }
 

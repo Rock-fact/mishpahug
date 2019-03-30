@@ -49,7 +49,7 @@ public class LoginFragment extends MvpAppCompatFragment implements ILogin {
         progressFrame.setOnClickListener(null);
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Mishpahug",false);
+        iToolbar.setTitleToolbarEnable("Mishpahug",false,false,false);
 
         return view;
     }

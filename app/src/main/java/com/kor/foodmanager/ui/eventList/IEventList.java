@@ -14,7 +14,7 @@ public interface IEventList extends MvpView {
     void hideProgressFrame();
 
     void swipeRefresh();
-    void isLastPage();
+    void isLastPage(boolean isLast);
     void isLoading();
 
 }

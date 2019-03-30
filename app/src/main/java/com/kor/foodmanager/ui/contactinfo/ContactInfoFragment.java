@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.IToolbar;
 
@@ -33,6 +34,20 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         fragment.isNew = isNew;
         return fragment;
     }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            user=(UserDto) savedInstanceState.getSerializable("user");
+            isNew=savedInstanceState.getBoolean("isNew");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("user",user);
+        outState.putBoolean("isNew",isNew);
+    }
 
 
     @Nullable
@@ -46,7 +61,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         nextBtn.setOnClickListener(this);
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Contact Info",true);
+        iToolbar.setTitleToolbarEnable("Contact Info",false,true,false);
 
         return view;
     }

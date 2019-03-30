@@ -4,6 +4,7 @@ package com.kor.foodmanager.ui.eventInfo.guestEventInfoPending;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -58,6 +59,19 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
         fragment.event = data;
         return fragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
+    }
 
 
     @Override
@@ -68,7 +82,7 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
         progressBar.setVisibility(View.GONE);
         if (event!=null){
             iToolbar=(IToolbar) getActivity();
-            iToolbar.setTitleToolbarEnable(event.getTitle(),true);
+            iToolbar.setTitleToolbarEnable(event.getTitle(),false,true,false);
             familyName.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
             eventAddress.setText(event.getAddress().showFullEventAddres());

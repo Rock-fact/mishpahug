@@ -38,6 +38,19 @@ public class MyEventInfoDoneFragment extends MvpAppCompatFragment {
         myEventInfoDoneFragment.event = event;
         return myEventInfoDoneFragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,13 +61,10 @@ public class MyEventInfoDoneFragment extends MvpAppCompatFragment {
         eventDescription.setText(event.getDescription());
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable(event.getTitle(), true);
+        iToolbar.setTitleToolbarEnable(event.getTitle(), false,true,false);
         return view;
     }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+
 
     @Override
     public void onDestroy() {

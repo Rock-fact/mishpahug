@@ -93,7 +93,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Add event", true);
+        iToolbar.setTitleToolbarEnable("Add event", false,true,false);
         placesAutocomplete(view);
         return view;
     }

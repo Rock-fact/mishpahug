@@ -49,7 +49,7 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 .inflate(R.layout.event_in_list, viewGroup, false));
             case VIEW_TYPE_LOADING:
                 return new FooterHolder(LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.event_in_list, viewGroup, false));
+                        .inflate(R.layout.progress_frame, viewGroup, false));
             default:
                 return null;
         }
@@ -100,15 +100,16 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public void removeLoading() {
-        isLoaderVisible = false;
         int position = events.size() - 1;
-        Log.d("VOVA", "removeLoading: "+(position+1));
-
+        if (position >= 0) {
+        Log.d("VOVA", "removeLoading: " + (position + 1));
+        isLoaderVisible = false;
         EventDto event = getItem(position);
         if (event != null) {
             events.remove(position);
             notifyItemRemoved(position);
         }
+    }
     }
 
     public void clear() {
@@ -149,6 +150,7 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(getAdapterPosition());
@@ -161,18 +163,22 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
             EventDto event = events.get(position);
-            familyName.setText(event.getOwner().getFullName());
-            eventTitle.setText(event.getTitle());
-            eventDate.setText(event.getDate().toString());
-            Log.d("MY_TAG", "EventId: " + event.getEventId());
-            Log.d("MY_TAG", "Rate: " + event.getOwner().getRate());
-            ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
-            if (event.getOwner().getPictureLink().size() > 0 && event.getOwner().getPictureLink().get(0) != null) {
-                //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
-            } else {
-                Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
-            }
+            Log.d("MY_TAG", "onBind: "+(event.getOwner()!=null));
+
+                familyName.setText(event.getOwner().getFullName());
+                eventTitle.setText(event.getTitle());
+                eventDate.setText(event.getDate().toString());
+                Log.d("MY_TAG", "EventId: " + event.getEventId());
+                Log.d("MY_TAG", "Rate: " + event.getOwner().getRate());
+
+                ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
+                if (event.getOwner().getPictureLink().size() > 0 && event.getOwner().getPictureLink().get(0) != null) {
+                    //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
+                    Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                } else {
+                    Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                }
+
             progressBar.setVisibility(View.INVISIBLE);
 
         }
@@ -185,19 +191,19 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class FooterHolder extends BaseViewHolder {
 
-        @BindView(R.id.progressBar)
-        ProgressBar progressBar;
+//        @BindView(R.id.progressBar)
+//        ProgressBar progressBar;
 
 
         FooterHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+//            ButterKnife.bind(this, itemView);
         }
 
         @Override
         public void onBind(int position) {
             super.onBind(position);
-            progressBar.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override

@@ -53,7 +53,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     private OnDateSelectedListener listener;
     private IToolbar iToolbar;
 
-
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
         fragment.listener = pickerListener;
@@ -65,9 +64,9 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         unbinder = ButterKnife.bind(this,view);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Calendar",false,true,false);
         presenter.showMonth(calendarView.getCurrentDate().getMonth());
-        iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Calendar",true);
         progressFrame.setOnClickListener(null);
         return view;
     }

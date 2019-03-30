@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.eventList;
 
 import android.os.Binder;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.ui.IToolbar;
 
@@ -61,11 +63,19 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         eventListFragment.filters = filters;
         return eventListFragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            filters = (EventsInProgressRequestDto)savedInstanceState.getSerializable("filters");
+        }
+        setLoading(currentPage, TOTAL_ON_PAGE);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setLoading(currentPage, TOTAL_ON_PAGE);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",filters);
     }
 
     public void setLoading(int currentPage, int totalPage) {
@@ -114,7 +124,7 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
         });
 
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Event list", true);
+        iToolbar.setTitleToolbarEnable("Event list", true,false,false);
         return view;
     }
 
@@ -157,8 +167,8 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
     }
 
     @Override
-    public void isLastPage() {
-        isLastPage = true;
+    public void isLastPage(boolean isLast) {
+        isLastPage = isLast;
     }
 
     @Override
