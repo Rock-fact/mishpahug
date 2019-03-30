@@ -7,6 +7,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.HebcalDto;
+import com.kor.foodmanager.data.model.IsrMonth;
 import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -21,4 +22,5 @@ public interface ICalendar extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
     void showCalendarDialog(CalendarDialog dialog);
+    void showIsrM(IsrMonth month1, IsrMonth month2);
 }

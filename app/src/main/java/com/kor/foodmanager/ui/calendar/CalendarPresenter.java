@@ -16,6 +16,8 @@ import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.HebcalDto;
 import com.kor.foodmanager.data.model.HebcalItemDto;
+import com.kor.foodmanager.data.model.IsrCalendar;
+import com.kor.foodmanager.data.model.IsrMonth;
 import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -26,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -56,12 +59,14 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     private Collection<CalendarDay> subscribedEvents = new HashSet<>();
     List<EventDto> myEventsDto;
     List<EventDto> subscribedEventsDto;
+    IsrCalendar isrCalendar;
     private List<HebcalItemDto> isrHolidaysList;
     private DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
 
     public CalendarPresenter() {
         App.get().calendarComponent().inject(this);
+        new GetIsrMonths("now").execute();
     }
 
     public void showMonth(int month) {
@@ -69,6 +74,9 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         new GetEventsForCalendarTask(month + 1).execute();
         new GetIsrHolidays(month + 1).execute();
         getViewState().addCalendarListener();
+        if(isrCalendar!=null){
+            getViewState().showIsrM(isrCalendar.getMonth(month-1), isrCalendar.getMonth(month));
+        }
     }
 
     @Override
@@ -226,12 +234,42 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
             getViewState().hideProgressFrame();
             if (isSuccess) {
                 isrHolidaysList = res.getItems();
-                Log.d(TAG, "onPostExecute: " + isrHolidaysList.size());
-                for (HebcalItemDto itemDto : isrHolidaysList
-                ) {
-                    Log.d(TAG, "holiday : " + itemDto.getDate() + itemDto.getMemo());
-                }
                 getViewState().decorateCalendar(res);
+            } else {
+                router.showSystemMessage(error);
+            }
+        }
+    }
+    private class GetIsrMonths extends AsyncTask<Void, Void, IsrCalendar> {
+        private final String year;
+        private Boolean isSuccess;
+        private String error;
+
+        public GetIsrMonths(String year) {
+            this.year = year;
+        }
+
+        @Override
+        protected IsrCalendar doInBackground(Void... voids) {
+            IsrCalendar res = null;
+            try {
+                res = interactor.getIsrMonths(year);
+                isSuccess = true;
+            } catch (IOException e) {
+                error = "Connection failed!";
+                isSuccess = false;
+            }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(IsrCalendar res) {
+            getViewState().hideProgressFrame();
+            if (isSuccess) {
+                isrCalendar = res;
+                int month = Calendar.getInstance().get(Calendar.MONTH);
+                getViewState().showIsrM(isrCalendar.getMonth(month-1), isrCalendar.getMonth(month));
+                // TODO: 30.03.2019
             } else {
                 router.showSystemMessage(error);
             }

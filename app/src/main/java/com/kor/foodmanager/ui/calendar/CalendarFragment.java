@@ -15,6 +15,7 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.HebcalDto;
 import com.kor.foodmanager.data.model.HebcalItemDto;
+import com.kor.foodmanager.data.model.IsrMonth;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -45,9 +46,13 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     @BindView(R.id.progressFrame) FrameLayout progressFrame;
     @BindView(R.id.myEventCount) TextView myEventCount;
     @BindView(R.id.mySubCount) TextView mySubCount;
+    @BindView(R.id.month1) TextView month1view;
+    @BindView(R.id.month2) TextView month2view;
     private Unbinder unbinder;
     private OnDateSelectedListener listener;
     private IToolbar iToolbar;
+    private Boolean isMonth1Decorated = false;
+    private Boolean isMonth2Decorated = false;
 
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
@@ -75,6 +80,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
     @Override
     public void showCalendar(Collection<CalendarDay> myEvents, Collection<CalendarDay> subscribedEvents){
+        calendarView.setDynamicHeightEnabled(true);
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
         TitleFormatter customTitleFormatter = new TitleFormatter() {
@@ -151,8 +157,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
                 view.setDaysDisabled(true);
             }
         });
-        calendarView.setAllowClickDaysOutsideCurrentMonth(false);
-        calendarView.setDynamicHeightEnabled(true);
     }
 
     @Override
@@ -168,5 +172,36 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     @Override
     public void showCalendarDialog(CalendarDialog dialog) {
         dialog.show(getChildFragmentManager(),"DIALOG");
+    }
+
+    @Override
+    public void showIsrM(IsrMonth month1, IsrMonth month2) {
+        month1view.setText(month1.getName());
+        month2view.setText(month2.getName());
+        IsrMonthDecorator month1Decor = new IsrMonthDecorator(month1);
+        IsrMonthDecorator month2Decor = new IsrMonthDecorator(month2);
+        month1view.setOnClickListener(v -> {
+            if(isMonth1Decorated){
+                calendarView.removeDecorator(month1Decor);
+                month2view.setVisibility(View.VISIBLE);
+                isMonth1Decorated = false;
+            }else {
+                calendarView.addDecorator(month1Decor);
+                month2view.setVisibility(View.GONE);
+                isMonth1Decorated = true;
+            }
+        });
+
+        month2view.setOnClickListener(v -> {
+            if(isMonth2Decorated){
+                calendarView.removeDecorator(month2Decor);
+                month1view.setVisibility(View.VISIBLE);
+                isMonth2Decorated = false;
+            }else {
+                calendarView.addDecorator(month2Decor);
+                month1view.setVisibility(View.GONE);
+                isMonth2Decorated = true;
+            }
+        });
     }
 }
