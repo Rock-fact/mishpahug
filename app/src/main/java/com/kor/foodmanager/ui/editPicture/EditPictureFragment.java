@@ -3,11 +3,9 @@ package com.kor.foodmanager.ui.editPicture;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +16,6 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.android.MediaManager;
-import com.cloudinary.utils.ObjectUtils;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
@@ -45,6 +40,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     @InjectPresenter EditPicturePresenter presenter;
     private IToolbar iToolbar;
     private Unbinder unbinder;
+
 
     protected static final int AVATAR_EDIT_REQUEST = 1;
     protected static final int EVENT_BANNER_EDIT_REQUEST = 2;

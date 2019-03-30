@@ -7,8 +7,12 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
 import com.cloudinary.utils.ObjectUtils;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +23,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
     public void loadImage(int position, Uri picUri) {
         new LoadImageTask(position, picUri).execute();
     }
+
 
     private class LoadImageTask extends AsyncTask<Void, Void, Void> {
         private int position;
@@ -31,6 +36,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
             res = true;
         }
 
+
         @Override
         protected Void doInBackground(Void... voids) {
             Map config = new HashMap();
@@ -38,10 +44,13 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
             config.put("api_key", "893573575281754");
             config.put("api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
             Cloudinary cloudinary = new Cloudinary(config);
+            Log.d("MY_TAG", "uri: "+picUri.getPath());
+            File imgFile = new File(picUri.getPath());
+
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
                     try {
-                        cloudinary.uploader().upload("http://i.imgur.com/DvpvklR.png", ObjectUtils.asMap("public_id", "avatar"));
+                        cloudinary.uploader().upload(imgFile, ObjectUtils.asMap("public_id", "avatar"));
                     } catch (IOException e) {
                         res = false;
                         e.printStackTrace();
@@ -49,7 +58,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
                     try {
-                        cloudinary.uploader().upload(picUri, ObjectUtils.asMap("public_id", "event_banner"));
+                        cloudinary.uploader().upload(imgFile, ObjectUtils.asMap("public_id", "event_banner"));
                     } catch (IOException e) {
                         res = false;
                         e.printStackTrace();

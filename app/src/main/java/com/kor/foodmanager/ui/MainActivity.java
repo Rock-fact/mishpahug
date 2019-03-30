@@ -124,7 +124,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
 //        config.put("api_secret","aYACgLcWNlBuKjxd5_McsRkf4pQ");
 //        MediaManager.init(getActivity(), config);
 
-        MediaManager.init(this);
+//        MediaManager.init(this);
 
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
