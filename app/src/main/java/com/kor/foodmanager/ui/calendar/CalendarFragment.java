@@ -166,35 +166,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     }
 
     @Override
-    public void showDateDialog(CalendarDay date, String stringDate, String message, List<EventDto> myEventsDto, List<EventDto> subscribedEventsDto) {
-        Bundle args = new Bundle();
-        args.putString("TITLE", stringDate);
-        args.putString("MESSAGE", message);
-        if(myEventsDto.size()!=0){
-            args.putString("MY_EVENTS","You have " + myEventsDto.size() + " event today");
-        }
-        if(subscribedEventsDto.size()!=0){
-            args.putString("MY_SUBS","You subscribe " + myEventsDto.size() + " event today");
-        }
-        CalendarDialog dialog = CalendarDialog.newInstance(args);
-        Log.d(TAG, "showDateDialog: "+stringDate+", "+message);
-        dialog.setCancelable(true);
-        dialog.show(getChildFragmentManager(), "DIALOG");
-
-//        new AlertDialog.Builder(getActivity())
-//                .setView(R.layout.calendar_dialog)
-//                .setTitle(stringDate)
-//                .setMessage(message)
-//                .setPositiveButton("Add new event", (dialog, which) -> {
-//                    presenter.goToAddEventScreen(date.getCalendar());
-//                })
-//                .setNeutralButton("Find event", ((dialog, which) -> {
-//                    presenter.goToEventListScreen();
-//                    // TODO: 27.03.2019 constructor + date for filter
-//                }))
-//                .setNegativeButton("Cancel",null)
-//                .setCancelable(true)
-//                .create()
-//                .show();
+    public void showCalendarDialog(CalendarDialog dialog) {
+        dialog.show(getChildFragmentManager(),"DIALOG");
     }
 }

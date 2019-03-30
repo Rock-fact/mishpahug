@@ -27,6 +27,7 @@ import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.calendar.CalendarFragment;
+import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;

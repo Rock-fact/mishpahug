@@ -3,6 +3,7 @@ package com.kor.foodmanager.ui.calendar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
 import com.kor.foodmanager.data.model.HebcalDto;
 import com.kor.foodmanager.data.model.HebcalItemDto;
+import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.IOException;
@@ -77,7 +79,7 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
     }
 
     public void onDateSelected(CalendarDay date) {
-        String message = "Today is: ";
+        String message = "Today: ";
         String stringDate = format.format(date.getDate());
         Log.d(TAG, "dateSelectedDialog: " + stringDate);
         for (HebcalItemDto itemDto : isrHolidaysList
@@ -88,18 +90,27 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
                 message = message + itemDto.getMemo();
             }
         }
-        if (message.equals("Today is: ")) {
+        if (message.equals("Today: ")) {
             message = "No holidays today";
         }
-        getViewState().showDateDialog(date, stringDate, message, myEventsDto, subscribedEventsDto);
+
+        showCalendarDialog(date, stringDate, message);
     }
 
-    public void goToAddEventScreen(Calendar calendar) {
-        router.navigateTo(ADD_EVENT_SCREEN, calendar);
-    }
-
-    public void goToEventListScreen() {
-        router.navigateTo(EVENT_LIST_SCREEN);
+    public void showCalendarDialog(CalendarDay date, String stringDate, String message){
+        Bundle args = new Bundle();
+        args.putString("TITLE", stringDate);
+        args.putString("MESSAGE", message);
+        args.putSerializable("DATE", date.getCalendar());
+        if(myEventsDto.size()!=0){
+            args.putString("MY_EVENTS","You have " + myEventsDto.size() + " event today");
+        }
+        if(subscribedEventsDto.size()!=0){
+            args.putString("MY_SUBS","You subscribe " + myEventsDto.size() + " event today");
+        }
+        CalendarDialog dialog = CalendarDialog.newInstance(args);
+        dialog.setCancelable(true);
+        getViewState().showCalendarDialog(dialog);
     }
 
     private class GetEventsForCalendarTask extends AsyncTask<Void, Void, EventListDto> {

@@ -11,13 +11,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.arellomobile.mvp.MvpAppCompatDialogFragment;
+import com.arellomobile.mvp.MvpDialogFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+
+import java.util.Calendar;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
-public class CalendarDialog extends DialogFragment implements View.OnClickListener {
-    private TextView todaysHolidays, myEvents, mySubs, dialogTitle;
-    private Button showEventsBtn, addNewEventBtn;
+public class CalendarDialog extends MvpAppCompatDialogFragment implements ICalendarDialog {
+    @InjectPresenter CalendarDialogPresenter presenter;
+    @BindView(R.id.TodaysHolidays) TextView todaysHolidays;
+    @BindView(R.id.MyEvents) TextView myEvents;
+    @BindView(R.id.mySubs) TextView mySubs;
+    @BindView(R.id.DialogTitle) TextView dialogTitle;
+    @BindView(R.id.showEventsBtn) Button showEventsBtn;
+    @BindView(R.id.addNewEventBtn) Button addNewEventBtn;
+    private Unbinder unbinder;
 
     public static CalendarDialog newInstance(Bundle args) {
         CalendarDialog fragment = new CalendarDialog();
@@ -32,23 +49,14 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.calendar_dialog, null, false);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        todaysHolidays = view.findViewById(R.id.TodaysHolidays);
-        myEvents = view.findViewById(R.id.MyEvents);
-        mySubs = view.findViewById(R.id.mySubs);
-        addNewEventBtn = view.findViewById(R.id.addNewEventBtn);
-        showEventsBtn = view.findViewById(R.id.showEventsBtn);
-        dialogTitle = view.findViewById(R.id.DialogTitle);
         Bundle bundle = getArguments();
-        addNewEventBtn.setOnClickListener(this);
-        showEventsBtn.setOnClickListener(this);
-        myEvents.setOnClickListener(this);
-        mySubs.setOnClickListener(this);
 
         if(bundle.getString("MESSAGE")!=null){
             todaysHolidays.setVisibility(View.VISIBLE);
@@ -71,16 +79,32 @@ public class CalendarDialog extends DialogFragment implements View.OnClickListen
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         return dialog;
     }
 
     @Override
-    public void onClick(View v) {
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 
+    @OnClick(R.id.addNewEventBtn)
+    public void addNewEvent(){
+        Calendar date = (Calendar) getArguments().getSerializable("DATE");
+        presenter.addNewEvent(date);
+    }
+
+    @OnClick(R.id.showEventsBtn)
+    public void showEvents(){
+        presenter.showEvents();
+    }
+    @OnClick(R.id.MyEvents)
+    public void showMyEvents(){
+        presenter.showMyEvents();
+    }
+    @OnClick(R.id.mySubs)
+    public void showMySubs(){
+        presenter.showMySubs();
     }
 }
