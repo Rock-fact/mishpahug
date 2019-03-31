@@ -75,13 +75,14 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
-        rc.transform(new CropCircleTransformation()).into(avatar);
+        rc.error(R.drawable.ic_ava).transform(new CropCircleTransformation()).into(avatar);
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
+            Log.d("MY_TAG", "EVENT_BANNER_EDIT_REQUEST: "+presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
             rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
-        rc.fit().into(eventBanner);
+        rc.error(R.drawable.ic_ava).fit().into(eventBanner);
         avatar.setOnClickListener(this);
         eventBanner.setOnClickListener(this);
         return view;

@@ -2,6 +2,7 @@ package com.kor.foodmanager.data.pictureEditor;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -23,7 +24,7 @@ public class EditPictureRepository implements IEditPictureRepository{
         config.put("api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
         MediaManager.init(context, config);
         this.authRepository = authRepository;
-        public_id = authRepository.getToken();
+        public_id = authRepository.getToken().substring(6);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class EditPictureRepository implements IEditPictureRepository{
 
             @Override
             public void onSuccess(String requestId, Map resultData) {
-                public_id = authRepository.getToken();
+               // public_id = authRepository.getToken().substring(6);
             }
 
             @Override
@@ -58,8 +59,8 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String getPicUrl(String name) {
-        public_id.concat(name);
-        return MediaManager.get().url().generate("sample");
+        Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
+        return MediaManager.get().url().generate(public_id.concat(name));
     }
 
     @Override
