@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,8 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class EditPictureFragment extends MvpAppCompatFragment implements IEditPicture, View.OnClickListener {
-    @InjectPresenter EditPicturePresenter presenter;
+    @InjectPresenter
+    EditPicturePresenter presenter;
     private IToolbar iToolbar;
     private Unbinder unbinder;
 
@@ -53,6 +55,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     TextView avatarTxt;
     @BindView(R.id.event_banner_txt)
     TextView eventBannerTxt;
+    private RequestCreator rc;
 
     public EditPictureFragment() {
 
@@ -66,11 +69,19 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Edit pictures", false, true, false);
         unbinder = ButterKnife.bind(this, view);
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png")
-                .transform(new CropCircleTransformation())
-                .into(avatar);
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png").fit().into(eventBanner);
-
+        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
+            Log.d("MY_TAG", "AVATAR_EDIT_REQUEST: "+presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+        } else {
+            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+        }
+        rc.transform(new CropCircleTransformation()).into(avatar);
+        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
+            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+        } else {
+            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+        }
+        rc.fit().into(eventBanner);
         avatar.setOnClickListener(this);
         eventBanner.setOnClickListener(this);
         return view;
@@ -86,7 +97,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     public void onClick(View v) {
         new AlertDialog.Builder(getActivity()).setMessage("What do you want to do?")
                 .setNegativeButton("Delete picture", (dialog, which) -> {
-                    RequestCreator rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+                    rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
                     if (v.getId() == R.id.avatar_img) {
                         rc.transform(new CropCircleTransformation()).into(avatar);
                     } else {

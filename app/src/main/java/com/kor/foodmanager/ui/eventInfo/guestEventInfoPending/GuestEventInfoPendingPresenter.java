@@ -18,4 +18,5 @@ public class GuestEventInfoPendingPresenter extends MvpPresenter<IGuestEventInfo
     public void showOnMap(String address){
 
     }
+
 }
