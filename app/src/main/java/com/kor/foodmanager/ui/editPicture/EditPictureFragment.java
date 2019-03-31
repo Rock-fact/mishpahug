@@ -96,14 +96,15 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void onClick(View v) {
+
         new AlertDialog.Builder(getActivity()).setMessage("What do you want to do?")
                 .setNegativeButton("Delete picture", (dialog, which) -> {
-                    rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
                     if (v.getId() == R.id.avatar_img) {
-                        rc.transform(new CropCircleTransformation()).into(avatar);
-                    } else {
-                        rc.into(eventBanner);
+                        Picasso.get().load(presenter.deletePic("_avatar")).into(avatar);
+                    } else if (v.getId() == R.id.event_img){
+                        Picasso.get().load(presenter.deletePic("_event_banner")).into(eventBanner);
                     }
+
                 })
                 .setPositiveButton("Edit picture", (dialog, which) -> {
                     Intent photoPickerIntent = new Intent(Intent.ACTION_PICK); //ACTION_GET_CONTENT

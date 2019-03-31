@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 @InjectViewState
 public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
+    private String result;
     @Inject
     IEditPictureRepository editPictureRepository;
 
@@ -19,8 +20,9 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         App.get().mainComponent().inject(this);
     }
 
-    public void loadImage(int position, Uri picUri) {
+    public String loadImage(int position, Uri picUri) {
         new LoadImageTask(position, picUri).execute();
+        return result;
     }
 
     public String getPicUrl(int position) {
@@ -34,9 +36,14 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         }
     }
 
+    public String deletePic(String name) {
+        return editPictureRepository.destroyPic(name);
+    }
+
     private class LoadImageTask extends AsyncTask<Void, Void, Void> {
         private int position;
         private Uri picUri;
+        private String res;
 
         public LoadImageTask(int position, Uri picUri) {
             this.position = position;
@@ -48,16 +55,20 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         protected Void doInBackground(Void... voids) {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                    editPictureRepository.uploadPic(picUri, "_avatar");
+                    res = editPictureRepository.uploadPic(picUri, "_avatar");
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                    editPictureRepository.uploadPic(picUri, "_event_banner");
+                    res = editPictureRepository.uploadPic(picUri, "_event_banner");
                     break;
             }
 
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            result=res;
+        }
     }
 
 }

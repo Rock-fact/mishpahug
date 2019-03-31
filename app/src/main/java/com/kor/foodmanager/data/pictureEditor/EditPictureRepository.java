@@ -8,6 +8,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.google.android.gms.common.stats.ConnectionTracker;
+import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 
 import java.util.HashMap;
@@ -28,8 +29,8 @@ public class EditPictureRepository implements IEditPictureRepository{
     }
 
     @Override
-    public void uploadPic(Uri uri, String name) {
-        MediaManager.get().upload(uri).option("public_id",public_id.concat(name)).callback(new UploadCallback() {
+    public String uploadPic(Uri uri, String name) {
+        return MediaManager.get().upload(uri).option("public_id",public_id.concat(name)).callback(new UploadCallback() {
             @Override
             public void onStart(String requestId) {
 
@@ -64,8 +65,10 @@ public class EditPictureRepository implements IEditPictureRepository{
     }
 
     @Override
-    public void destroyPic(String publicId) {
-
+    public String destroyPic(String name) {
+        Log.d("MY_TAG", "destroyPic: "+public_id.concat(name));
+        String uri = MediaManager.get().url().generate("sample");
+        return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
     }
 
 }
