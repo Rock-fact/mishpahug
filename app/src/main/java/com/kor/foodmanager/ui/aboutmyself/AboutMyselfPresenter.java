@@ -5,10 +5,15 @@ import android.os.AsyncTask;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.buissness.login.ILoginInteractor;
+import com.kor.foodmanager.data.login.LoginException;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
+import com.kor.foodmanager.ui.login.LoginPresenter;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -23,17 +28,25 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
     @Inject
     IUserDataRepository userDataRepository;
 
+    ILoginInteractor interactor;
+
     public AboutMyselfPresenter(){
         App.get().mainComponent().inject(this);
+        interactor=App.get().loginComponent().getLoginInteractor();
     }
 
-    public void backToRegistrationFragment(){
-        router.backTo(MainActivity.REGISTRATION_FRAGMENT);
+    public void toEventList(){
+        router.navigateTo(MainActivity.EVENT_LIST_SCREEN);
+    }
+    public void registration(String email, String password) {
+        new RegistrationTask(email,password).execute();
     }
 
     public void updateStaticFields(){
         new GetStaticFieldsTask().execute();
     }
+
+
 
     public void updateUserProfile(UserDto user){
         new UpdateUserProfileTask(user).execute();
@@ -99,6 +112,47 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
             }else{
                 router.showSystemMessage(s);
             }
+        }
+    }
+
+    private class RegistrationTask extends AsyncTask<Void,Void,String> {
+        private String email, password;
+        private Boolean isSuccess;
+
+        public RegistrationTask(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            getViewState().showProgressFrame();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String res = "OK";
+            try {
+                interactor.registration(email, password);
+                isSuccess = true;
+            } catch (IOException e) {
+                res = "Connection failed!";
+                isSuccess = false;
+            } catch (LoginException e) {
+                res = e.getMessage();
+                isSuccess = false;
+            }
+            return res;
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            getViewState().hideProgressFrame();
+            if(!isSuccess){
+                getViewState().showError(s);
+            }
+
         }
     }
 
