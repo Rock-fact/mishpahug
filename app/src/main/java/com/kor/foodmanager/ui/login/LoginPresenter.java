@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
 
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.PERSONALPROFILE_FRAGMENT_NEW;
 import static com.kor.foodmanager.ui.MainActivity.REGISTRATION_FRAGMENT;
 
 @InjectViewState
@@ -25,6 +26,7 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
     public LoginPresenter(){
         App.get().loginComponent().inject(this);
     }
+
 
     public void login(String email, String password) {
         try {
@@ -38,19 +40,10 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
     }
 
     public void registration(){
-        router.navigateTo(REGISTRATION_FRAGMENT);
+        router.navigateTo(PERSONALPROFILE_FRAGMENT_NEW);
     }
 
-//    public void registration(String email, String password) {
-//        try {
-//            interactor.validate(email,password);
-//            new RegistrationTask(email,password).execute();
-//        } catch (EmailValidException e) {
-//            getViewState().showEmailError(e.getMessage());
-//        } catch (PasswordValidException e) {
-//            getViewState().showPasswordError(e.getMessage());
-//        }
-//    }
+
 
     @Override
     public void onDestroy() {
@@ -93,49 +86,6 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
             getViewState().hideProgressFrame();
             if(isSuccess){
                 router.newRootScreen(EVENT_LIST_SCREEN);
-            }else{
-                getViewState().showError(s);
-            }
-
-        }
-    }
-
-    private class RegistrationTask extends AsyncTask<Void,Void,String> {
-        private String email, password;
-        private Boolean isSuccess;
-
-        public RegistrationTask(String email, String password) {
-            this.email = email;
-            this.password = password;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            getViewState().showProgressFrame();
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            String res = "OK";
-            try {
-                interactor.registration(email, password);
-                isSuccess = true;
-            } catch (IOException e) {
-                res = "Connection failed!";
-                isSuccess = false;
-            } catch (LoginException e) {
-                res = e.getMessage();
-                isSuccess = false;
-            }
-            return res;
-        }
-
-
-            @Override
-        protected void onPostExecute(String s) {
-            getViewState().hideProgressFrame();
-            if(isSuccess){
-                router.navigateTo(REGISTRATION_FRAGMENT);
             }else{
                 getViewState().showError(s);
             }

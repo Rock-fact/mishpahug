@@ -30,6 +30,7 @@ import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.calendar.CalendarFragment;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
+import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressFragment;
@@ -245,9 +246,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                         return new CalendarFragment();
                     }
                 case ABOUTMYSELF_FRAGMENT_NEW:
-                    return AboutMyselfFragment.getNewInstance((UserDto) data, true);
+                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:
-                    return PersonalProfileFragment.getNewInstance((UserDto) data, true);
+                    return new PersonalProfileFragment();
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
                 case EVENT_INFO_SCREEN:

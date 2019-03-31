@@ -47,9 +47,7 @@ public class RegistrationFragment extends MvpAppCompatFragment implements IRegis
     }
 
     @Nullable
-
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.registration_fragment, container, false);
