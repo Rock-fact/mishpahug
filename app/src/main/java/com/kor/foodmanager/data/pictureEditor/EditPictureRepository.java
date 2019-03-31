@@ -48,7 +48,7 @@ public class EditPictureRepository implements IEditPictureRepository{
 
             @Override
             public void onError(String requestId, ErrorInfo error) {
-
+                MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
             }
 
             @Override
