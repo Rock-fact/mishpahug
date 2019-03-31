@@ -59,11 +59,11 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     @BindView(R.id.secondName_txt)
     EditText lastName;
     @BindView(R.id.dateOfBirth)
-    TextView dateOfBirth;
+    EditText dateOfBirth;
     @BindView(R.id.confession)
-    TextView confession;
+    EditText confession;
     @BindView(R.id.gender)
-    TextView gender;
+    EditText gender;
     @BindView(R.id.spinnerConfession)
     Spinner spinnerConfession;
     @BindView(R.id.spinnerGender)
@@ -118,6 +118,9 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         unbinder = ButterKnife.bind(this, view);
         updateSpinersValues();
 
+
+            fillFields();
+
         Log.d("Spinner", "onCreateView: "+staticFields.getGender().toString());
 
         spinnerConfession.setOnItemSelectedListener(this);
@@ -127,6 +130,13 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         iToolbar.setTitleToolbarEnable("Personal Info",false,true,false);
 
         return view;
+    }
+    public void fillFields(){
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        dateOfBirth.setText(user.getDateOfBirth());
+        confession.setText(user.getConfession());
+        gender.setText(user.getGender());
     }
 
     @Override
@@ -195,10 +205,10 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         if (dateOfBirth.getText().toString().equals("")) {
             list.add("Date of birth");
         }
-        if (spinnerConfession.getSelectedItem().toString().equals("")) {
+        if (confession.getText().toString().equals("")) {
             list.add("Confession");
         }
-        if (spinnerGender.getSelectedItem().toString().equals("")) {
+        if (gender.getText().toString().equals("")) {
             list.add("Gender");
         }
 
@@ -209,8 +219,8 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
             user.setFirstName(firstName.getText().toString());
             user.setLastName(lastName.getText().toString());
             user.setDateOfBirth(dateOfBirth.getText().toString());
-            user.setGender(spinnerGender.getSelectedItem().toString());
-            user.setConfession(spinnerConfession.getSelectedItem().toString());
+            user.setGender(gender.getText().toString());
+            user.setConfession(confession.getText().toString());
             presenter.startContactInfo(user);
         } else {
             new AlertDialog.Builder(getActivity())

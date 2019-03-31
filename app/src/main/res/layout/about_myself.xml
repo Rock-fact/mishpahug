@@ -31,7 +31,7 @@
         android:layout_marginEnd="8dp"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Edit Pictures"
+        android:text="@string/edit_picture"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatar" />
 
-    <TextView
+    <EditText
         android:id="@+id/marital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +47,7 @@
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
         android:hint="Marital status"
+        android:enabled="false"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/food"
@@ -70,7 +71,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
-    <TextView
+    <EditText
         android:id="@+id/food"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,6 +79,7 @@
         android:gravity="center"
         android:hint="Food preferences"
         android:textColor="#FFFFFF"
+        android:enabled="false"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -106,7 +108,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Few words about myself"
+        android:hint="Few words about myself"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

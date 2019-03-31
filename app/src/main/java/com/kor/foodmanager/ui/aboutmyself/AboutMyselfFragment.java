@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,11 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     @BindView(R.id.editPictures)
     TextView editPicture;
     @BindView(R.id.marital)
-    TextView marital;
+    EditText marital;
     @BindView(R.id.food)
-    TextView food;
+    EditText food;
+    @BindView(R.id.wordsAbout)
+    EditText description;
     @BindView(R.id.spinnerMarital)
     Spinner spinnerMarital;
     @BindView(R.id.spinnerFood)
@@ -154,19 +157,26 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         String str = "";
         List<String> list = new ArrayList<>();
         if (marital.getText().toString().equals("")) {
-            list.add("maritalStatus");
+            list.add("Marital status");
         }
         if (food.getText().toString().equals("")) {
-            list.add("foodPreferences");
+            list.add("Food preferences");
+        }
+        if (description.getText().toString().equals("")) {
+            list.add("Few words about myself");
         }
         str = UserInfo.inLine(list);
         if (str.equals("")) {
             user.setFoodPreferences(UserInfo.inList(food.getText().toString()));
             user.setMaritalStatus(marital.getText().toString());
+            user.setDescription(description.getText().toString());
 
-            presenter.registration(email, password);
-            presenter.updateUserProfile(user);
-            presenter.toEventList();
+
+            List<String> picture =new ArrayList<>();
+            picture.add("https://i.imgur.com/vaZKZcz.jpg");
+            user.setPictureLink(picture);
+            Log.d("registration", "onClickSaveBtn: "+user.toString());
+            presenter.registrationAndUpdateUserProfile(email, password,user);
 
         } else {
             new AlertDialog.Builder(getActivity())
