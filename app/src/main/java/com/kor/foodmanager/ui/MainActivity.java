@@ -28,6 +28,7 @@ import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.aboutmyself.AboutMyselfFragment;
 import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.calendar.CalendarFragment;
+import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
 import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
@@ -54,6 +55,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -216,7 +219,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                 case LOGIN_SCREEN:
                     return new LoginFragment();
                 case ADD_EVENT_SCREEN:
-                    return new AddEventFragment();
+                    if(data!=null){
+                        return AddEventFragment.newInstance((Calendar) data);
+                    }else {
+                        return new AddEventFragment();
+                    }
                 case EVENT_LIST_SCREEN:
                     if (data != null) {
                         return EventListFragment.getNewInstance((EventsInProgressRequestDto) data);

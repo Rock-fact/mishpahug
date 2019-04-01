@@ -1,28 +1,43 @@
 package com.kor.foodmanager.ui.calendar;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
+import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.data.model.HebcalDto;
+import com.kor.foodmanager.data.model.HebcalItemDto;
 import com.kor.foodmanager.ui.IToolbar;
+import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.format.DateFormatTitleFormatter;
+import com.prolificinteractive.materialcalendarview.format.TitleFormatter;
 
-import java.util.Calendar;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 public class CalendarFragment extends MvpAppCompatFragment implements ICalendar {
     @InjectPresenter CalendarPresenter presenter;
@@ -40,8 +55,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         return fragment;
     }
 
-    // TODO: 18.03.2019 add toolbar with menu adn Back like in MyProfile 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,8 +62,8 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         unbinder = ButterKnife.bind(this,view);
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Calendar",false,true,false);
-
         presenter.showMonth(calendarView.getCurrentDate().getMonth());
+        progressFrame.setOnClickListener(null);
         return view;
     }
 
@@ -62,14 +75,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
     @Override
     public void showCalendar(Collection<CalendarDay> myEvents, Collection<CalendarDay> subscribedEvents){
-        if(listener!=null){
-            calendarView.setOnDateChangedListener(listener);
-        }else {
-            calendarView.setOnDateChangedListener((widget, date, selected) -> {
-                presenter.onDateSelected(date);
-            });
-        }
-
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
         calendarView.addDecorator(new DayViewDecorator() {
@@ -87,11 +92,67 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
                 view.setDaysDisabled(true);
             }
         });
+
+        TitleFormatter customTitleFormatter = new TitleFormatter() {
+            @Override
+            public CharSequence format(CalendarDay day) {
+                SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy");
+                DateFormatTitleFormatter dateFormatTitleFormatter = new DateFormatTitleFormatter(format);
+                String[] isrMonths ={"Tevet/Shevat",
+                        "Shevat/Adar",
+                        "Adar/Nisan",
+                        "Nisan/Iyyar",
+                        "Iyyar/Sivan",
+                        "Sivan/Tammuz",
+                        "Tammuz/Av",
+                        "Av/Elul",
+                        "Elul/Tishrei",
+                        "Tishrei/Heshvan",
+                        "Heshvan/Kislev",
+                        "Kislev/Tevet"};
+                DateFormatSymbols isrMonthsSym  = new DateFormatSymbols();
+                isrMonthsSym.setMonths(isrMonths);
+                SimpleDateFormat isrFormat = new SimpleDateFormat("MMMM", isrMonthsSym);
+                DateFormatTitleFormatter isrFormatter = new DateFormatTitleFormatter(isrFormat);
+//                MonthArrayTitleFormatter monthArrayTitleFormatter = new MonthArrayTitleFormatter(isrMonths);
+                int isrYear = day.getYear()+3760;
+                return dateFormatTitleFormatter.format(day)+" - "+isrFormatter.format(day)+" "+isrYear;
+            }
+        };
+        calendarView.setTitleFormatter(customTitleFormatter);
         calendarView.setOnMonthChangedListener((widget, date) -> {
             presenter.showMonth(date.getMonth());
                 });
 //        calendarView.setDateSelected(Calendar.getInstance(),true);        
         // TODO: 19.03.2019 something strange in behavior, if i select current date 
+    }
+
+    @Override
+    public void addCalendarListener(){
+        if(listener!=null){
+            calendarView.setOnDateChangedListener(listener);
+        }else {
+            calendarView.setOnDateChangedListener((widget, date, selected) -> {
+                presenter.onDateSelected(date);
+            });
+        }
+    }
+
+    @Override
+    public void decorateCalendar(HebcalDto hebcalDto){
+        Collection<CalendarDay> isrHolidays = new HashSet<>();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        for (HebcalItemDto hebcalItemDto :
+                hebcalDto.getItems()) {
+            try {
+                isrHolidays.add(CalendarDay.from(format.parse(hebcalItemDto.getDate())));
+                Log.d(TAG, "subscribedEvent: " + hebcalItemDto.getDate());
+            } catch (ParseException e) {
+                Log.d(TAG, "parse error: " + e.getMessage());
+            }
+        }
+        calendarView.addDecorator(new HolidayDecorator(ContextCompat.getColor(getActivity(), R.color.colorAccent), isrHolidays));
+
     }
 
     @Override
@@ -104,4 +165,8 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         progressFrame.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showCalendarDialog(CalendarDialog dialog) {
+        dialog.show(getChildFragmentManager(),"DIALOG");
+    }
 }
