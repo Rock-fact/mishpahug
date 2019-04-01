@@ -7,10 +7,12 @@ import android.util.Log;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.stats.ConnectionTracker;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,10 +67,13 @@ public class EditPictureRepository implements IEditPictureRepository{
     }
 
     @Override
-    public String destroyPic(String name) {
-        Log.d("MY_TAG", "destroyPic: "+public_id.concat(name));
-        String uri = MediaManager.get().url().generate("sample");
-        return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
+    public String destroyPic(String name) throws IOException {
+//        Log.d("MY_TAG", "destroyPic: "+public_id.concat(name));
+//        String uri = MediaManager.get().url().generate("sample");
+
+        MediaManager.get().getCloudinary().uploader().destroy(public_id.concat(name), ObjectUtils.emptyMap());
+        //return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
+        return name;
     }
 
 }
