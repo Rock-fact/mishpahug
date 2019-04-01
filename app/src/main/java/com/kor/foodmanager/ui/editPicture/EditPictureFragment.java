@@ -18,6 +18,7 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import butterknife.BindView;
@@ -73,20 +74,20 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     public void loadImages(){
         if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
-            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE);
+            Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
         rc.error(R.drawable.logo).transform(new CropCircleTransformation()).into(avatar);
-        Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
-            Log.d("MY_TAG", "EVENT_BANNER_EDIT_REQUEST: "+presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE);
+            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
         rc.error(R.drawable.logo).fit().into(eventBanner);
-        Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
     }
 
     @Override
