@@ -35,9 +35,9 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
     public String getPicUrl(int position) {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                return editPictureRepository.getPicUrl("_avatar");
+                return editPictureRepository.getPicUrl("/avatar");
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                return editPictureRepository.getPicUrl("_event_banner");
+                return editPictureRepository.getPicUrl("/event_banner");
             default:
                 return null;
         }
@@ -63,11 +63,11 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         protected Void doInBackground(Void... voids) {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, "_avatar");
+                    res = editPictureRepository.uploadPic(picUri, "/avatar");
                     Log.d("MY_TAG", "doInBackground: "+ res);
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, "_event_banner");
+                    res = editPictureRepository.uploadPic(picUri, "/event_banner");
                     break;
             }
 

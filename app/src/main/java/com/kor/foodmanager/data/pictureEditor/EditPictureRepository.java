@@ -33,6 +33,7 @@ public class EditPictureRepository implements IEditPictureRepository{
     @Override
     public String uploadPic(Uri uri, String name) {
         String res = MediaManager.get().upload(uri).option("public_id",public_id.concat(name))
+                .option("invalidate", true)
                 .option("overwrite", true).dispatch();
         Log.d("LOADER", "uploadPic: "+res);
         return res;
@@ -46,10 +47,10 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String destroyPic(String name) throws IOException {
-//        Log.d("MY_TAG", "destroyPic: "+public_id.concat(name));
-//        String uri = MediaManager.get().url().generate("sample");
 
-        MediaManager.get().getCloudinary().uploader().destroy(public_id.concat(name), ObjectUtils.emptyMap());
+        Map options = new HashMap();
+        options.put("invalidate", true);
+        MediaManager.get().getCloudinary().uploader().destroy(public_id.concat(name), options);
         //return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
         return name;
     }

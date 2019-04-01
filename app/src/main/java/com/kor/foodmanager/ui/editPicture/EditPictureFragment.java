@@ -75,7 +75,8 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     public void loadImages(){
         if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
             Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
+            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
@@ -83,7 +84,8 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
             Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
+            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
@@ -96,10 +98,10 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         new AlertDialog.Builder(getActivity()).setMessage("What do you want to do?")
                 .setNegativeButton("Delete picture", (dialog, which) -> {
                     if (v.getId() == R.id.avatar_img) {
-                        presenter.deletePic("_avatar");
+                        presenter.deletePic("/avatar");
                         Picasso.get().load(R.drawable.logo).into(avatar);
                     } else if (v.getId() == R.id.event_img){
-                        presenter.deletePic("_event_banner");
+                        presenter.deletePic("/event_banner");
                         Picasso.get().load(R.drawable.logo).into(eventBanner);
                     }
 
