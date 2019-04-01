@@ -8,6 +8,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
 
@@ -35,9 +36,9 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
     public String getPicUrl(int position) {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                return editPictureRepository.getPicUrl("/avatar");
+                return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                return editPictureRepository.getPicUrl("/event_banner");
+                return editPictureRepository.getPicUrl(MainActivity.EVENT_BANNER_PICTURE);
             default:
                 return null;
         }
@@ -63,11 +64,11 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         protected Void doInBackground(Void... voids) {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, "/avatar");
+                    res = editPictureRepository.uploadPic(picUri, MainActivity.AVATAR_PICTURE);
                     Log.d("MY_TAG", "doInBackground: "+ res);
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, "/event_banner");
+                    res = editPictureRepository.uploadPic(picUri, MainActivity.EVENT_BANNER_PICTURE);
                     break;
             }
 

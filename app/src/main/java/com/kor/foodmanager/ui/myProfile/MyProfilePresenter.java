@@ -52,7 +52,7 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
     }
 
     public void editAvatar() {
-        router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
+            router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
     }
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{

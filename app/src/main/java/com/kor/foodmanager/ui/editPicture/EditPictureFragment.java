@@ -1,7 +1,6 @@
 package com.kor.foodmanager.ui.editPicture;
 
 
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,15 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
+import com.kor.foodmanager.ui.MainActivity;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -72,7 +74,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         super.onDestroy();
     }
 
-    public void loadImages(){
+    public void loadImages() {
         if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
             Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
             rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST))
@@ -98,10 +100,10 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         new AlertDialog.Builder(getActivity()).setMessage("What do you want to do?")
                 .setNegativeButton("Delete picture", (dialog, which) -> {
                     if (v.getId() == R.id.avatar_img) {
-                        presenter.deletePic("/avatar");
+                        presenter.deletePic(MainActivity.AVATAR_PICTURE);
                         Picasso.get().load(R.drawable.logo).into(avatar);
-                    } else if (v.getId() == R.id.event_img){
-                        presenter.deletePic("/event_banner");
+                    } else if (v.getId() == R.id.event_img) {
+                        presenter.deletePic(MainActivity.EVENT_BANNER_PICTURE);
                         Picasso.get().load(R.drawable.logo).into(eventBanner);
                     }
 

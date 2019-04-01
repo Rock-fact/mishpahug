@@ -4,6 +4,8 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
+import com.kor.foodmanager.ui.editPicture.IEditPicture;
 
 import javax.inject.Inject;
 
@@ -24,6 +26,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     @Inject Router router;
     @Inject NavigatorHolder navigatorHolder;
     @Inject IAuthRepository authRepository;
+    @Inject IEditPictureRepository editPictureRepository;
     private Boolean isStarted = false;
 
     public MainActivityPresenter(){
@@ -87,4 +90,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
         router.newRootScreen(LOGIN_SCREEN);
     }
 
+    public String loadAvatar() {
+        return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+    }
 }
