@@ -30,6 +30,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.MonthDay;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -48,11 +49,13 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     @BindView(R.id.mySubCount) TextView mySubCount;
     @BindView(R.id.month1) TextView month1view;
     @BindView(R.id.month2) TextView month2view;
+    @BindView(R.id.month3) TextView month3view;
     private Unbinder unbinder;
     private OnDateSelectedListener listener;
     private IToolbar iToolbar;
     private Boolean isMonth1Decorated = false;
     private Boolean isMonth2Decorated = false;
+    private Boolean isMonth3Decorated = false;
 
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
@@ -83,33 +86,33 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         calendarView.setDynamicHeightEnabled(true);
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
-        TitleFormatter customTitleFormatter = new TitleFormatter() {
-            @Override
-            public CharSequence format(CalendarDay day) {
-                SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy");
-                DateFormatTitleFormatter dateFormatTitleFormatter = new DateFormatTitleFormatter(format);
-                String[] isrMonths ={"Tevet/Shevat",
-                        "Shevat/Adar",
-                        "Adar/Nisan",
-                        "Nisan/Iyyar",
-                        "Iyyar/Sivan",
-                        "Sivan/Tammuz",
-                        "Tammuz/Av",
-                        "Av/Elul",
-                        "Elul/Tishrei",
-                        "Tishrei/Heshvan",
-                        "Heshvan/Kislev",
-                        "Kislev/Tevet"};
-                DateFormatSymbols isrMonthsSym  = new DateFormatSymbols();
-                isrMonthsSym.setMonths(isrMonths);
-                SimpleDateFormat isrFormat = new SimpleDateFormat("MMMM", isrMonthsSym);
-                DateFormatTitleFormatter isrFormatter = new DateFormatTitleFormatter(isrFormat);
-//                MonthArrayTitleFormatter monthArrayTitleFormatter = new MonthArrayTitleFormatter(isrMonths);
-                int isrYear = day.getYear()+3760;
-                return dateFormatTitleFormatter.format(day)+" - "+isrFormatter.format(day)+" "+isrYear;
-            }
-        };
-        calendarView.setTitleFormatter(customTitleFormatter);
+//        TitleFormatter customTitleFormatter = new TitleFormatter() {
+//            @Override
+//            public CharSequence format(CalendarDay day) {
+//                SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy");
+//                DateFormatTitleFormatter dateFormatTitleFormatter = new DateFormatTitleFormatter(format);
+//                String[] isrMonths ={"Tevet/Shevat",
+//                        "Shevat/Adar",
+//                        "Adar/Nisan",
+//                        "Nisan/Iyyar",
+//                        "Iyyar/Sivan",
+//                        "Sivan/Tammuz",
+//                        "Tammuz/Av",
+//                        "Av/Elul",
+//                        "Elul/Tishrei",
+//                        "Tishrei/Heshvan",
+//                        "Heshvan/Kislev",
+//                        "Kislev/Tevet"};
+//                DateFormatSymbols isrMonthsSym  = new DateFormatSymbols();
+//                isrMonthsSym.setMonths(isrMonths);
+//                SimpleDateFormat isrFormat = new SimpleDateFormat("MMMM", isrMonthsSym);
+//                DateFormatTitleFormatter isrFormatter = new DateFormatTitleFormatter(isrFormat);
+////                MonthArrayTitleFormatter monthArrayTitleFormatter = new MonthArrayTitleFormatter(isrMonths);
+//                int isrYear = day.getYear()+3760;
+//                return dateFormatTitleFormatter.format(day)+" - "+isrFormatter.format(day)+" "+isrYear;
+//            }
+//        };
+//        calendarView.setTitleFormatter(customTitleFormatter);
         calendarView.setOnMonthChangedListener((widget, date) -> {
             presenter.showMonth(date.getMonth());
                 });
@@ -175,33 +178,95 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     }
 
     @Override
-    public void showIsrM(IsrMonth month1, IsrMonth month2) {
+    public void showIsrM(List<IsrMonth> list) {
+        if(list.size()==0){
+            // TODO: 01.04.2019  
+            return;
+        }
+        IsrMonth month1 = list.get(0);
         month1view.setText(month1.getName());
-        month2view.setText(month2.getName());
         IsrMonthDecorator month1Decor = new IsrMonthDecorator(month1);
-        IsrMonthDecorator month2Decor = new IsrMonthDecorator(month2);
+
         month1view.setOnClickListener(v -> {
             if(isMonth1Decorated){
                 calendarView.removeDecorator(month1Decor);
-                month2view.setVisibility(View.VISIBLE);
+                showMonthBtns(list.size());
                 isMonth1Decorated = false;
             }else {
                 calendarView.addDecorator(month1Decor);
-                month2view.setVisibility(View.GONE);
+                hideMonthBtns(list.size(),1);
                 isMonth1Decorated = true;
             }
         });
 
-        month2view.setOnClickListener(v -> {
-            if(isMonth2Decorated){
-                calendarView.removeDecorator(month2Decor);
-                month1view.setVisibility(View.VISIBLE);
-                isMonth2Decorated = false;
-            }else {
-                calendarView.addDecorator(month2Decor);
-                month1view.setVisibility(View.GONE);
-                isMonth2Decorated = true;
+        if (list.size()>1){
+            IsrMonth month2 = list.get(1);
+            month2view.setText(month2.getName());
+            IsrMonthDecorator month2Decor = new IsrMonthDecorator(month2);
+
+            month2view.setOnClickListener(v -> {
+                if(isMonth2Decorated){
+                    calendarView.removeDecorator(month2Decor);
+                    showMonthBtns(list.size());
+                    isMonth2Decorated = false;
+                }else {
+                    calendarView.addDecorator(month2Decor);
+                    hideMonthBtns(list.size(),2);
+                    isMonth2Decorated = true;
+                }
+            });
+        }
+        if (list.size()>2){
+            IsrMonth month3 = list.get(2);
+            month3view.setText(month3.getName());
+            IsrMonthDecorator month3Decor = new IsrMonthDecorator(month3);
+
+            month3view.setOnClickListener(v -> {
+                if(isMonth3Decorated){
+                    calendarView.removeDecorator(month3Decor);
+                    showMonthBtns(list.size());
+                    isMonth2Decorated = false;
+                }else {
+                    calendarView.addDecorator(month3Decor);
+                    hideMonthBtns(list.size(),3);
+                    isMonth3Decorated = true;
+                }
+            });
+        }
+
+        showMonthBtns(list.size());
+        // TODO: 01.04.2019 decorators behavion after month changing 
+    }
+
+    private void showMonthBtns(int count){
+            month1view.setVisibility(View.VISIBLE);
+            if(count>1){
+            month2view.setVisibility(View.VISIBLE);
             }
-        });
+            if (count>2){
+                month3view.setVisibility(View.VISIBLE);
+            }
+    }
+
+    private void hideMonthBtns(int count, int curr){
+        if(count==2){
+            if(curr==1){
+                month2view.setVisibility(View.GONE);
+            }else if(curr==2){
+                month1view.setVisibility(View.GONE);
+            }
+        }
+        if (count==3){
+            if(curr==1){
+                month2view.setVisibility(View.GONE);
+                month3view.setVisibility(View.GONE);
+            }else if(curr==2){
+                month1view.setVisibility(View.GONE);
+                month3view.setVisibility(View.GONE);
+            }else if(curr==3){
+                month1view.setVisibility(View.GONE);
+                month2view.setVisibility(View.GONE);
+            }
+        }
     }
 }
