@@ -75,8 +75,16 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     Object data;
     private IToolbar iToolbar;
     private int duration = 0;
+    Boolean isDateAlreadyChosen = false;
 
     public AddEventFragment() {
+    }
+
+    public static AddEventFragment newInstance(Calendar date){
+        AddEventFragment fragment = new AddEventFragment();
+        fragment.dateAndTime = date;
+        fragment.isDateAlreadyChosen = true;
+        return fragment;
     }
 
     @Override
@@ -85,7 +93,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Add event", false,true,false);
+        iToolbar.setTitleToolbarEnable("Add event", false,true,true);
         placesAutocomplete(view);
         return view;
     }
@@ -94,6 +102,9 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     public void onStart() {
         super.onStart();
         presenter.startWork();
+        if(isDateAlreadyChosen==true){
+            setTime();
+        }
     }
 
     @Override

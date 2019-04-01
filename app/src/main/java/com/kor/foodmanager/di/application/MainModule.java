@@ -28,7 +28,7 @@ import ru.terrakok.cicerone.Router;
 
 @Module
 public class MainModule {
-    private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
+    private static final String BASE_URL = "https://mishpah.herokuapp.com/";
     private Context context;
     private Cicerone<Router> cicerone;
     private Gson gson;

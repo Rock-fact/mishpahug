@@ -2,6 +2,7 @@
     <string name="app_name"></string>
     <string name="title_registration">Registration</string>
     <string name="change_name"><u>Change name</u></string>
+    <string name="edit_picture"><u>Edit picture</u></string>
     <string name="family">Family</string>
     <string name="guest">Guest</string>
     <string name="email">E-mail</string>
