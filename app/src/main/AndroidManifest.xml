@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kor.foodmanager">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:usesCleartextTraffic="true"
@@ -15,7 +17,8 @@
         android:theme="@style/AppTheme.NoActionBar">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDaffS-SBNhZElzCDBANjokRpLQnxr6mB4"/>
+            android:value="AIzaSyDaffS-SBNhZElzCDBANjokRpLQnxr6mB4"
+            />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://893573575281754:aYACgLcWNlBuKjxd5_McsRkf4pQ@newmishpahug" />
     </application>
 
 </manifest>

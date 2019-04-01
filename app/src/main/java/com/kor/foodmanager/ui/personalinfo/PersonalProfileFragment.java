@@ -1,11 +1,17 @@
 package com.kor.foodmanager.ui.personalinfo;
+
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -13,35 +19,75 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.IToolbar;
+import com.kor.foodmanager.ui.userInfo.UserInfo;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
-public class PersonalProfileFragment extends MvpAppCompatFragment implements IPersonalProfileFragment, View.OnClickListener {
+public class PersonalProfileFragment extends MvpAppCompatFragment implements IPersonalProfileFragment, AdapterView.OnItemSelectedListener {
 
     @InjectPresenter
     PersonalProfilePresenter presenter;
 
     private UserDto user;
     private StaticfieldsDto staticFields;
-    private boolean isNew;
+    private boolean isNew=true;
+    private DatePickerDialog datePickerDialog;
+    private IToolbar iToolbar;
 
-    EditText firstName, lastName, dateOfBirth, confession, gender;
-    Spinner spinnerConfession, spinnerGender;
+
+    @BindView(R.id.firstName_txt)
+    EditText firstName;
+    @BindView(R.id.secondName_txt)
+    EditText lastName;
+    @BindView(R.id.dateOfBirth)
+    EditText dateOfBirth;
+    @BindView(R.id.confession)
+    EditText confession;
+    @BindView(R.id.gender)
+    EditText gender;
+    @BindView(R.id.spinnerConfession)
+    Spinner spinnerConfession;
+    @BindView(R.id.spinnerGender)
+    Spinner spinnerGender;
+    @BindView(R.id.date_frame)
     FrameLayout dateFrame;
+    @BindView(R.id.date_picker)
     DatePicker dataPicker;
+    @BindView(R.id.calendar_btn)
     ImageView calendarBtn;
-    DatePickerDialog datePickerDialog;
+    @BindView(R.id.next_btn)
     Button nextBtn;
+    @BindView(R.id.avatar)
+    ImageView avatar;
+    @BindView(R.id.change_btn)
+    TextView changePicture;
 
-    public static PersonalProfileFragment getNewInstance(UserDto user, boolean isNew){
+    Unbinder unbinder;
+
+    public PersonalProfileFragment() {
+        user=new UserDto();
+    }
+
+    public static PersonalProfileFragment getNewInstance(UserDto user, boolean isNew) {
         PersonalProfileFragment fragment = new PersonalProfileFragment();
         fragment.user = user;
         fragment.isNew = isNew;
@@ -51,42 +97,46 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
-        if (savedInstanceState!=null){
-            user=(UserDto) savedInstanceState.getSerializable("user");
-            isNew=savedInstanceState.getBoolean("isNew");
+        if (savedInstanceState != null) {
+            user = (UserDto) savedInstanceState.getSerializable("user");
+            isNew = savedInstanceState.getBoolean("isNew");
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("user",user);
-        outState.putBoolean("isNew",isNew);
+        outState.putSerializable("user", user);
+        outState.putBoolean("isNew", isNew);
     }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.personal_profile, container, false);
-        firstName = view.findViewById(R.id.firstName_txt);
-        lastName = view.findViewById(R.id.secondName_txt);
-        dateOfBirth = view.findViewById(R.id.dateOfBirth);
-        confession = view.findViewById(R.id.confession);
-        gender = view.findViewById(R.id.gender);
-        spinnerConfession = view.findViewById(R.id.spinnerConfession);
-        spinnerGender = view.findViewById(R.id.spinnerGender);
-        dateFrame = view.findViewById(R.id.date_frame);
-        dataPicker = view.findViewById(R.id.date_picker);
-        calendarBtn = view.findViewById(R.id.calendar_btn);
-
-        nextBtn = view.findViewById(R.id.next_btn);
-        nextBtn.setOnClickListener(this);
-
-        calendarBtn.setOnClickListener(this);
-
+        unbinder = ButterKnife.bind(this, view);
         updateSpinersValues();
 
+
+            fillFields();
+
+        Log.d("Spinner", "onCreateView: "+staticFields.getGender().toString());
+
+        spinnerConfession.setOnItemSelectedListener(this);
+        spinnerGender.setOnItemSelectedListener(this);
+
+        iToolbar=(IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Personal Info",false,true,false);
+
         return view;
+    }
+    public void fillFields(){
+        firstName.setText(user.getFirstName());
+        lastName.setText(user.getLastName());
+        dateOfBirth.setText(user.getDateOfBirth());
+        confession.setText(user.getConfession());
+        gender.setText(user.getGender());
     }
 
     @Override
@@ -95,12 +145,15 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         presenter.updateStaticFields();
     }
 
-    public void updateStaticFields(StaticfieldsDto staticFields){
+    public void updateStaticFields(StaticfieldsDto staticFields) {
         this.staticFields = staticFields;
         updateSpinersValues();
     }
 
-    private void updateSpinersValues(){
+    private void updateSpinersValues() {
+        staticFields.getConfession().add(0, "");
+        staticFields.getGender().add(0, "");
+
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getGender());
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
@@ -108,31 +161,100 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getConfession());
         confessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerConfession.setAdapter(confessionAdapter);
+
+        spinnerGender.setSelection(0);
+        spinnerConfession.setSelection(0);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.calendar_btn) {
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR); // current year
-            int mMonth = c.get(Calendar.MONTH); // current month
-            int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+    @OnClick(R.id.change_btn)
+    public void onClickChangePicture() {
+        Toast.makeText(getActivity(), "GoToEditPicture", Toast.LENGTH_SHORT).show();
+    }
 
-            datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                    dateOfBirth.setText("" + i + "-" + (i1 < 10 ? "0" + i1 : i1)  + "-" + i2);
-                }
-            }, mYear, mMonth, mDay);
-            datePickerDialog.show();
-        }else if(view.getId() == R.id.next_btn){
+    @OnClick(R.id.calendar_btn)
+    public void onClickCalendarBtn() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR); // current year
+        int mMonth = c.get(Calendar.MONTH); // current month
+        int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+
+        datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                dateOfBirth.setText("" + i + "-" + (i1 < 10 ? "0" + i1 : i1) + "-" + i2);
+            }
+        }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+    @OnClick(R.id.next_btn)
+    public void onClickNextBtn() {
+        String str = "";
+        List<String> list = new ArrayList<>();
+
+//        if (user.getPictureLink() == null || user.getPictureLink().isEmpty()) {
+//            list.add("Edit Picture");
+//        }
+        //TODO edit Picture
+        if (firstName.getText().toString().equals("")) {
+            list.add("First Name");
+        }
+        if (lastName.getText().toString().equals("")) {
+            list.add("Last Name");
+        }
+        if (dateOfBirth.getText().toString().equals("")) {
+            list.add("Date of birth");
+        }
+        if (confession.getText().toString().equals("")) {
+            list.add("Confession");
+        }
+        if (gender.getText().toString().equals("")) {
+            list.add("Gender");
+        }
+
+
+        str = UserInfo.inLine(list);
+
+        if (str.equals("")) {
             user.setFirstName(firstName.getText().toString());
             user.setLastName(lastName.getText().toString());
             user.setDateOfBirth(dateOfBirth.getText().toString());
-            user.setGender(spinnerGender.getSelectedItem().toString());
-            user.setConfession(spinnerConfession.getSelectedItem().toString());
+            user.setGender(gender.getText().toString());
+            user.setConfession(confession.getText().toString());
             presenter.startContactInfo(user);
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Fill the further fields")
+                    .setMessage(str)
+                    .setPositiveButton("Ok", null)
+                    .create()
+                    .show();
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == spinnerConfession.getId()) {
+            if (position != 0) {
+                confession.setText(spinnerConfession.getSelectedItem().toString());
+                spinnerConfession.setSelection(0);
+            }
+        } else if (parent.getId() == spinnerGender.getId()) {
+            if (position != 0) {
+                gender.setText(spinnerGender.getSelectedItem().toString());
+                spinnerGender.setSelection(0);
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
+    }
 }

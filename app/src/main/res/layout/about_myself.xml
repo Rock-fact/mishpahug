@@ -7,62 +7,21 @@
     android:background="#32265F"
     tools:context=".ui.MainActivity">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_back"
-            tools:ignore="VectorDrawableCompat" />
-
-        <TextView
-            android:id="@+id/aboutMyself"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center"
-            android:text="About Myself"
-            android:textColor="#FFF"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:padding="8dp"
         android:src="@drawable/ic_portrait"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/editPictures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,9 +31,9 @@
         android:layout_marginEnd="8dp"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Edit Pictures"
+        android:text="@string/edit_picture"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,9 +46,10 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Marital Status"
+        android:hint="Marital status"
+        android:enabled="false"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/food"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -117,9 +77,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Food preference"
+        android:hint="Food preferences"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:enabled="false"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,34 +101,6 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/allergy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:gravity="center"
-        android:text="Allergy"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/food" />
-
-    <Spinner
-        android:id="@+id/spinnerAllergy"
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:backgroundTint="#FFFFFF"
-        android:dropDownWidth="match_parent"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/allergy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/allergy"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/wordsAbout"
@@ -175,13 +108,13 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Few words about myself"
+        android:hint="Few words about myself"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allergy" />
+        app:layout_constraintTop_toBottomOf="@+id/food" />
 
     <Button
         android:id="@+id/save_btn"
@@ -189,11 +122,30 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Save"
+        android:background="@drawable/background_gradient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <FrameLayout
+        android:id="@+id/progressFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC32265F"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
 
 </android.support.constraint.ConstraintLayout>

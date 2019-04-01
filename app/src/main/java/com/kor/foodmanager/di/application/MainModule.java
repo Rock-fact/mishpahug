@@ -5,9 +5,12 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.data.pictureEditor.EditPictureRepository;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.data.userData.UserDataRepository;
+import com.kor.foodmanager.ui.editPicture.IEditPicture;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,8 +28,7 @@ import ru.terrakok.cicerone.Router;
 
 @Module
 public class MainModule {
-//    private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
-    private static final String BASE_URL = "http://54.208.168.131:8080/mishpah/";
+    private static final String BASE_URL = "https://mishpah.herokuapp.com/";
     private Context context;
     private Cicerone<Router> cicerone;
     private Gson gson;
@@ -84,5 +86,10 @@ public class MainModule {
     @Provides @Singleton
     IUserDataRepository provideUserDataRepository(IAuthRepository authRepository, Api api){
         return new UserDataRepository(api, authRepository);
+    }
+
+    @Provides @Singleton
+    IEditPictureRepository provideEditPictureRepository(Context context, IAuthRepository authRepository){
+        return new EditPictureRepository(context, authRepository);
     }
 }

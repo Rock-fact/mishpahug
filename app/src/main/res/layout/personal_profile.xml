@@ -8,42 +8,6 @@
     tools:context=".ui.MainActivity">
 
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_action_back"
-            tools:ignore="VectorDrawableCompat" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center"
-            android:text="Personal profile"
-            android:textColor="#FFF"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
@@ -56,9 +20,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/change_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,9 +32,9 @@
         android:layout_marginEnd="8dp"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Edit Picture"
+        android:text="@string/edit_picture"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,9 +47,9 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="First Name"
+        android:hint="First Name"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,9 +61,9 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Last Name"
+        android:hint="Last Name"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,9 +86,10 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
             android:gravity="center"
-            android:text="Date of birth"
+            android:hint="Date of birth"
+            android:enabled="false"
             android:textColor="#FFFFFF"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,9 +118,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Confession"
+        android:hint="Confession"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:enabled="false"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,9 +134,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:gravity="center"
-        android:text="Gender"
+        android:hint="Gender"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -215,6 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Next"
+        android:background="@drawable/background_gradient"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

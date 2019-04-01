@@ -1,15 +1,14 @@
-package com.kor.foodmanager.ui.aboutmyself;
+package com.kor.foodmanager.ui.editPicture;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
-import com.kor.foodmanager.data.model.StaticfieldsDto;
-
 
 @StateStrategyType(value = AddToEndSingleStrategy.class)
-public interface IAboutMyselfFragment extends MvpView {
-    void updateStaticFields(StaticfieldsDto staticFields);
-    void showError(String error);
+public interface IEditPicture extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
+    void loadAvatarPicture(String uri);
+    void loadEvenerBannerPicture(String uri);
+    public void loadImages();
 }

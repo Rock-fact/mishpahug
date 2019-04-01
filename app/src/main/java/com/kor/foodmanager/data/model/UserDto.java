@@ -165,4 +165,20 @@ public class UserDto implements Serializable {
     public void setNumberOfVoters(int numberOfVoters) {
         this.numberOfVoters = numberOfVoters;
     }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", confession='" + confession + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", pictureLink=" + pictureLink +
+                ", foodPreferences=" + foodPreferences +
+                '}';
+    }
 }

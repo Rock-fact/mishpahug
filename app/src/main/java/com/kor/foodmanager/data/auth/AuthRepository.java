@@ -1,6 +1,7 @@
 package com.kor.foodmanager.data.auth;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.model.UserDto;

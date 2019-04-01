@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.cloudinary.android.MediaManager;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
@@ -29,6 +30,8 @@ import com.kor.foodmanager.ui.addEvent.AddEventFragment;
 import com.kor.foodmanager.ui.calendar.CalendarFragment;
 import com.kor.foodmanager.ui.calendar.calendar_dialog.CalendarDialog;
 import com.kor.foodmanager.ui.contactinfo.ContactInfoFragment;
+import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
+import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfo.GuestEventInfoFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoDone.GuestEventInfoDoneFragment;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressFragment;
@@ -49,6 +52,9 @@ import com.kor.foodmanager.ui.registration.RegistrationFragment;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Calendar;
 
@@ -86,6 +92,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     public static final String USER_INFO_SCREEN_PROGRESS = "USER_INFO_SCREEN_PROGRESS";
     public static final String USER_INFO_SCREEN_PENDING = "USER_INFO_SCREEN_PENDING";
     public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
+    public static final String EDIT_PIC_FRAGMENT_SCREEN = "EDIT_PIC_FRAGMENT_SCREEN";
 
     public static final String TAG = "MY_TAG";
     @InjectPresenter
@@ -114,6 +121,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
 
+
+//        Map config = new HashMap();
+//        config.put("cloud_name", "newmishpahug");
+//        config.put("api_key", "893573575281754");
+//        config.put("api_secret","aYACgLcWNlBuKjxd5_McsRkf4pQ");
+//        MediaManager.init(getActivity(), config);
+
+//        MediaManager.init(this);
+
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -122,12 +138,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                 super.onDrawerOpened(drawerView);
                 guestName = drawerView.findViewById(R.id.guestName);
                 UserDto userDto = presenter.authRepository.getUser();
-                String fullName = userDto.getFirstName() + " " + userDto.getLastName();
-                Log.d("VOVA", "onDrawerOpened: " + fullName);
-                guestName.setText(fullName);
-                Log.d("VOVA", "onDrawerOpened: " + guestName.getText());
-                imageView = drawerView.findViewById(R.id.imageView);
-                Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
+                if (userDto != null) {
+                    String fullName = userDto.getFirstName() + " " + userDto.getLastName();
+                    guestName.setText(fullName);
+                    imageView = drawerView.findViewById(R.id.imageView);
+                    Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
+                }
             }
         };
         drawer.addDrawerListener(toggle);
@@ -237,9 +253,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                         return new CalendarFragment();
                     }
                 case ABOUTMYSELF_FRAGMENT_NEW:
-                    return AboutMyselfFragment.getNewInstance((UserDto) data, true);
+                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data, true);
                 case PERSONALPROFILE_FRAGMENT_NEW:
-                    return PersonalProfileFragment.getNewInstance((UserDto) data, true);
+                    return new PersonalProfileFragment();
                 case CONTACTINFO_FRAGMENT_NEW:
                     return ContactInfoFragment.getNewInstance((UserDto) data, true);
                 case EVENT_INFO_SCREEN:
@@ -268,6 +284,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     return UserInfo.getNewInstance((UserDto) data, true);
                 case MY_PROFILE_FRAGMENT_SCREEN:
                     return MyProfileFragment.getNewInstance((UserDto) data);
+                case EDIT_PIC_FRAGMENT_SCREEN:
+                    return new EditPictureFragment();
                 default:
                     throw new RuntimeException("Unknown screen key!");
             }
