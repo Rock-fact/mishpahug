@@ -1,9 +1,8 @@
 package com.kor.foodmanager.ui.editPicture;
 
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -13,25 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.xml.transform.Result;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
@@ -69,20 +59,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Edit pictures", false, true, false);
         unbinder = ButterKnife.bind(this, view);
-        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
-            Log.d("MY_TAG", "AVATAR_EDIT_REQUEST: "+presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-        }
-        rc.error(R.drawable.logo).transform(new CropCircleTransformation()).into(avatar);
-        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
-            Log.d("MY_TAG", "EVENT_BANNER_EDIT_REQUEST: "+presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-        }
-        rc.error(R.drawable.logo).fit().into(eventBanner);
+        loadImages();
         avatar.setOnClickListener(this);
         eventBanner.setOnClickListener(this);
         return view;
@@ -94,6 +71,22 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         super.onDestroy();
     }
 
+    public void loadImages(){
+        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
+            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE);
+        } else {
+            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+        }
+        rc.error(R.drawable.logo).transform(new CropCircleTransformation()).into(avatar);
+        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
+            Log.d("MY_TAG", "EVENT_BANNER_EDIT_REQUEST: "+presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE);
+        } else {
+            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+        }
+        rc.error(R.drawable.logo).fit().into(eventBanner);
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -102,11 +95,9 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                     if (v.getId() == R.id.avatar_img) {
                         presenter.deletePic("_avatar");
                         Picasso.get().load(R.drawable.logo).into(avatar);
-                        //Picasso.get().load(presenter.deletePic("_avatar")).into(avatar);
                     } else if (v.getId() == R.id.event_img){
                         presenter.deletePic("_event_banner");
                         Picasso.get().load(R.drawable.logo).into(eventBanner);
-                        //Picasso.get().load(presenter.deletePic("_event_banner")).into(eventBanner);
                     }
 
                 })
@@ -160,5 +151,15 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         avatar.setVisibility(View.VISIBLE);
         avatarTxt.setVisibility(View.VISIBLE);
         eventBannerTxt.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void loadAvatarPicture(String uri) {
+        Picasso.get().load(uri).error(R.drawable.logo).into(avatar);
+    }
+
+    @Override
+    public void loadEvenerBannerPicture(String uri) {
+        Picasso.get().load(uri).error(R.drawable.logo).fit().into(avatar);
     }
 }

@@ -8,4 +8,7 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface IEditPicture extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
+    void loadAvatarPicture(String uri);
+    void loadEvenerBannerPicture(String uri);
+    public void loadImages();
 }

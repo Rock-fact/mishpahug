@@ -45,7 +45,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
 
     public String deletePic(String name) {
         new DeleteImgTask(name).execute();
-        return name;
+        return result;
     }
 
     private class LoadImageTask extends AsyncTask<Void, Void, Void> {
@@ -64,6 +64,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
                     res = editPictureRepository.uploadPic(picUri, "_avatar");
+                    Log.d("MY_TAG", "doInBackground: "+ res);
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
                     res = editPictureRepository.uploadPic(picUri, "_event_banner");
@@ -91,7 +92,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                editPictureRepository.destroyPic(name);
+                result = editPictureRepository.destroyPic(name);
             } catch (IOException e) {
                 router.showSystemMessage(e.getMessage());
                 res = false;
@@ -101,6 +102,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            //getViewState().loadImages();
             Log.d("MY_TAG", "deleting image onPostExecute: "+res);
         }
     }

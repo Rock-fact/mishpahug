@@ -32,32 +32,10 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String uploadPic(Uri uri, String name) {
-        return MediaManager.get().upload(uri).option("public_id",public_id.concat(name)).callback(new UploadCallback() {
-            @Override
-            public void onStart(String requestId) {
-
-            }
-
-            @Override
-            public void onProgress(String requestId, long bytes, long totalBytes) {
-
-            }
-
-            @Override
-            public void onSuccess(String requestId, Map resultData) {
-               // public_id = authRepository.getToken().substring(6);
-            }
-
-            @Override
-            public void onError(String requestId, ErrorInfo error) {
-                MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
-            }
-
-            @Override
-            public void onReschedule(String requestId, ErrorInfo error) {
-
-            }
-        }).dispatch();
+        String res = MediaManager.get().upload(uri).option("public_id",public_id.concat(name))
+                .option("overwrite", true).dispatch();
+        Log.d("LOADER", "uploadPic: "+res);
+        return res;
     }
 
     @Override
