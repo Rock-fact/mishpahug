@@ -61,7 +61,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         unbinder = ButterKnife.bind(this,view);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Calendar",false,true,false);
+        iToolbar.setTitleToolbarEnable("Calendar",false,true,true);
         presenter.showMonth(calendarView.getCurrentDate().getMonth());
         progressFrame.setOnClickListener(null);
         return view;

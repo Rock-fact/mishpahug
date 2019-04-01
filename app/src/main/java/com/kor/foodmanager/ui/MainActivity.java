@@ -138,12 +138,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                 super.onDrawerOpened(drawerView);
                 guestName = drawerView.findViewById(R.id.guestName);
                 UserDto userDto = presenter.authRepository.getUser();
-                String fullName = userDto.getFirstName() + " " + userDto.getLastName();
-                Log.d("VOVA", "onDrawerOpened: " + fullName);
-                guestName.setText(fullName);
-                Log.d("VOVA", "onDrawerOpened: " + guestName.getText());
-                imageView = drawerView.findViewById(R.id.imageView);
-                Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
+                if (userDto != null) {
+                    String fullName = userDto.getFirstName() + " " + userDto.getLastName();
+                    guestName.setText(fullName);
+                    imageView = drawerView.findViewById(R.id.imageView);
+                    Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
+                }
             }
         };
         drawer.addDrawerListener(toggle);
