@@ -78,6 +78,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
         rc.error(R.drawable.logo).transform(new CropCircleTransformation()).into(avatar);
+        Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
             Log.d("MY_TAG", "EVENT_BANNER_EDIT_REQUEST: "+presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
             rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE);
@@ -85,6 +86,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
         rc.error(R.drawable.logo).fit().into(eventBanner);
+        Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
     }
 
     @Override
