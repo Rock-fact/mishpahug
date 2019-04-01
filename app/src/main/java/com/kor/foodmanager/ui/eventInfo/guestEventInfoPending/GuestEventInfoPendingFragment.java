@@ -129,6 +129,7 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
     }
 
 
+
     @Override
     public void onDestroy() {
         unbinder.unbind();

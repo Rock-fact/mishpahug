@@ -5,9 +5,12 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.data.pictureEditor.EditPictureRepository;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.data.userData.UserDataRepository;
+import com.kor.foodmanager.ui.editPicture.IEditPicture;
 
 import java.util.concurrent.TimeUnit;
 
@@ -83,5 +86,10 @@ public class MainModule {
     @Provides @Singleton
     IUserDataRepository provideUserDataRepository(IAuthRepository authRepository, Api api){
         return new UserDataRepository(api, authRepository);
+    }
+
+    @Provides @Singleton
+    IEditPictureRepository provideEditPictureRepository(Context context, IAuthRepository authRepository){
+        return new EditPictureRepository(context, authRepository);
     }
 }
