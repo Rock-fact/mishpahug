@@ -129,7 +129,6 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
             Uri picUri = data.getData();
             if (picUri != null) {
                 RequestCreator rc = Picasso.get().load(picUri);
-                rc.fetch();
                 presenter.loadImage(requestCode, picUri);
                 switch (requestCode) {
                     case AVATAR_EDIT_REQUEST:

@@ -7,8 +7,11 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -23,6 +26,8 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
 
     @Inject
     IUserDataRepository userDataRepository;
+    @Inject
+    IEditPictureRepository editPictureRepository;
 
     public MyProfilePresenter(){
         App.get().mainComponent().inject(this);
@@ -53,6 +58,10 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
 
     public void editAvatar() {
             router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
+    }
+
+    public List<String> getPictureLincs() {
+        return editPictureRepository.getPictureLincs();
     }
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{

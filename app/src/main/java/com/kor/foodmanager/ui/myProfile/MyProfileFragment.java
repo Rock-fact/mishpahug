@@ -28,6 +28,7 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,7 +143,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         maritalStatus_view.setText(user.getMaritalStatus());
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
         allergy_view.setText("Allergy"); //TODO add allergy
-
+        Picasso.get().load(user.getPictureLink().get(0)).into(avatar);
         spinnerMaritalStatus.setOnItemSelectedListener(this);
         spinnerGender.setOnItemSelectedListener(this);
         spinnerFoodPreferences.setOnItemSelectedListener(this);
@@ -250,6 +251,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
             user.setPhoneNumber(telephoneNumber_view.getText().toString());
             user.setMaritalStatus(maritalStatus_view.getText().toString());
             user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
+            user.setPictureLink(presenter.getPictureLincs());
             presenter.updateUserProfile(user);
         } else {
             new AlertDialog.Builder(getActivity())

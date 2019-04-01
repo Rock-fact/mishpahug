@@ -11,9 +11,12 @@ import com.cloudinary.utils.ObjectUtils;
 import com.google.android.gms.common.stats.ConnectionTracker;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditPictureRepository implements IEditPictureRepository{
@@ -53,6 +56,14 @@ public class EditPictureRepository implements IEditPictureRepository{
         MediaManager.get().getCloudinary().uploader().destroy(public_id.concat(name), options);
         //return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
         return name;
+    }
+
+    @Override
+    public List<String> getPictureLincs() {
+        List<String> links = new ArrayList<>();
+        links.add(0, getPicUrl(MainActivity.AVATAR_PICTURE));
+        links.add(1, getPicUrl(MainActivity.EVENT_BANNER_PICTURE));
+        return links;
     }
 
 }
