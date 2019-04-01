@@ -94,6 +94,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     public static final String MY_PROFILE_FRAGMENT_SCREEN = "MY_PROFILE_FRAGMENT_SCREEN";
     public static final String EDIT_PIC_FRAGMENT_SCREEN = "EDIT_PIC_FRAGMENT_SCREEN";
 
+    public static final String AVATAR_PICTURE = "/avatar";
+     public static final String EVENT_BANNER_PICTURE = "/event_banner";
+
+
     public static final String TAG = "MY_TAG";
     @InjectPresenter
     MainActivityPresenter presenter;
@@ -142,7 +146,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     String fullName = userDto.getFirstName() + " " + userDto.getLastName();
                     guestName.setText(fullName);
                     imageView = drawerView.findViewById(R.id.imageView);
-                    Picasso.get().load("https://i.imgur.com/VVq6KcT.png").into(imageView);
+                    Picasso.get().load(presenter.loadAvatar()).into(imageView);
                 }
             }
         };

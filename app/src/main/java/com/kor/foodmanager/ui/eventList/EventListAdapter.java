@@ -173,8 +173,9 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
                 if (event.getOwner().getPictureLink().size() > 0 && event.getOwner().getPictureLink().get(0) != null) {
-                    //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(myViewHolder.eventImg); //TODO
-                    Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+                    Picasso.get().load(event.getOwner().getPictureLink().get(1))
+                            .error(R.drawable.logo).into(eventImg); //TODO
+                    //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
                 } else {
                     Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
                 }

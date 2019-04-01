@@ -28,6 +28,7 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,6 +51,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     private UserDto user;
     private StaticfieldsDto staticFields;
+    private Boolean inputModeOn;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.avatar)
@@ -104,7 +106,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     private IToolbar iToolbar;
 
 
-
     Unbinder unbinder;
 
     public static MyProfileFragment getNewInstance(UserDto user) {
@@ -116,9 +117,10 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inputModeOn = false;
         staticFields = new StaticfieldsDto();
-        if (savedInstanceState!=null){
-            user=(UserDto) savedInstanceState.getSerializable("user");
+        if (savedInstanceState != null) {
+            user = (UserDto) savedInstanceState.getSerializable("user");
         }
     }
 
@@ -141,14 +143,14 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         maritalStatus_view.setText(user.getMaritalStatus());
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
         allergy_view.setText("Allergy"); //TODO add allergy
-
+        Picasso.get().load(user.getPictureLink().get(0)).into(avatar);
         spinnerMaritalStatus.setOnItemSelectedListener(this);
         spinnerGender.setOnItemSelectedListener(this);
         spinnerFoodPreferences.setOnItemSelectedListener(this);
         spinnerConfession.setOnItemSelectedListener(this);
 
-        iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("My profile",false,true,false);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("My profile", false, true, false);
 
 
         changeBtn.setOnClickListener(v -> {
@@ -179,12 +181,14 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     public void viewMode() {
         wrapperForInput.setVisibility(View.GONE);
         wrapperForView.setVisibility(View.VISIBLE);
+        inputModeOn = false;
     }
 
     @Override
     public void inputMode() {
         wrapperForInput.setVisibility(View.VISIBLE);
         wrapperForView.setVisibility(View.GONE);
+        inputModeOn = true;
     }
 
     @Override
@@ -201,25 +205,33 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
 
     @Override
     public void fillView() {
-        String str="";
-        List<String> list=new ArrayList<>();
-        if (firstName.getText().toString().equals("")){
-        list.add("firstName");}
-        if (secondName.getText().toString().equals("")){
-            list.add("secondName");}
-        if (confession.getText().toString().equals("")){
-            list.add("confession");}
-        if (gender.getText().toString().equals("")){
-            list.add("gender");}
-        if (telephoneNumber.getText().toString().equals("")){
-            list.add("telephoneNumber");}
-        if (maritalStatus.getText().toString().equals("")){
-            list.add("maritalStatus");}
-        if (foodPreferences.getText().toString().equals("")){
-            list.add("foodPreferences");}
-        if (allergy.getText().toString().equals("")){
-            list.add("allergy");}
-            str=UserInfo.inLine(list);
+        String str = "";
+        List<String> list = new ArrayList<>();
+        if (firstName.getText().toString().equals("")) {
+            list.add("firstName");
+        }
+        if (secondName.getText().toString().equals("")) {
+            list.add("secondName");
+        }
+        if (confession.getText().toString().equals("")) {
+            list.add("confession");
+        }
+        if (gender.getText().toString().equals("")) {
+            list.add("gender");
+        }
+        if (telephoneNumber.getText().toString().equals("")) {
+            list.add("telephoneNumber");
+        }
+        if (maritalStatus.getText().toString().equals("")) {
+            list.add("maritalStatus");
+        }
+        if (foodPreferences.getText().toString().equals("")) {
+            list.add("foodPreferences");
+        }
+        if (allergy.getText().toString().equals("")) {
+            list.add("allergy");
+        }
+        str = UserInfo.inLine(list);
         if (str.equals("")) {
 
             firstName_view.setText(firstName.getText().toString());
@@ -239,12 +251,13 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
             user.setPhoneNumber(telephoneNumber_view.getText().toString());
             user.setMaritalStatus(maritalStatus_view.getText().toString());
             user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
+            user.setPictureLink(presenter.getPictureLincs());
             presenter.updateUserProfile(user);
         } else {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Fill the further fields")
                     .setMessage(str)
-                    .setPositiveButton("Ok",null)
+                    .setPositiveButton("Ok", null)
                     .create()
                     .show();
         }
@@ -259,6 +272,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
+
 
     private void updateSpinersValues() {
         staticFields.getConfession().add(0, "");
@@ -297,8 +311,10 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     }
 
     @OnClick(R.id.avatar)
-    public void editAvatar(){
-        presenter.editAvatar();
+    public void editAvatar() {
+        if(inputModeOn) {
+            presenter.editAvatar();
+        }
     }
 
     @Override
@@ -321,7 +337,7 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
             }
         } else if (parent.getId() == spinnerFoodPreferences.getId()) {
             if (position != 0) {
-                if (foodPreferences.getText().toString().equals("")||foodPreferences.getText()==null) {
+                if (foodPreferences.getText().toString().equals("") || foodPreferences.getText() == null) {
                     foodPreferences.setText(spinnerFoodPreferences.getSelectedItem().toString());
                 } else {
                     if (foodPreferences.getText().toString().contains(spinnerFoodPreferences.getSelectedItem().toString())) {
