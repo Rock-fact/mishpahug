@@ -7,23 +7,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient">
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toTopOf="@+id/myEventText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:mcv_selectionColor="@color/colorBeige"
-        app:mcv_showOtherDates="all"
         app:mcv_arrowColor="@color/white"
+        app:mcv_dateTextAppearance="@style/CalendarTextAppearance"
         app:mcv_firstDayOfWeek="sunday"
-        app:mcv_dateTextAppearance="@style/CalendarTextAppearance"/>
+        app:mcv_selectionColor="@color/colorBeige"
+        app:mcv_showOtherDates="all"/>
 
     <TextView
         android:id="@+id/mySubText"
@@ -68,6 +69,40 @@
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/month1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bordered"
+        android:padding="6dp"
+        android:text="month1"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/month2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <TextView
+        android:id="@+id/month2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/bordered"
+        android:padding="6dp"
+        android:text="month2"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/month1"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
     <FrameLayout
         android:id="@+id/progressFrame"

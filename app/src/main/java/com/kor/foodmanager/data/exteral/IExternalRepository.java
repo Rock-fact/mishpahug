@@ -6,4 +6,6 @@ import java.io.IOException;
 
 public interface IExternalRepository {
     HebcalDto getIsrHolidays(int month) throws IOException;
+
+    HebcalDto getIsrMonths(String year) throws IOException;
 }

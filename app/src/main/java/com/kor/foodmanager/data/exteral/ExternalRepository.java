@@ -35,4 +35,20 @@ public class ExternalRepository implements IExternalRepository {
         HebcalDto hebcalDto = gson.fromJson(response.body().string(),HebcalDto.class);
         return hebcalDto;
     }
+
+    @Override
+    public HebcalDto getIsrMonths(String year) throws IOException {
+        //year = now for current year, or 4-digit YYYY
+        StringBuilder urlBuilder = new StringBuilder("https://www.hebcal.com/hebcal/?")
+                .append("v=1&cfg=json&maj=on&min=off&mod=off&nx=on")
+                .append("&year=").append(year)
+                .append("&month=x&ss=off&mf=off&c=off&s=off&d=off");
+        String url = urlBuilder.toString();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Response response = okHttpClient.newCall(request).execute();
+        HebcalDto hebcalDto = gson.fromJson(response.body().string(),HebcalDto.class);
+        return hebcalDto;
+    }
 }
