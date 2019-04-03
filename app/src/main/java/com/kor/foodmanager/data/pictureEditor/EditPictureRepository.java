@@ -73,7 +73,7 @@ public class EditPictureRepository implements IEditPictureRepository{
     public List<String> getPictureLincsFromServer() {
         List<String> links = new ArrayList<>();
         links.add(0, authRepository.getUser().getPictureLink().get(0));
-        links.add(1, authRepository.getUser().getPictureLink().get(2));
+        links.add(1, authRepository.getUser().getPictureLink().get(1));
         return links;
     }
 
