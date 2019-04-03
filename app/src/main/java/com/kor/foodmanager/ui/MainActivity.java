@@ -51,6 +51,8 @@ import com.kor.foodmanager.ui.personalinfo.PersonalProfileFragment;
 import com.kor.foodmanager.ui.registration.RegistrationFragment;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -146,7 +148,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     String fullName = userDto.getFirstName() + " " + userDto.getLastName();
                     guestName.setText(fullName);
                     imageView = drawerView.findViewById(R.id.imageView);
-                    Picasso.get().load(presenter.loadAvatar()).into(imageView);
+                    Picasso.get().load(presenter.loadAvatar()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .networkPolicy(NetworkPolicy.NO_CACHE).into(imageView);
                 }
             }
         };
