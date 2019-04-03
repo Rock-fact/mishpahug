@@ -22,5 +22,5 @@ public interface ICalendar extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
     void showCalendarDialog(CalendarDialog dialog);
-    void showIsrM(IsrMonth month1, IsrMonth month2);
+    void showIsrM(List<IsrMonth> list);
 }

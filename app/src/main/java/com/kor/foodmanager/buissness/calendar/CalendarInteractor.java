@@ -1,5 +1,7 @@
 package com.kor.foodmanager.buissness.calendar;
 
+import android.util.Log;
+
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.calendar.ICalendarRepository;
 import com.kor.foodmanager.data.event.ServerException;
@@ -15,8 +17,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 public class CalendarInteractor implements ICalendarInteractor {
     private IAuthRepository authRepository;
@@ -54,23 +59,27 @@ public class CalendarInteractor implements ICalendarInteractor {
         ) {
             if(itemDto.getCategory().equals("roshchodesh")){
                 String monthName = itemDto.getTitle().replace("Rosh Chodesh ","");
-                Date monthDate = null;
+                Calendar monthDate = Calendar.getInstance();
                 try {
-                    monthDate = format.parse(itemDto.getDate());
+                    monthDate.setTime(format.parse(itemDto.getDate()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 IsrMonth isrMonth = new IsrMonth(monthName,monthDate);
                 isrCalendar.addMonth(isrMonth);
-            }else if(itemDto.getTitle().substring(0,itemDto.getTitle().length()-4).equals("Rosh Hashana")){
-                Date monthDate = null;
+            }else if(itemDto.getTitle().substring(0,itemDto.getTitle().length()-5).equals("Rosh Hashana")){
+                Log.d(TAG, "ROSHHASHANA: ");
+                Calendar monthDate = Calendar.getInstance();
                 try {
-                    monthDate = format.parse(itemDto.getDate());
+                    monthDate.setTime(format.parse(itemDto.getDate()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 IsrMonth isrMonth = new IsrMonth("Tishrei",monthDate);
                 isrCalendar.addMonth(isrMonth);
+            }else {
+                // TODO: 01.04.2019
+                Log.d(TAG, "OTHER: "+itemDto.getTitle().substring(0,itemDto.getTitle().length()-4));
             }
         }
         return isrCalendar;

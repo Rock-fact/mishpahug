@@ -31,19 +31,19 @@ public class CalendarDialogPresenter extends MvpPresenter<ICalendarDialog> {
     }
 
     public void showEvents() {
-        router.navigateTo(EVENT_LIST_SCREEN);
+        router.replaceScreen(EVENT_LIST_SCREEN);
     }
 
     public void showMyEvents() {
-        router.navigateTo(MY_EVENT_LIST_SCREEN);
+        router.replaceScreen(MY_EVENT_LIST_SCREEN);
     }
 
     public void showMySubs() {
-        router.navigateTo(PARTICIPATION_LIST_SCREEN);
+        router.replaceScreen(PARTICIPATION_LIST_SCREEN);
     }
 
     public void addNewEvent(Calendar date) {
-        router.navigateTo(ADD_EVENT_SCREEN,date);
+        router.replaceScreen(ADD_EVENT_SCREEN,date);
         // TODO: 30.03.2019 test behavior of toolbar in this case 
     }
 }

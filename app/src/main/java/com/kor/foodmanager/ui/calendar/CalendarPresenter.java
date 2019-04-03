@@ -51,6 +51,7 @@ import static com.kor.foodmanager.ui.MainActivity.TAG;
 
 @InjectViewState
 public class CalendarPresenter extends MvpPresenter<ICalendar> {
+    // TODO: 01.04.2019 different years not works in this implementation
     @Inject
     ICalendarInteractor interactor;
     @Inject
@@ -75,8 +76,14 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         new GetIsrHolidays(month + 1).execute();
         getViewState().addCalendarListener();
         if(isrCalendar!=null){
-            getViewState().showIsrM(isrCalendar.getMonth(month-1), isrCalendar.getMonth(month));
+            showIsrMonths(month);
         }
+    }
+
+    private void showIsrMonths(int month) {
+        Log.d(TAG, "showIsrMonths: "+isrCalendar.size());
+        List<IsrMonth> list = isrCalendar.getIsrMonths(month);
+        getViewState().showIsrM(list);
     }
 
     @Override
@@ -136,6 +143,10 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         dialog.setCancelable(true);
         getViewState().showCalendarDialog(dialog);
     }
+
+
+
+
 
     private class GetEventsForCalendarTask extends AsyncTask<Void, Void, EventListDto> {
         private int month;
@@ -268,7 +279,7 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
             if (isSuccess) {
                 isrCalendar = res;
                 int month = Calendar.getInstance().get(Calendar.MONTH);
-                getViewState().showIsrM(isrCalendar.getMonth(month-1), isrCalendar.getMonth(month));
+                showIsrMonths(month);
                 // TODO: 30.03.2019
             } else {
                 router.showSystemMessage(error);

@@ -2,14 +2,15 @@ package com.kor.foodmanager.data.model;
 
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class IsrMonth {
     private String name;
-    private Date firstDay;
-    private Date lastDay;
+    private Calendar firstDay;
+    private Calendar lastDay;
 
-    public IsrMonth(String name, Date firstDay) {
+    public IsrMonth(String name, Calendar firstDay) {
         this.name = name;
         this.firstDay = firstDay;
     }
@@ -17,11 +18,11 @@ public class IsrMonth {
     public IsrMonth() {
     }
 
-    public Date getLastDay() {
+    public Calendar getLastDay() {
         return lastDay;
     }
 
-    public void setLastDay(Date lastDay) {
+    public void setLastDay(Calendar lastDay) {
         this.lastDay = lastDay;
     }
 
@@ -33,16 +34,16 @@ public class IsrMonth {
         this.name = name;
     }
 
-    public Date getFirstDay() {
+    public Calendar getFirstDay() {
         return firstDay;
     }
 
-    public void setFirstDay(Date firstDay) {
+    public void setFirstDay(Calendar firstDay) {
         this.firstDay = firstDay;
     }
 
     @Override
     public String toString() {
-        return name + ", " + firstDay.toString() + " - " + lastDay.toString();
+        return name + ", " + (firstDay.get(Calendar.MONTH)+1)+"."+firstDay.get(Calendar.DATE)+ " - " + (lastDay.get(Calendar.MONTH)+1)+"."+lastDay.get(Calendar.DATE);
     }
 }
