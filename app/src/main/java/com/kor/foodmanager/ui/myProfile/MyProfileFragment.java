@@ -114,6 +114,14 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         return fragment;
     }
 
+public static MyProfileFragment getNewInstance(List<String> picLincs) {
+        MyProfileFragment fragment = new MyProfileFragment();
+       if (fragment.user!=null){
+           fragment.user.setPictureLink(picLincs);
+       }
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
