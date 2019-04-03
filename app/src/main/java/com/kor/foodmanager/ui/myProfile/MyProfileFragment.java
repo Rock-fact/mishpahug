@@ -152,7 +152,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
         allergy_view.setText("Allergy"); //TODO add allergy
 
-        Picasso.get().load(presenter.loadAvatar(inputModeOn)).into(avatar);
+        Picasso.get().load(presenter.loadAvatar(inputModeOn)).error(R.drawable.logo).into(avatar);
 
         spinnerMaritalStatus.setOnItemSelectedListener(this);
         spinnerGender.setOnItemSelectedListener(this);
