@@ -10,5 +10,5 @@ public interface IEditPictureRepository {
     String getPicUrl(String name);
     String destroyPic(String name) throws IOException;
     List<String> getPictureLincs();
-
+    List<String> getPictureLincsFromServer();
 }

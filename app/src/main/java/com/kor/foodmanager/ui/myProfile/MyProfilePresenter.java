@@ -64,6 +64,14 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
         return editPictureRepository.getPictureLincs();
     }
 
+    public String loadAvatar(boolean inputModeOn) {
+        if(inputModeOn){
+            return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+        } else {
+            return editPictureRepository.getPictureLincsFromServer().get(0);
+        }
+    }
+
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{
 
         private boolean successful;

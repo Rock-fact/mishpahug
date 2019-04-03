@@ -143,7 +143,9 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
         maritalStatus_view.setText(user.getMaritalStatus());
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
         allergy_view.setText("Allergy"); //TODO add allergy
-        Picasso.get().load(user.getPictureLink().get(0)).into(avatar);
+
+        Picasso.get().load(presenter.loadAvatar(inputModeOn)).into(avatar);
+
         spinnerMaritalStatus.setOnItemSelectedListener(this);
         spinnerGender.setOnItemSelectedListener(this);
         spinnerFoodPreferences.setOnItemSelectedListener(this);

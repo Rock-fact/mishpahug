@@ -127,15 +127,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
 
-
-//        Map config = new HashMap();
-//        config.put("cloud_name", "newmishpahug");
-//        config.put("api_key", "893573575281754");
-//        config.put("api_secret","aYACgLcWNlBuKjxd5_McsRkf4pQ");
-//        MediaManager.init(getActivity(), config);
-
-//        MediaManager.init(this);
-
         setSupportActionBar(toolbar);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -148,8 +139,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     String fullName = userDto.getFirstName() + " " + userDto.getLastName();
                     guestName.setText(fullName);
                     imageView = drawerView.findViewById(R.id.imageView);
-                    Picasso.get().load(presenter.loadAvatar()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    Picasso.get().load(presenter.loadAvatar()).error(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
                             .networkPolicy(NetworkPolicy.NO_CACHE).into(imageView);
+                    Log.d(TAG, "ToolbarImg: "+presenter.loadAvatar());
                 }
             }
         };
@@ -322,6 +314,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     protected void onResume() {
         super.onResume();
         presenter.setNavigator(navigator);
+
     }
 
     @Override

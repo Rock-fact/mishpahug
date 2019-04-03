@@ -7,6 +7,8 @@ import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.ui.editPicture.IEditPicture;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import ru.terrakok.cicerone.Navigator;
@@ -92,7 +94,12 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
 
     public String loadAvatar() {
         if(authRepository.getToken()!=null) {
-            return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+            List<String> tmp = authRepository.getUser().getPictureLink();
+            if(tmp!=null){
+                return tmp.get(0);
+            } else {
+                return "error";
+            }
         } else {
             return "error";
         }
