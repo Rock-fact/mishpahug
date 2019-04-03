@@ -91,6 +91,10 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public String loadAvatar() {
-        return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+        if(authRepository.getToken()!=null) {
+            return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+        } else {
+            return "error";
+        }
     }
 }
