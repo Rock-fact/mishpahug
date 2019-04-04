@@ -83,7 +83,6 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
     @Override
     public void showCalendar(Collection<CalendarDay> myEvents, Collection<CalendarDay> subscribedEvents){
-        calendarView.setDynamicHeightEnabled(true);
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_my_event,myEvents));
         calendarView.addDecorator(new EventDecorator(R.drawable.calendar_subscribed_event,subscribedEvents));
 //        TitleFormatter customTitleFormatter = new TitleFormatter() {

@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -26,6 +27,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class LoginFragment extends MvpAppCompatFragment implements ILogin {
     @InjectPresenter LoginPresenter presenter;
@@ -69,11 +72,20 @@ public class LoginFragment extends MvpAppCompatFragment implements ILogin {
     public void loginBtnClicked(){
         String email = inputEmail.getText().toString();
         String password = inputPassword.getText().toString();
+        hideKeyboard();
         presenter.login(email,password);
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(loginBtn.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @OnClick(R.id.regBtn)
     public void regBtnClicked(){
+        hideKeyboard();
         presenter.registration();
     }
 
