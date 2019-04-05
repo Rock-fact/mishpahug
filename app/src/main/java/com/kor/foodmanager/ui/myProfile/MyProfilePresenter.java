@@ -66,9 +66,9 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
 
     public String loadAvatar(boolean inputModeOn) {
         if(inputModeOn){
-            return editPictureRepository.getPicUrl(MainActivity.AVATAR_PICTURE);
+            return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
         } else {
-            return editPictureRepository.getPictureLincsFromServer().get(0);
+            return editPictureRepository.cropForAvatar(editPictureRepository.getPictureLincsFromServer().get(0));
         }
     }
 

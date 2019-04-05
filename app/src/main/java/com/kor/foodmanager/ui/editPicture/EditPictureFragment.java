@@ -82,7 +82,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
-        rc.error(R.drawable.logo).transform(new CropCircleTransformation()).into(avatar);
+        rc.error(R.drawable.logo).into(avatar);
 
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
             Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
@@ -91,7 +91,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }
-        rc.error(R.drawable.logo).fit().into(eventBanner);
+        rc.error(R.drawable.logo).into(eventBanner);
     }
 
     @Override
@@ -128,14 +128,16 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                 requestCode == EVENT_BANNER_EDIT_REQUEST) {
             Uri picUri = data.getData();
             if (picUri != null) {
-                RequestCreator rc = Picasso.get().load(picUri);
+                //RequestCreator rc = Picasso.get().load(picUri);
                 presenter.loadImage(requestCode, picUri);
                 switch (requestCode) {
                     case AVATAR_EDIT_REQUEST:
-                        rc.transform(new CropCircleTransformation()).into(avatar);
+                        Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).into(avatar);
+                        //rc.transform(new CropCircleTransformation()).into(avatar);
                         break;
                     case EVENT_BANNER_EDIT_REQUEST:
-                        rc.fit().into(eventBanner);
+                        Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).into(eventBanner);
+                        //rc.fit().into(eventBanner);
                         break;
                 }
 

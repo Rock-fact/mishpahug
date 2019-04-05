@@ -11,4 +11,6 @@ public interface IEditPictureRepository {
     String destroyPic(String name) throws IOException;
     List<String> getPictureLincs();
     List<String> getPictureLincsFromServer();
+    String cropForAvatar (String loadedImg);
+    String cropForBanner (String loadedImg);
 }

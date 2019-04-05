@@ -96,7 +96,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
         if(authRepository.getToken()!=null) {
             List<String> tmp = authRepository.getUser().getPictureLink();
             if(tmp!=null&&tmp.size()>0){
-                return tmp.get(0);
+                return editPictureRepository.cropForAvatar(tmp.get(0));
             } else {
                 return "error";
             }

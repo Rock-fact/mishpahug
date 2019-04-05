@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.cloudinary.Transformation;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
@@ -64,8 +65,8 @@ public class EditPictureRepository implements IEditPictureRepository{
     @Override
     public List<String> getPictureLincs() {
         List<String> links = new ArrayList<>();
-        links.add(0, getPicUrl(MainActivity.AVATAR_PICTURE));
-        links.add(1, getPicUrl(MainActivity.EVENT_BANNER_PICTURE));
+        links.add(0, cropForAvatar(MainActivity.AVATAR_PICTURE));
+        links.add(1, cropForBanner(MainActivity.EVENT_BANNER_PICTURE));
         return links;
     }
 
@@ -84,6 +85,27 @@ public class EditPictureRepository implements IEditPictureRepository{
             Log.d("LINKSLIST", "adding 1: "+links.get(0)+" "+links.get(1)+ " size: "+links.size());
         }
         return links;
+    }
+
+    @Override
+    public String cropForAvatar(String loadedImg) {
+        if(public_id==null) {
+            public_id = authRepository.getToken().substring(6);
+        }
+        return MediaManager.get().url()
+                .transformation(new Transformation()
+                .width(400).height(400).gravity("face").radius("max").crop("crop").chain()
+                .width(200).crop("scale")).generate(public_id.concat(loadedImg));
+    }
+
+    @Override
+    public String cropForBanner(String loadedImg) {
+        if(public_id==null) {
+            public_id = authRepository.getToken().substring(6);
+        }
+        return MediaManager.get().url()
+                .transformation(new Transformation().width(350).height(170)
+                        .crop("fit")).generate(public_id.concat(loadedImg));
     }
 
 
