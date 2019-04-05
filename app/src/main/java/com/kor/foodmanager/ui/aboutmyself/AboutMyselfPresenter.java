@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.facebook.AccessToken;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.login.ILoginInteractor;
 import com.kor.foodmanager.data.login.LoginException;
@@ -89,11 +90,14 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
     private class RegistrationTask extends AsyncTask<Void, Void, String> {
         private String email, password;
+        private String token=AccessToken.getCurrentAccessToken().getToken();
         private Boolean isSuccess;
 
         public RegistrationTask(String email, String password) {
-            this.email = email;
-            this.password = password;
+            if (token==null) {
+                this.email = email;
+                this.password = password;
+            }
         }
         @Override
         protected void onPreExecute() {
@@ -103,7 +107,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
+                if (token==null)
                 interactor.registration(email, password);
+                else interactor.registration(token);
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";
@@ -159,7 +165,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected void onPostExecute(String s) {
             if (isSuccess) {
                 Log.d("Registration", "Update is"+isSuccess);
-                new LoginTask(email, password).execute();
+                String token=AccessToken.getCurrentAccessToken().getToken();
+                if (token==null) new LoginTask(email, password).execute();
+                else new LoginTask(token).execute();
             } else {
                 router.showSystemMessage(s);
             }
@@ -167,11 +175,15 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
     }
     private class LoginTask extends AsyncTask<Void,Void,String> {
         private String email, password;
+        private String token;
         private Boolean isSuccess;
 
         public LoginTask(String email, String password) {
             this.email = email;
             this.password = password;
+        }
+        public LoginTask(String token) {
+            this.token = token;
         }
 
         @Override
@@ -183,7 +195,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
+                if (token==null)
                 interactor.login(email, password);
+                else interactor.login(token);
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";

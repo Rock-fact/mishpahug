@@ -39,6 +39,10 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         }
     }
 
+    public void login(String token) {
+        new LoginTask(token).execute();
+    }
+
     public void registration(){
         router.navigateTo(PERSONALPROFILE_FRAGMENT_NEW);
     }
@@ -53,11 +57,15 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
 
     private class LoginTask extends AsyncTask<Void,Void,String> {
         private String email, password;
+        private String token;
         private Boolean isSuccess;
 
         public LoginTask(String email, String password) {
             this.email = email;
             this.password = password;
+        }
+        public LoginTask(String token) {
+            this.token = token;
         }
 
         @Override
@@ -69,7 +77,8 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
-                interactor.login(email, password);
+                if (token==null)interactor.login(email, password);
+                else interactor.login(token);
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";
@@ -87,9 +96,9 @@ public class LoginPresenter extends MvpPresenter<ILogin> {
             if(isSuccess){
                 router.newRootScreen(EVENT_LIST_SCREEN);
             }else{
-                getViewState().showError(s);
+                if (token==null) getViewState().showError(s);
+                else registration();
             }
-
         }
     }
 }

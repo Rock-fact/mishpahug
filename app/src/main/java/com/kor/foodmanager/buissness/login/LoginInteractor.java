@@ -37,6 +37,12 @@ public class LoginInteractor implements ILoginInteractor{
         authRepository.saveToken(token);
         authRepository.saveUser(userDto);
     }
+    @Override
+    public void login(String token) throws LoginException, IOException {
+        UserDto userDto = loginRepository.login(token);
+        authRepository.saveToken(token);
+        authRepository.saveUser(userDto);
+    }
 
     @Override
     public void registration(String email, String password) throws LoginException, IOException {
@@ -45,6 +51,12 @@ public class LoginInteractor implements ILoginInteractor{
         StaticfieldsDto staticfieldsDto = loginRepository.registration(token);
         authRepository.saveToken(token);
     }
+    @Override
+    public void registration(String token) throws LoginException, IOException {
+        StaticfieldsDto staticfieldsDto = loginRepository.registration(token);
+        authRepository.saveToken(token);
+    }
+
 
     @Override
     public void validate(String email, String password) throws EmailValidException, PasswordValidException {
