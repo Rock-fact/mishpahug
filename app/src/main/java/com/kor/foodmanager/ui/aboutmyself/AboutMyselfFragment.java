@@ -49,7 +49,6 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
 
     private UserDto user;
-    private boolean isNew;
     private StaticfieldsDto staticFields;
 
     @BindView(R.id.editPictures)
@@ -74,12 +73,11 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     String email;
     String password;
 
-    public static AboutMyselfFragment getNewInstance(UserDtoWithEmail user, boolean isNew) {
+    public static AboutMyselfFragment getNewInstance(UserDtoWithEmail user) {
         AboutMyselfFragment fragment = new AboutMyselfFragment();
         fragment.user = user.getUser();
         fragment.email = user.getEmail();
         fragment.password = user.getPassword();
-        fragment.isNew = isNew;
         return fragment;
     }
 
@@ -89,7 +87,6 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         staticFields = new StaticfieldsDto();
         if (savedInstanceState != null) {
             user = (UserDto) savedInstanceState.getSerializable("user");
-            isNew = savedInstanceState.getBoolean("isNew");
             email = savedInstanceState.getString("email");
             password = savedInstanceState.getString("password");
         }
@@ -99,7 +96,6 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("user", user);
-        outState.putBoolean("isNew", isNew);
         outState.putString("email", email);
         outState.putString("password", password);
     }
@@ -175,7 +171,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
             List<String> picture =new ArrayList<>();
             picture.add("https://i.imgur.com/vaZKZcz.jpg");
             user.setPictureLink(picture);
-            Log.d("registration", "onClickSaveBtn: "+user.toString());
+            //TODO picture link
             presenter.registrationAndUpdateUserProfile(email, password,user);
 
         } else {

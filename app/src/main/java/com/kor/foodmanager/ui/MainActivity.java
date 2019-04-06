@@ -273,11 +273,14 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                         return new CalendarFragment();
                     }
                 case ABOUTMYSELF_FRAGMENT_NEW:
-                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data, true);
+                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data);
                 case PERSONALPROFILE_FRAGMENT_NEW:
+                    if (data==null)
                     return new PersonalProfileFragment();
+                    else
+                        return PersonalProfileFragment.getNewInstance((UserDtoWithEmail) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
-                    return ContactInfoFragment.getNewInstance((UserDto) data, true);
+                    return ContactInfoFragment.getNewInstance((UserDtoWithEmail) data);
                 case EVENT_INFO_SCREEN:
                     return GuestEventInfoFragment.getNewInstance((EventDto) data);
                 case PARTICIPATION_LIST_SCREEN:

@@ -9,6 +9,7 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
+import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 
 
 import javax.inject.Inject;
@@ -33,7 +34,7 @@ public class PersonalProfilePresenter extends MvpPresenter<IPersonalProfileFragm
         new GetStaticFieldsTask().execute();
     }
 
-    public void startContactInfo(UserDto user){
+    public void startContactInfo(UserDtoWithEmail user){
         router.navigateTo(MainActivity.CONTACTINFO_FRAGMENT_NEW, user);
     }
 

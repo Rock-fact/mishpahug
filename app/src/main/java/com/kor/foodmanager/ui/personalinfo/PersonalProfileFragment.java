@@ -28,6 +28,7 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.IToolbar;
+import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 
 
@@ -47,9 +48,10 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     @InjectPresenter
     PersonalProfilePresenter presenter;
 
+    private UserDtoWithEmail userDtoWithEmail;
     private UserDto user;
+    private Boolean isFacebook = false;
     private StaticfieldsDto staticFields;
-    private boolean isNew=true;
     private DatePickerDialog datePickerDialog;
     private IToolbar iToolbar;
 
@@ -84,13 +86,14 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     Unbinder unbinder;
 
     public PersonalProfileFragment() {
-        user=new UserDto();
+        userDtoWithEmail = new UserDtoWithEmail();
     }
 
-    public static PersonalProfileFragment getNewInstance(UserDto user, boolean isNew) {
+    public static PersonalProfileFragment getNewInstance(UserDtoWithEmail user, Boolean isFacebook) {
         PersonalProfileFragment fragment = new PersonalProfileFragment();
-        fragment.user = user;
-        fragment.isNew = isNew;
+        fragment.userDtoWithEmail = user;
+        fragment.user = user.getUser();
+        fragment.isFacebook = true;
         return fragment;
     }
 
@@ -98,16 +101,14 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
         if (savedInstanceState != null) {
-            user = (UserDto) savedInstanceState.getSerializable("user");
-            isNew = savedInstanceState.getBoolean("isNew");
+            userDtoWithEmail = (UserDtoWithEmail) savedInstanceState.getSerializable("user");
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("user", user);
-        outState.putBoolean("isNew", isNew);
+        outState.putSerializable("user", userDtoWithEmail);
     }
 
 
@@ -118,25 +119,24 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         unbinder = ButterKnife.bind(this, view);
         updateSpinersValues();
 
-
-            fillFields();
-
-        Log.d("Spinner", "onCreateView: "+staticFields.getGender().toString());
+        if (isFacebook) fillFields();
 
         spinnerConfession.setOnItemSelectedListener(this);
         spinnerGender.setOnItemSelectedListener(this);
 
-        iToolbar=(IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Personal Info",false,true,false);
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Personal Info", false, true, false);
 
         return view;
     }
-    public void fillFields(){
+
+    public void fillFields() {
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         dateOfBirth.setText(user.getDateOfBirth());
         confession.setText(user.getConfession());
         gender.setText(user.getGender());
+        //TODO picture link
     }
 
     @Override
@@ -221,7 +221,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
             user.setDateOfBirth(dateOfBirth.getText().toString());
             user.setGender(gender.getText().toString());
             user.setConfession(confession.getText().toString());
-            presenter.startContactInfo(user);
+            presenter.startContactInfo(userDtoWithEmail);
         } else {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Fill the further fields")

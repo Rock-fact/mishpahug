@@ -1,5 +1,7 @@
 package com.kor.foodmanager.data.login;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.model.ErrorDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
@@ -38,6 +40,7 @@ public class LoginRepository implements ILoginRepository {
             StaticfieldsDto staticfieldsDto = response.body();
             return staticfieldsDto;
         }else {
+            Log.d("Facebook", "registration: "+response.errorBody().string());
             ErrorDto errorDto = gson.fromJson(response.errorBody().string(),ErrorDto.class);
             throw new LoginException(errorDto.getCode()+ ": "+errorDto.getMessage());
         }

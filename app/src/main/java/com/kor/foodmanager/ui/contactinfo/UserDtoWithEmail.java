@@ -2,7 +2,9 @@ package com.kor.foodmanager.ui.contactinfo;
 
 import com.kor.foodmanager.data.model.UserDto;
 
-public class UserDtoWithEmail {
+import java.io.Serializable;
+
+public class UserDtoWithEmail implements Serializable {
     String email;
     String password;
     UserDto user;
@@ -11,6 +13,10 @@ public class UserDtoWithEmail {
         this.email = email;
         this.password = password;
         this.user = user;
+    }
+
+    public UserDtoWithEmail() {
+        this.user=new UserDto();
     }
 
     public String getEmail() {

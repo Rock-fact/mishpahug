@@ -81,6 +81,7 @@ public class LoginFragment extends MvpAppCompatFragment implements ILogin {
         callbackManager=CallbackManager.Factory.create();
 
         loginFacebookBtn.setFragment(this);
+        loginFacebookBtn.setReadPermissions("email", "user_birthday","user_posts");
 
         loginFacebookBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
