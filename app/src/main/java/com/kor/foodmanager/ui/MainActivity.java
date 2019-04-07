@@ -67,6 +67,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Credentials;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
@@ -124,6 +125,8 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String token="EAARNzSYPUzQBALoPgxqb6p9HL6JqIE0OxIo3uTjHcN7jZCU9zYrM5e6oamAOHLoXRFpPHvgQOlbzNR1eesldL6KejC4KLSkx93Qq71wjvZBOmhZAwjZAsPwWIoL3VaerVHMFxBg6Ye6tEZAPQKlchExz4mnG3ZCxhCmyRgaZCn0SCjKkUJiK7N7yX8QlTABPx17cB6fElEGu9KmfEipSKI67SQuXglPlhwZD";
+       Log.d("Facebook", "onCreate: "+Credentials.basic(token,""));
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.kor.foodmanager",
