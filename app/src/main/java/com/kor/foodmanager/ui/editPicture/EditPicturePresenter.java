@@ -64,8 +64,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         protected Void doInBackground(Void... voids) {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                    res = editPictureRepository
-                            .cropForAvatar(editPictureRepository.uploadPic(picUri, MainActivity.AVATAR_PICTURE));
+                    res = editPictureRepository.uploadPic(picUri, MainActivity.AVATAR_PICTURE);
 
                     Log.d("MY_TAG", "doInBackground: "+ res);
                     break;

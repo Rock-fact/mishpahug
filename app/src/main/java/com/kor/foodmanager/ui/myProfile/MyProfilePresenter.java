@@ -61,14 +61,14 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
     }
 
     public List<String> getPictureLincs() {
-        return editPictureRepository.getPictureLincs();
+        return editPictureRepository.getPictureLincsFromServer();
     }
 
     public String loadAvatar(boolean inputModeOn) {
         if(inputModeOn){
-            return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
+            return editPictureRepository.getPictureLincs().get(0);
         } else {
-            return editPictureRepository.cropForAvatar(editPictureRepository.getPictureLincsFromServer().get(0));
+            return editPictureRepository.getPictureLincsFromServer().get(0);
         }
     }
 
