@@ -12,4 +12,5 @@ public interface ILoginInteractor {
     void registration(String email, String password) throws LoginException, IOException;
     void registration(String token) throws LoginException, IOException;
     void validate(String email, String password) throws EmailValidException, PasswordValidException;
+    void validate(String email) throws EmailValidException, PasswordValidException;
 }

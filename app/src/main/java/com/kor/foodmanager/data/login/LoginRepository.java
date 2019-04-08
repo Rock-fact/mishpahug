@@ -1,5 +1,6 @@
 package com.kor.foodmanager.data.login;
 
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;

@@ -32,6 +32,8 @@ public class ContactInfoPresenter extends MvpPresenter<IContactInfoFragment> {
     }
     public void validate(String email, String password) throws EmailValidException, PasswordValidException {
             interactor.validate(email,password);
-
+    }
+    public void validate(String email) throws EmailValidException, PasswordValidException {
+        interactor.validate(email);
     }
 }

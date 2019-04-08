@@ -63,4 +63,9 @@ public class LoginInteractor implements ILoginInteractor{
         validator.checkEmail(email);
         validator.checkPassword(password);
     }
+
+    @Override
+    public void validate(String email) throws EmailValidException {
+        validator.checkEmail(email);
+    }
 }

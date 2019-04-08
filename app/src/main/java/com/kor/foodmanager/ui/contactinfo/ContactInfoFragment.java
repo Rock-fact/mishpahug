@@ -54,7 +54,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     @BindView(R.id.next_btn)
     Button nextBtn;
     Unbinder unbinder;
-    Boolean isFacebook=false;
+    Boolean isFacebook=AccessToken.getCurrentAccessToken()!=null;
 
     private IToolbar iToolbar;
 
@@ -84,7 +84,6 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         View view = inflater.inflate(R.layout.contact_info, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        if (AccessToken.getCurrentAccessToken().getToken()!=null) isFacebook=true;
         if (isFacebook&& userDtoWithEmail.getEmail()!=null&& !userDtoWithEmail.getEmail().isEmpty())
         emailInput.setText(userDtoWithEmail.getEmail());
 
@@ -118,7 +117,8 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
 
         if (str.equals("")) {
             try {
-                presenter.validate(emailInput.getText().toString(),password.getText().toString());
+                if (isFacebook) presenter.validate(emailInput.getText().toString());
+                else presenter.validate(emailInput.getText().toString(),password.getText().toString());
                 userDtoWithEmail.getUser().setPhoneNumber(phoneInput.getText().toString());
                 userDtoWithEmail.setEmail(emailInput.getText().toString());
                 userDtoWithEmail.setPassword(password.getText().toString());
@@ -138,7 +138,6 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         }
 
     }
-
 
     @Override
     public void showEmailError(String error) {

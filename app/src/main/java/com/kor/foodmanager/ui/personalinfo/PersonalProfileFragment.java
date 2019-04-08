@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -50,7 +51,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
 
     private UserDtoWithEmail userDtoWithEmail;
     private UserDto user;
-    private Boolean isFacebook = false;
+    private Boolean isFacebook = AccessToken.getCurrentAccessToken()!=null;
     private StaticfieldsDto staticFields;
     private DatePickerDialog datePickerDialog;
     private IToolbar iToolbar;
@@ -87,6 +88,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
 
     public PersonalProfileFragment() {
         userDtoWithEmail = new UserDtoWithEmail();
+        user=userDtoWithEmail.getUser();
     }
 
     public static PersonalProfileFragment getNewInstance(UserDtoWithEmail user, Boolean isFacebook) {

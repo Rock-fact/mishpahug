@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -50,6 +51,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
     private UserDto user;
     private StaticfieldsDto staticFields;
+    private Boolean isFacebook= AccessToken.getCurrentAccessToken()!=null;
 
     @BindView(R.id.editPictures)
     TextView editPicture;
@@ -105,6 +107,9 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.about_myself, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        if (isFacebook && user.getDescription()!=null)
+            description.setText(user.getDescription());
 
         spinnerFood.setOnItemSelectedListener(this);
         spinnerMarital.setOnItemSelectedListener(this);
@@ -172,7 +177,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
             picture.add("https://i.imgur.com/vaZKZcz.jpg");
             user.setPictureLink(picture);
             //TODO picture link
-            presenter.registrationAndUpdateUserProfile(email, password,user);
+            presenter.registrationAndUpdateUserProfile(email, password,user,isFacebook);
 
         } else {
             new AlertDialog.Builder(getActivity())
