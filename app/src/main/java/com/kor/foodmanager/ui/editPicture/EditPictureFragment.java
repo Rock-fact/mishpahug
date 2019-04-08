@@ -68,6 +68,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         return view;
     }
 
+
     @Override
     public void onDestroy() {
         unbinder.unbind();
@@ -79,6 +80,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
             Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
             rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST))
                     .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
+            Log.d("MY_LOADER", "loadImages: "+presenter.getPicUrl(AVATAR_EDIT_REQUEST));
         } else {
             rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
         }

@@ -155,7 +155,6 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         allergy_view.setText("Allergy"); //TODO add allergy
 
         Picasso.get().invalidate(presenter.loadAvatar(user));
-//        Picasso.get().invalidate(presenter.loadAvatar(false));
         Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
 
@@ -196,6 +195,9 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
     public void viewMode() {
         wrapperForInput.setVisibility(View.GONE);
         wrapperForView.setVisibility(View.VISIBLE);
+        Picasso.get().invalidate(presenter.loadAvatar(user));
+        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
         inputModeOn = false;
     }
 
@@ -257,7 +259,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
             maritalStatus_view.setText(maritalStatus.getText().toString());
             foodPreferences_view.setText(foodPreferences.getText().toString());
             allergy_view.setText(allergy.getText().toString());
-            presenter.viewMode();
+//            presenter.viewMode();
 
             user.setFirstName(firstName_view.getText().toString());
             user.setLastName(secondName_view.getText().toString());
@@ -268,6 +270,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
             user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
             user.setPictureLink(presenter.getPictureLincs());
             presenter.updateUserProfile(user);
+            presenter.viewMode();
         } else {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Fill the further fields")
@@ -277,6 +280,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
                     .show();
         }
     }
+
+
 
     @Override
     public void hideProgressBar() {
