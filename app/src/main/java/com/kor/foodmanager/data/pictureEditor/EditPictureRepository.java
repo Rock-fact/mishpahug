@@ -23,6 +23,7 @@ import java.util.Map;
 public class EditPictureRepository implements IEditPictureRepository{
     private IAuthRepository authRepository;
     private String public_id;
+    private long version;
 
     public EditPictureRepository(Context context, IAuthRepository authRepository) {
         Map config = new HashMap();
@@ -31,15 +32,46 @@ public class EditPictureRepository implements IEditPictureRepository{
         config.put("api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
         MediaManager.init(context, config);
         this.authRepository = authRepository;
+        version=0;
     }
 
     @Override
     public String uploadPic(Uri uri, String name) {
         public_id = authRepository.getToken().substring(6);
-        String res = MediaManager.get().upload(uri).option("public_id",public_id.concat(name))
+        String res = MediaManager.get().upload(uri)
+                .option("public_id",public_id.concat(name))
                 .option("invalidate", true)
-                .option("overwrite", true).dispatch();
-        Log.d("LOADER", "uploadPic: "+res);
+                .option("overwrite", true)
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        Log.d("MY_LOADER", "onSuccess version: "+resultData.get("version"));
+                        Log.d("MY_LOADER", "onSuccess data: "+resultData.toString());
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                })
+                .dispatch();
+        Log.d("LOADER", "uploadPic: "+Uri.parse(res));
+
         return res;
     }
 
@@ -49,7 +81,9 @@ public class EditPictureRepository implements IEditPictureRepository{
             public_id = authRepository.getToken().substring(6);
         }
         Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
-        return MediaManager.get().url().generate(public_id.concat(name));
+        return MediaManager.get().url()
+                .version(version++)
+                .generate(public_id.concat(name));
     }
 
     @Override
@@ -97,6 +131,7 @@ public class EditPictureRepository implements IEditPictureRepository{
 //        }
 
         return MediaManager.get().url()
+                .version(version++)
                 .transformation(new Transformation()
                 .width(500).height(500).crop("thumb").gravity("face").radius("max").fetchFormat("png"))
                 .generate(loadedImg);
@@ -110,6 +145,7 @@ public class EditPictureRepository implements IEditPictureRepository{
         return MediaManager.get().url()
                 .transformation(new Transformation().width(350).height(170)
                         .crop("scale").fetchFormat("png")).generate(loadedImg);
+
     }
 
 

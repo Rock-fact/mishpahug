@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +145,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
+        Log.d("HI_TAG", "onCreateView: ");
         unbinder = ButterKnife.bind(this, view);
         firstName_view.setText(user.getFirstName());
         secondName_view.setText(user.getLastName());
@@ -155,7 +157,6 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         allergy_view.setText("Allergy"); //TODO add allergy
 
         Picasso.get().invalidate(presenter.loadAvatar(user));
-//        Picasso.get().invalidate(presenter.loadAvatar(false));
         Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
 
@@ -187,6 +188,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         super.onStart();
     }
 
+
+
     public void updateStaticFields(StaticfieldsDto staticFields) {
         this.staticFields = staticFields;
         updateSpinersValues();
@@ -196,6 +199,9 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
     public void viewMode() {
         wrapperForInput.setVisibility(View.GONE);
         wrapperForView.setVisibility(View.VISIBLE);
+        Picasso.get().invalidate(presenter.loadAvatar(user));
+        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
         inputModeOn = false;
     }
 
@@ -216,6 +222,9 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         maritalStatus.setText(maritalStatus_view.getText().toString());
         foodPreferences.setText(foodPreferences_view.getText().toString());
         allergy.setText(allergy_view.getText().toString());
+        Picasso.get().invalidate(presenter.loadAvatar(user));
+        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
     }
 
     @Override
@@ -257,7 +266,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
             maritalStatus_view.setText(maritalStatus.getText().toString());
             foodPreferences_view.setText(foodPreferences.getText().toString());
             allergy_view.setText(allergy.getText().toString());
-            presenter.viewMode();
+//            presenter.viewMode();
 
             user.setFirstName(firstName_view.getText().toString());
             user.setLastName(secondName_view.getText().toString());
@@ -268,6 +277,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
             user.setFoodPreferences(UserInfo.inList(foodPreferences_view.getText().toString()));
             user.setPictureLink(presenter.getPictureLincs());
             presenter.updateUserProfile(user);
+            presenter.viewMode();
         } else {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Fill the further fields")
@@ -277,6 +287,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
                     .show();
         }
     }
+
+
 
     @Override
     public void hideProgressBar() {
