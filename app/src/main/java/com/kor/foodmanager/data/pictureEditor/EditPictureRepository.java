@@ -92,10 +92,16 @@ public class EditPictureRepository implements IEditPictureRepository{
         if(public_id==null) {
             public_id = authRepository.getToken().substring(6);
         }
+//        return MediaManager.get().url()
+//                .transformation(new Transformation()
+//                .width(400).height(400).gravity("face").radius("max").crop("crop").chain()
+//                .width(200).crop("scale")).generate(public_id.concat(loadedImg));
         return MediaManager.get().url()
                 .transformation(new Transformation()
-                .width(400).height(400).gravity("face").radius("max").crop("crop").chain()
-                .width(200).crop("scale")).generate(public_id.concat(loadedImg));
+                .width(500).height(500).gravity("face").radius("max").crop("thumb"))
+                .generate(public_id.concat(loadedImg));
+
+
     }
 
     @Override
