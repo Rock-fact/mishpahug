@@ -36,9 +36,12 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
     public String getPicUrl(int position) {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
+                //return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
+                return editPictureRepository.getPictureLincs().get(0);
+
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                return editPictureRepository.cropForBanner(MainActivity.EVENT_BANNER_PICTURE);
+                //return editPictureRepository.cropForBanner(MainActivity.EVENT_BANNER_PICTURE);
+                return editPictureRepository.getPictureLincs().get(1);
             default:
                 return null;
         }

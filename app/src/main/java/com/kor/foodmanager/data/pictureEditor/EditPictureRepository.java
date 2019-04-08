@@ -65,8 +65,11 @@ public class EditPictureRepository implements IEditPictureRepository{
     @Override
     public List<String> getPictureLincs() {
         List<String> links = new ArrayList<>();
-        links.add(0, cropForAvatar(MainActivity.AVATAR_PICTURE));
-        links.add(1, cropForBanner(MainActivity.EVENT_BANNER_PICTURE));
+        if(public_id==null) {
+            public_id = authRepository.getToken().substring(6);
+        }
+        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
+        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
         return links;
     }
 
@@ -77,11 +80,11 @@ public class EditPictureRepository implements IEditPictureRepository{
         links.add(1,"none");
         Log.d("LINKSLIST", "default: "+links.get(0)+" "+links.get(1)+ " size: "+links.size());
         if(authRepository.getUser().getPictureLink().size()>0) {
-            links.add(0, authRepository.getUser().getPictureLink().get(0));
+            links.add(0, cropForAvatar(authRepository.getUser().getPictureLink().get(0)));
             Log.d("LINKSLIST", "adding 0: "+links.get(0)+" "+links.get(1)+ " size: "+links.size());
         }
         if(authRepository.getUser().getPictureLink().size()>1) {
-            links.add(1, authRepository.getUser().getPictureLink().get(1));
+            links.add(1, cropForBanner(authRepository.getUser().getPictureLink().get(1)));
             Log.d("LINKSLIST", "adding 1: "+links.get(0)+" "+links.get(1)+ " size: "+links.size());
         }
         return links;
@@ -89,29 +92,24 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String cropForAvatar(String loadedImg) {
-        if(public_id==null) {
-            public_id = authRepository.getToken().substring(6);
-        }
-//        return MediaManager.get().url()
-//                .transformation(new Transformation()
-//                .width(400).height(400).gravity("face").radius("max").crop("crop").chain()
-//                .width(200).crop("scale")).generate(public_id.concat(loadedImg));
+//        if(public_id==null) {
+//            public_id = authRepository.getToken().substring(6);
+//        }
+
         return MediaManager.get().url()
                 .transformation(new Transformation()
-                .width(500).height(500).gravity("face").radius("max").crop("thumb"))
-                .generate(public_id.concat(loadedImg));
-
-
+                .width(500).height(500).crop("thumb").gravity("face").radius("max").fetchFormat("png"))
+                .generate(loadedImg);
     }
 
     @Override
     public String cropForBanner(String loadedImg) {
-        if(public_id==null) {
-            public_id = authRepository.getToken().substring(6);
-        }
+//        if(public_id==null) {
+//            public_id = authRepository.getToken().substring(6);
+//        }
         return MediaManager.get().url()
                 .transformation(new Transformation().width(350).height(170)
-                        .crop("fit")).generate(public_id.concat(loadedImg));
+                        .crop("scale").fetchFormat("png")).generate(loadedImg);
     }
 
 
