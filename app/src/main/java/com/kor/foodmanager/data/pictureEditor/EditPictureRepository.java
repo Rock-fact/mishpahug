@@ -39,7 +39,8 @@ public class EditPictureRepository implements IEditPictureRepository{
         String res = MediaManager.get().upload(uri).option("public_id",public_id.concat(name))
                 .option("invalidate", true)
                 .option("overwrite", true).dispatch();
-        Log.d("LOADER", "uploadPic: "+res);
+        Log.d("LOADER", "uploadPic: "+Uri.parse(res));
+
         return res;
     }
 
