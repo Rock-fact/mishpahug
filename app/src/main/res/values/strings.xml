@@ -1,4 +1,7 @@
 <resources>
+    <string name="facebook_app_id">1211443409015604</string>
+    <string name="fb_login_protocol_scheme">fb1211443409015604</string>
+
     <string name="app_name"></string>
     <string name="title_registration">Registration</string>
     <string name="change_name"><u>Change name</u></string>

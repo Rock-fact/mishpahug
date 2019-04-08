@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -49,8 +50,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
 
     private UserDto user;
-    private boolean isNew;
     private StaticfieldsDto staticFields;
+    private Boolean isFacebook= AccessToken.getCurrentAccessToken()!=null;
 
     @BindView(R.id.editPictures)
     TextView editPicture;
@@ -58,12 +59,16 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     EditText marital;
     @BindView(R.id.food)
     EditText food;
+    @BindView(R.id.languages)
+    EditText languages;
     @BindView(R.id.wordsAbout)
     EditText description;
     @BindView(R.id.spinnerMarital)
     Spinner spinnerMarital;
     @BindView(R.id.spinnerFood)
     Spinner spinnerFood;
+    @BindView(R.id.spinnerLanguages)
+    Spinner spinnerLanguages;
     @BindView(R.id.save_btn)
     Button saveBtn;
     @BindView(R.id.progressFrame)
@@ -74,12 +79,11 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     String email;
     String password;
 
-    public static AboutMyselfFragment getNewInstance(UserDtoWithEmail user, boolean isNew) {
+    public static AboutMyselfFragment getNewInstance(UserDtoWithEmail user) {
         AboutMyselfFragment fragment = new AboutMyselfFragment();
         fragment.user = user.getUser();
         fragment.email = user.getEmail();
         fragment.password = user.getPassword();
-        fragment.isNew = isNew;
         return fragment;
     }
 
@@ -89,7 +93,6 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         staticFields = new StaticfieldsDto();
         if (savedInstanceState != null) {
             user = (UserDto) savedInstanceState.getSerializable("user");
-            isNew = savedInstanceState.getBoolean("isNew");
             email = savedInstanceState.getString("email");
             password = savedInstanceState.getString("password");
         }
@@ -99,7 +102,6 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("user", user);
-        outState.putBoolean("isNew", isNew);
         outState.putString("email", email);
         outState.putString("password", password);
     }
@@ -110,8 +112,13 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         View view = inflater.inflate(R.layout.about_myself, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        if (isFacebook && user.getDescription()!=null)
+            description.setText(user.getDescription());
+
         spinnerFood.setOnItemSelectedListener(this);
         spinnerMarital.setOnItemSelectedListener(this);
+        spinnerLanguages.setOnItemSelectedListener(this);
+
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("About myself", false, true, false);
 
@@ -134,6 +141,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     private void updateSpinersValues() {
         staticFields.getFoodPreferences().add(0, "");
         staticFields.getMaritalStatus().add(0, "");
+        staticFields.getLanguages().add(0,"");
 
         ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getMaritalStatus());
         maritalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -143,8 +151,13 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         foodPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFood.setAdapter(foodPreferenceAdapter);
 
+        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getLanguages());
+        languagesPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguages.setAdapter(languagesPreferenceAdapter);
+
         spinnerMarital.setSelection(0);
         spinnerFood.setSelection(0);
+        spinnerLanguages.setSelection(0);
     }
 
     @OnClick(R.id.editPictures)
@@ -162,21 +175,26 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         if (food.getText().toString().equals("")) {
             list.add("Food preferences");
         }
+        if (languages.getText().toString().equals("")) {
+            list.add("Languages");
+        }
         if (description.getText().toString().equals("")) {
             list.add("Few words about myself");
         }
+
         str = UserInfo.inLine(list);
         if (str.equals("")) {
             user.setFoodPreferences(UserInfo.inList(food.getText().toString()));
             user.setMaritalStatus(marital.getText().toString());
             user.setDescription(description.getText().toString());
+            user.setLanguages(UserInfo.inList(languages.getText().toString()));
 
 
             List<String> picture =new ArrayList<>();
             picture.add("https://i.imgur.com/vaZKZcz.jpg");
             user.setPictureLink(picture);
-            Log.d("registration", "onClickSaveBtn: "+user.toString());
-            presenter.registrationAndUpdateUserProfile(email, password,user);
+            //TODO picture link
+            presenter.registrationAndUpdateUserProfile(email, password,user,isFacebook);
 
         } else {
             new AlertDialog.Builder(getActivity())
@@ -213,6 +231,20 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
                     }
                 }
                 spinnerFood.setSelection(0);
+            }
+        } else if (parent.getId() == spinnerLanguages.getId()) {
+            if (position != 0) {
+                if (languages.getText().toString().equals("") || languages.getText() == null) {
+                    languages.setText(spinnerLanguages.getSelectedItem().toString());
+                    Log.d("Registration", "onItemSelected: "+languages.getText());
+                } else {
+                    if (languages.getText().toString().contains(spinnerLanguages.getSelectedItem().toString())) {
+                        languages.setText(spinnerLanguages.getSelectedItem().toString());
+                    } else {
+                        languages.setText(languages.getText().toString() + ", " + spinnerLanguages.getSelectedItem().toString());
+                    }
+                }
+                spinnerLanguages.setSelection(0);
             }
         }
     }

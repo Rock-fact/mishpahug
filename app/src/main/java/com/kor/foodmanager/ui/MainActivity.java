@@ -1,5 +1,8 @@
 package com.kor.foodmanager.ui;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +59,8 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +69,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Credentials;
 import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
@@ -124,6 +131,22 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String token="EAARNzSYPUzQBALoPgxqb6p9HL6JqIE0OxIo3uTjHcN7jZCU9zYrM5e6oamAOHLoXRFpPHvgQOlbzNR1eesldL6KejC4KLSkx93Qq71wjvZBOmhZAwjZAsPwWIoL3VaerVHMFxBg6Ye6tEZAPQKlchExz4mnG3ZCxhCmyRgaZCn0SCjKkUJiK7N7yX8QlTABPx17cB6fElEGu9KmfEipSKI67SQuXglPlhwZD";
+       Log.d("Facebook", "onCreate: "+Credentials.basic(token,""));
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.kor.foodmanager",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("Facebook KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
 
@@ -252,11 +275,14 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                         return new CalendarFragment();
                     }
                 case ABOUTMYSELF_FRAGMENT_NEW:
-                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data, true);
+                    return AboutMyselfFragment.getNewInstance((UserDtoWithEmail) data);
                 case PERSONALPROFILE_FRAGMENT_NEW:
+                    if (data==null)
                     return new PersonalProfileFragment();
+                    else
+                        return PersonalProfileFragment.getNewInstance((UserDtoWithEmail) data, true);
                 case CONTACTINFO_FRAGMENT_NEW:
-                    return ContactInfoFragment.getNewInstance((UserDto) data, true);
+                    return ContactInfoFragment.getNewInstance((UserDtoWithEmail) data);
                 case EVENT_INFO_SCREEN:
                     return GuestEventInfoFragment.getNewInstance((EventDto) data);
                 case PARTICIPATION_LIST_SCREEN:

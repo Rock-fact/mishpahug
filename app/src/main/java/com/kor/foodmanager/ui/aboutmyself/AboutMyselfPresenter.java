@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.facebook.AccessToken;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.login.ILoginInteractor;
 import com.kor.foodmanager.data.login.LoginException;
@@ -42,11 +43,11 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         interactor = App.get().loginComponent().getLoginInteractor();
     }
 
-    public void registrationAndUpdateUserProfile(String email, String password, UserDto user) {
+    public void registrationAndUpdateUserProfile(String email, String password, UserDto user, Boolean isFacebook) {
         this.user=user;
         this.email=email;
         this.password=password;
-        new RegistrationTask(email, password).execute();
+        new RegistrationTask(email, password, isFacebook).execute();
     }
 
     public void updateStaticFields() {
@@ -89,11 +90,14 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
     private class RegistrationTask extends AsyncTask<Void, Void, String> {
         private String email, password;
+        private Boolean isFacebook;
         private Boolean isSuccess;
 
-        public RegistrationTask(String email, String password) {
-            this.email = email;
-            this.password = password;
+        public RegistrationTask(String email, String password, Boolean isFacebook) {
+                this.email = email;
+                this.password = password;
+                this.isFacebook=isFacebook;
+
         }
         @Override
         protected void onPreExecute() {
@@ -103,7 +107,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
+                if (!isFacebook)
                 interactor.registration(email, password);
+                else interactor.registration(AccessToken.getCurrentAccessToken().getToken());
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";
@@ -120,7 +126,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
             getViewState().hideProgressFrame();
             if (isSuccess) {
                 Log.d("Registration", "Registration is "+isSuccess);
-                new UpdateUserProfileTask(user).execute();
+                new UpdateUserProfileTask(user, isFacebook).execute();
             } else getViewState().showError(s);
 
         }
@@ -130,9 +136,11 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
         private boolean isSuccess;
         private UserDto user;
+        private Boolean isFacebook;
 
-        public UpdateUserProfileTask(UserDto user) {
+        public UpdateUserProfileTask(UserDto user, Boolean isFacebook) {
             this.user = user;
+            this.isFacebook=isFacebook;
             isSuccess = true;
         }
 
@@ -159,7 +167,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected void onPostExecute(String s) {
             if (isSuccess) {
                 Log.d("Registration", "Update is"+isSuccess);
-                new LoginTask(email, password).execute();
+
+                if (!isFacebook) new LoginTask(email, password).execute();
+                else new LoginTask(isFacebook).execute();
             } else {
                 router.showSystemMessage(s);
             }
@@ -167,11 +177,18 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
     }
     private class LoginTask extends AsyncTask<Void,Void,String> {
         private String email, password;
+        private String token;
+        private Boolean isFacebook;
         private Boolean isSuccess;
 
         public LoginTask(String email, String password) {
             this.email = email;
             this.password = password;
+            isFacebook=false;
+        }
+        public LoginTask(Boolean isFacebook) {
+            this.token = AccessToken.getCurrentAccessToken().getToken();
+            this.isFacebook=true;
         }
 
         @Override
@@ -183,7 +200,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             String res = "OK";
             try {
+                if (!isFacebook)
                 interactor.login(email, password);
+                else interactor.login(token);
                 isSuccess = true;
             } catch (IOException e) {
                 res = "Connection failed!";
@@ -203,7 +222,6 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
             }else{
                 getViewState().showError(s);
             }
-
         }
     }
 }

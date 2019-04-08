@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.buissness.login.ILoginInteractor;
 import com.kor.foodmanager.buissness.login.validator.EmailValidException;
@@ -41,8 +42,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     @InjectPresenter
     ContactInfoPresenter presenter;
 
-    private UserDto user;
-    private boolean isNew;
+    private UserDtoWithEmail userDtoWithEmail;
     @BindView(R.id.editPictures)
     TextView editPicture;
     @BindView(R.id.email)
@@ -54,29 +54,27 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     @BindView(R.id.next_btn)
     Button nextBtn;
     Unbinder unbinder;
+    Boolean isFacebook=AccessToken.getCurrentAccessToken()!=null;
 
     private IToolbar iToolbar;
 
-    public static ContactInfoFragment getNewInstance(UserDto user, boolean isNew) {
+    public static ContactInfoFragment getNewInstance(UserDtoWithEmail user) {
         ContactInfoFragment fragment = new ContactInfoFragment();
-        fragment.user = user;
-        fragment.isNew = isNew;
+        fragment.userDtoWithEmail = user;
         return fragment;
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            user = (UserDto) savedInstanceState.getSerializable("user");
-            isNew = savedInstanceState.getBoolean("isNew");
+            userDtoWithEmail = (UserDtoWithEmail) savedInstanceState.getSerializable("user");
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("user", user);
-        outState.putBoolean("isNew", isNew);
+        outState.putSerializable("user", userDtoWithEmail);
     }
 
 
@@ -85,6 +83,9 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.contact_info, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        if (isFacebook&& userDtoWithEmail.getEmail()!=null&& !userDtoWithEmail.getEmail().isEmpty())
+        emailInput.setText(userDtoWithEmail.getEmail());
 
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Contact Info", false, true, false);
@@ -105,7 +106,7 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         if (emailInput.getText().toString().equals("")) {
             list.add("email");
         }
-        if (password.getText().toString().equals("")) {
+        if (password.getText().toString().equals("") && !isFacebook) {
             list.add("password");
         }
         if (phoneInput.getText().toString().equals("")) {
@@ -116,9 +117,11 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
 
         if (str.equals("")) {
             try {
-                presenter.validate(emailInput.getText().toString(),password.getText().toString());
-                user.setPhoneNumber(phoneInput.getText().toString());
-                UserDtoWithEmail userDtoWithEmail = new UserDtoWithEmail(emailInput.getText().toString(), password.getText().toString(), user);
+                if (isFacebook) presenter.validate(emailInput.getText().toString());
+                else presenter.validate(emailInput.getText().toString(),password.getText().toString());
+                userDtoWithEmail.getUser().setPhoneNumber(phoneInput.getText().toString());
+                userDtoWithEmail.setEmail(emailInput.getText().toString());
+                userDtoWithEmail.setPassword(password.getText().toString());
                 presenter.startAboutMyself(userDtoWithEmail);
             } catch (EmailValidException e) {
                 showEmailError(e.getMessage());
@@ -135,7 +138,6 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
         }
 
     }
-
 
     @Override
     public void showEmailError(String error) {
