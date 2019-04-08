@@ -41,8 +41,8 @@ public class LoginRepository implements ILoginRepository {
             StaticfieldsDto staticfieldsDto = response.body();
             return staticfieldsDto;
         }else {
-            Log.d("Facebook", "registration: "+response.errorBody().string());
             ErrorDto errorDto = gson.fromJson(response.errorBody().string(),ErrorDto.class);
+            Log.d("Facebook", "registration: "+errorDto);
             throw new LoginException(errorDto.getCode()+ ": "+errorDto.getMessage());
         }
     }

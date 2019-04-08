@@ -59,12 +59,16 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     EditText marital;
     @BindView(R.id.food)
     EditText food;
+    @BindView(R.id.languages)
+    EditText languages;
     @BindView(R.id.wordsAbout)
     EditText description;
     @BindView(R.id.spinnerMarital)
     Spinner spinnerMarital;
     @BindView(R.id.spinnerFood)
     Spinner spinnerFood;
+    @BindView(R.id.spinnerLanguages)
+    Spinner spinnerLanguages;
     @BindView(R.id.save_btn)
     Button saveBtn;
     @BindView(R.id.progressFrame)
@@ -113,6 +117,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
         spinnerFood.setOnItemSelectedListener(this);
         spinnerMarital.setOnItemSelectedListener(this);
+        spinnerLanguages.setOnItemSelectedListener(this);
+
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("About myself", false, true, false);
 
@@ -135,6 +141,7 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
     private void updateSpinersValues() {
         staticFields.getFoodPreferences().add(0, "");
         staticFields.getMaritalStatus().add(0, "");
+        staticFields.getLanguages().add(0,"");
 
         ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getMaritalStatus());
         maritalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -144,8 +151,13 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         foodPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFood.setAdapter(foodPreferenceAdapter);
 
+        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getLanguages());
+        languagesPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLanguages.setAdapter(languagesPreferenceAdapter);
+
         spinnerMarital.setSelection(0);
         spinnerFood.setSelection(0);
+        spinnerLanguages.setSelection(0);
     }
 
     @OnClick(R.id.editPictures)
@@ -163,14 +175,19 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         if (food.getText().toString().equals("")) {
             list.add("Food preferences");
         }
+        if (languages.getText().toString().equals("")) {
+            list.add("Languages");
+        }
         if (description.getText().toString().equals("")) {
             list.add("Few words about myself");
         }
+
         str = UserInfo.inLine(list);
         if (str.equals("")) {
             user.setFoodPreferences(UserInfo.inList(food.getText().toString()));
             user.setMaritalStatus(marital.getText().toString());
             user.setDescription(description.getText().toString());
+            user.setLanguages(UserInfo.inList(languages.getText().toString()));
 
 
             List<String> picture =new ArrayList<>();
@@ -214,6 +231,20 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
                     }
                 }
                 spinnerFood.setSelection(0);
+            }
+        } else if (parent.getId() == spinnerLanguages.getId()) {
+            if (position != 0) {
+                if (languages.getText().toString().equals("") || languages.getText() == null) {
+                    languages.setText(spinnerLanguages.getSelectedItem().toString());
+                    Log.d("Registration", "onItemSelected: "+languages.getText());
+                } else {
+                    if (languages.getText().toString().contains(spinnerLanguages.getSelectedItem().toString())) {
+                        languages.setText(spinnerLanguages.getSelectedItem().toString());
+                    } else {
+                        languages.setText(languages.getText().toString() + ", " + spinnerLanguages.getSelectedItem().toString());
+                    }
+                }
+                spinnerLanguages.setSelection(0);
             }
         }
     }
