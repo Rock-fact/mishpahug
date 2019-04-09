@@ -175,7 +175,7 @@ public class EventListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (event.getOwner().getPictureLink().size() > 1 && event.getOwner().getPictureLink().get(1) != null) {
                     Log.d("MY_TAG", "EventList adapter pics: "+event.getOwner().getPictureLink().size());
                     Picasso.get().load(event.getOwner().getPictureLink().get(1))
-                            .error(R.drawable.logo).into(eventImg); //TODO
+                            .error(R.drawable.logo).fit().into(eventImg); //TODO
                     //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
                 } else {
                     Picasso.get().load(R.drawable.logo).into(eventImg);

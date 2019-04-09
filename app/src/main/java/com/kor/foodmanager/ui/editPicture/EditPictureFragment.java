@@ -134,11 +134,13 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                 presenter.loadImage(requestCode, picUri);
                 switch (requestCode) {
                     case AVATAR_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).into(avatar);
+                        Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
                         //rc.transform(new CropCircleTransformation()).into(avatar);
                         break;
                     case EVENT_BANNER_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).into(eventBanner);
+                        Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(eventBanner);
                         //rc.fit().into(eventBanner);
                         break;
                 }
