@@ -300,21 +300,21 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         staticFields.getMaritalStatus().add(0, "");
         staticFields.getGender().add(0, "");
 
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getGender());
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getGender());
+        genderAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
 
-        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getConfession());
-        confessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getConfession());
+        confessionAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerConfession.setAdapter(confessionAdapter);
 
-        ArrayAdapter<String> maritalStatusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getMaritalStatus());
-        maritalStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> maritalStatusAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getMaritalStatus());
+        maritalStatusAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerMaritalStatus.setAdapter(maritalStatusAdapter);
 
 
-        ArrayAdapter<String> foodPreferencesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
-        foodPreferencesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> foodPreferencesAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getFoodPreferences());
+        foodPreferencesAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerFoodPreferences.setAdapter(foodPreferencesAdapter);
 
         spinnerMaritalStatus.setSelection(0);
