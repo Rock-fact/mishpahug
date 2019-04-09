@@ -77,8 +77,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     EditText maritalStatus;
     @BindView(R.id.food_preferences)
     EditText foodPreferences;
-    @BindView(R.id.allergy)
-    EditText allergy;
     @BindView(R.id.spinnerConfession)
     Spinner spinnerConfession;
     @BindView(R.id.spinnerGender)
@@ -104,8 +102,6 @@ public class MyProfileFragment extends MvpAppCompatFragment implements IMyProfil
     TextView maritalStatus_view;
     @BindView(R.id.food_preferences_view)
     TextView foodPreferences_view;
-    @BindView(R.id.allergy_view)
-    TextView allergy_view;
     private IToolbar iToolbar;
 
 
@@ -154,7 +150,6 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         telephoneNumber_view.setText(user.getPhoneNumber());
         maritalStatus_view.setText(user.getMaritalStatus());
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
-        allergy_view.setText("Allergy"); //TODO add allergy
 
         Picasso.get().invalidate(presenter.loadAvatar(user));
         Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -221,7 +216,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         telephoneNumber.setText(telephoneNumber_view.getText().toString());
         maritalStatus.setText(maritalStatus_view.getText().toString());
         foodPreferences.setText(foodPreferences_view.getText().toString());
-        allergy.setText(allergy_view.getText().toString());
+
         Picasso.get().invalidate(presenter.loadAvatar(user));
         Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
@@ -252,9 +247,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         if (foodPreferences.getText().toString().equals("")) {
             list.add("foodPreferences");
         }
-        if (allergy.getText().toString().equals("")) {
-            list.add("allergy");
-        }
+
         str = UserInfo.inLine(list);
         if (str.equals("")) {
 
@@ -265,7 +258,7 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
             telephoneNumber_view.setText(telephoneNumber.getText().toString());
             maritalStatus_view.setText(maritalStatus.getText().toString());
             foodPreferences_view.setText(foodPreferences.getText().toString());
-            allergy_view.setText(allergy.getText().toString());
+
 //            presenter.viewMode();
 
             user.setFirstName(firstName_view.getText().toString());

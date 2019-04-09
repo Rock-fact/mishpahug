@@ -5,23 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#32265F"
+    android:background="@drawable/background_gradient"
     tools:context=".ui.MainActivity">
 
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/wrapperForView"
-        app:layout_constraintStart_toStartOf="@+id/wrapperForView"
-        app:layout_constraintTop_toTopOf="@+id/constraintLayout_toolbar"
-        android:visibility="gone"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout_toolbar"
@@ -72,6 +67,21 @@
         android:layout_marginTop="8dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout_avatar">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/wrapperForInput"
+            app:layout_constraintEnd_toEndOf="@+id/wrapperForInput"
+            app:layout_constraintStart_toStartOf="@+id/wrapperForInput"
+            app:layout_constraintTop_toTopOf="@+id/wrapperForInput" />
 
         <EditText
             android:id="@+id/firstName"
@@ -171,23 +181,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/marital_status" />
 
-        <EditText
-            android:id="@+id/allergy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
-            android:gravity="center"
-            android:hint="Allergy"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/food_preferences" />
-
-
-        <Spinner
+            <Spinner
             android:id="@+id/spinnerGender"
+                style="@style/BaseSpinner"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:backgroundTint="#FFFFFF"
@@ -203,6 +199,7 @@
 
         <Spinner
             android:id="@+id/spinnerConfession"
+            style="@style/BaseSpinner"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:backgroundTint="#FFFFFF"
@@ -218,6 +215,7 @@
 
         <Spinner
             android:id="@+id/spinnerMaritalStatus"
+            style="@style/BaseSpinner"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:backgroundTint="#FFFFFF"
@@ -233,6 +231,7 @@
 
         <Spinner
             android:id="@+id/spinnerFoodPreferences"
+            style="@style/BaseSpinner"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:backgroundTint="#FFFFFF"
@@ -355,20 +354,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/marital_status_view" />
 
-        <TextView
-            android:id="@+id/allergy_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
-            android:gravity="center"
-            android:hint="Allergy"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/food_preferences_view" />
-
     </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
