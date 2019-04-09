@@ -87,7 +87,8 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
             eventDescription.setText(event.getDescription());
             eventStatus.setText(event.getStatus().toUpperCase());
             if (event.getOwner().getPictureLink() != null) {
-                Picasso.get().load(event.getOwner().getPictureLink().get(1)).error(R.drawable.logo).into(eventImg); //TODO get 1 img
+                Picasso.get().load(event.getOwner().getPictureLink().get(1)).error(R.drawable.logo)
+                        .fit().into(eventImg); //TODO get 1 img
                 //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
             if(isVoted){

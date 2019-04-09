@@ -2,19 +2,21 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.eventInfo.guestEventInfo.GuestEventInfoFragment"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/background_gradient"
+    android:orientation="vertical"
+    tools:context=".ui.eventInfo.guestEventInfo.GuestEventInfoFragment">
 
     <ImageView
         android:id="@+id/event_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,20 +25,22 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/short_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="#BF5F4F8D"
-        app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+        app:layout_constraintBottom_toBottomOf="@+id/event_img"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4">
 
         <TextView
             android:id="@+id/family_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Name"
             android:textSize="24sp"
@@ -50,7 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="date"
             android:textSize="14sp"
@@ -83,15 +86,19 @@
         android:layout_marginEnd="8dp"
         android:isIndicator="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_img" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="150dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar">
 
@@ -117,7 +124,8 @@ Illud consulatu est ea, modo perfecto et mea"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/background_gradient"
         android:text="Join to event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -133,6 +141,20 @@ Illud consulatu est ea, modo perfecto et mea"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="214dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.18" />
 
 
 </android.support.constraint.ConstraintLayout>
