@@ -23,7 +23,8 @@ import java.util.Map;
 public class EditPictureRepository implements IEditPictureRepository{
     private IAuthRepository authRepository;
     private String public_id;
-    private long version;
+   private long version;
+    private MyUplosdPicListener listener;
 
     public EditPictureRepository(Context context, IAuthRepository authRepository) {
         Map config = new HashMap();
@@ -35,13 +36,18 @@ public class EditPictureRepository implements IEditPictureRepository{
         version=0;
     }
 
+    public void setListener(MyUplosdPicListener listener) {
+        this.listener = listener;
+    }
+
     @Override
-    public String uploadPic(Uri uri, String name) {
+    public String uploadPic(Uri uri, String name, int position) {
         public_id = authRepository.getToken().substring(6);
         String res = MediaManager.get().upload(uri)
                 .option("public_id",public_id.concat(name))
                 .option("invalidate", true)
                 .option("overwrite", true)
+                //.option("version", version)
                 .callback(new UploadCallback() {
                     @Override
                     public void onStart(String requestId) {
@@ -55,8 +61,9 @@ public class EditPictureRepository implements IEditPictureRepository{
 
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
-                        Log.d("MY_LOADER", "onSuccess version: "+resultData.get("version"));
-                        Log.d("MY_LOADER", "onSuccess data: "+resultData.toString());
+                        if(listener!=null) {
+                            listener.onPicUploaded(position);
+                        }
                     }
 
                     @Override
@@ -70,7 +77,6 @@ public class EditPictureRepository implements IEditPictureRepository{
                     }
                 })
                 .dispatch();
-        Log.d("LOADER", "uploadPic: "+Uri.parse(res));
 
         return res;
     }
@@ -82,7 +88,7 @@ public class EditPictureRepository implements IEditPictureRepository{
         }
         Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
         return MediaManager.get().url()
-                .version(version++)
+                //.version(version++)
                 .generate(public_id.concat(name));
     }
 
@@ -102,8 +108,12 @@ public class EditPictureRepository implements IEditPictureRepository{
         if(public_id==null) {
             public_id = authRepository.getToken().substring(6);
         }
-        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
-        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+//        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
+//        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+        links.add(0, cropForAvatar(getPicUrl(MainActivity.AVATAR_PICTURE)));
+        links.add(1, cropForBanner(getPicUrl(MainActivity.EVENT_BANNER_PICTURE)));
+
+
         return links;
     }
 
@@ -143,9 +153,14 @@ public class EditPictureRepository implements IEditPictureRepository{
 //            public_id = authRepository.getToken().substring(6);
 //        }
         return MediaManager.get().url()
+                .version(version++)
                 .transformation(new Transformation().width(350).height(170)
                         .crop("scale").fetchFormat("png")).generate(loadedImg);
 
+    }
+
+    public interface MyUplosdPicListener{
+        void onPicUploaded(int position);
     }
 
 

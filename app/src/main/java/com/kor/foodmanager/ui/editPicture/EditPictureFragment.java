@@ -48,7 +48,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     TextView avatarTxt;
     @BindView(R.id.event_banner_txt)
     TextView eventBannerTxt;
-    private RequestCreator rc;
+
 
     public EditPictureFragment() {
 
@@ -77,14 +77,14 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadImages() {
-        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
+//        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
         loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
 //        } else {
 //            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-       }
+//       }
         //rc.error(R.drawable.logo).into(avatar);
 
-        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
+//        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
 //            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
 //            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
 //                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
@@ -93,7 +93,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 //        }
 //        rc.error(R.drawable.logo).into(eventBanner);
             loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-        }
+//        }
     }
 
     @Override
@@ -130,21 +130,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                 requestCode == EVENT_BANNER_EDIT_REQUEST) {
             Uri picUri = data.getData();
             if (picUri != null) {
-                //RequestCreator rc = Picasso.get().load(picUri);
                 presenter.loadImage(requestCode, picUri);
-                switch (requestCode) {
-                    case AVATAR_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
-                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
-                        //rc.transform(new CropCircleTransformation()).into(avatar);
-                        break;
-                    case EVENT_BANNER_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
-                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(eventBanner);
-                        //rc.fit().into(eventBanner);
-                        break;
-                }
-
             }
         }
     }
@@ -182,6 +168,6 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .error(R.drawable.logo)
-                .into(avatar);
+                .into(eventBanner);
     }
 }
