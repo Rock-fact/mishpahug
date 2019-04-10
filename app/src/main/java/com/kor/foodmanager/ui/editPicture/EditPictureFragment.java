@@ -78,23 +78,22 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     @Override
     public void loadImages() {
         if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
-            Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
-            Log.d("MY_LOADER", "loadImages: "+presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-        }
-        rc.error(R.drawable.logo).into(avatar);
+        loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+//        } else {
+//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+       }
+        //rc.error(R.drawable.logo).into(avatar);
 
         if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
-            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+//            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+//            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
+//        } else {
+//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+//        }
+//        rc.error(R.drawable.logo).into(eventBanner);
+            loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
         }
-        rc.error(R.drawable.logo).into(eventBanner);
     }
 
     @Override
@@ -168,13 +167,21 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadAvatarPicture(String uri) {
-        Picasso.get().load(uri).memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+        Picasso.get().load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.drawable.logo)
+                .into(avatar);
     }
 
     @Override
     public void loadEvenerBannerPicture(String uri) {
-        Picasso.get().load(uri).memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).fit().into(avatar);
+        Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+        Picasso.get().load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.drawable.logo)
+                .into(avatar);
     }
 }
