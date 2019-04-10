@@ -96,18 +96,21 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         String message = "Today: ";
         String stringDate = format.format(date.getDate());
         Log.d(TAG, "dateSelectedDialog: " + stringDate);
-        for (HebcalItemDto itemDto : isrHolidaysList
-        ) {
-            Log.d(TAG, "isr holiday: " + itemDto.getDate() + ", " + itemDto.getMemo());
-            if (itemDto.getDate().equals(stringDate)) {
-                Log.d(TAG, "dateSelectedDialog: " + itemDto.getMemo());
-                message = message + itemDto.getMemo();
+        if(isrHolidaysList!=null){
+            for (HebcalItemDto itemDto : isrHolidaysList
+            ) {
+                Log.d(TAG, "isr holiday: " + itemDto.getDate() + ", " + itemDto.getMemo());
+                if (itemDto.getDate().equals(stringDate)) {
+                    Log.d(TAG, "dateSelectedDialog: " + itemDto.getMemo());
+                    message = message + itemDto.getMemo();
+                }
             }
+            if (message.equals("Today: ")) {
+                message = "No holidays today";
+            }
+        }else {
+            message = "";
         }
-        if (message.equals("Today: ")) {
-            message = "No holidays today";
-        }
-
         showCalendarDialog(date, stringDate, message);
     }
 
