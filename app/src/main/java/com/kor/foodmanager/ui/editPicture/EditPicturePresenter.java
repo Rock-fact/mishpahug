@@ -82,6 +82,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         @Override
         protected void onPostExecute(Void aVoid) {
             result=res;
+            getViewState().loadImages();
         }
     }
 

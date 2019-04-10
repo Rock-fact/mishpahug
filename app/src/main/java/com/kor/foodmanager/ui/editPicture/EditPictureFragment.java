@@ -75,6 +75,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         super.onDestroy();
     }
 
+    @Override
     public void loadImages() {
         if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
             Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
@@ -167,11 +168,13 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadAvatarPicture(String uri) {
-        Picasso.get().load(uri).error(R.drawable.logo).into(avatar);
+        Picasso.get().load(uri).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
     }
 
     @Override
     public void loadEvenerBannerPicture(String uri) {
-        Picasso.get().load(uri).error(R.drawable.logo).fit().into(avatar);
+        Picasso.get().load(uri).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).fit().into(avatar);
     }
 }

@@ -13,4 +13,5 @@
     <color name="colorBeige">#FFEED9</color>
     <color name="place_autocomplete_search_text">#FFEED9</color>
     <color name="place_autocomplete_search_hint">#FFEED9</color>
+    <color name="none">#00F7F7FA</color>
 </resources>
