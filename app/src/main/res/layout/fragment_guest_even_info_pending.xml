@@ -144,7 +144,7 @@ Illud consulatu est ea, modo perfecto et mea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Addresssssssssssssss"
         android:textAlignment="viewStart"
         android:textSize="24sp"
@@ -156,7 +156,6 @@ Illud consulatu est ea, modo perfecto et mea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="0505055050"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -204,7 +203,7 @@ Illud consulatu est ea, modo perfecto et mea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.63201094" />
+        app:layout_constraintGuide_percent="0.57" />
 
 
 
