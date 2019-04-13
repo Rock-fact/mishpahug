@@ -82,23 +82,10 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadImages() {
-//        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
-        loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-//        } else {
-//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-//       }
-        //rc.error(R.drawable.logo).into(avatar);
 
-//        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
-//            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-//            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
-//                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
-//        } else {
-//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-//        }
-//        rc.error(R.drawable.logo).into(eventBanner);
-            loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-//        }
+        loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+
+        loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
     }
 
     @Override
