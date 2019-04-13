@@ -153,8 +153,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         maritalStatus_view.setText(user.getMaritalStatus());
         foodPreferences_view.setText(UserInfo.inLine(user.getFoodPreferences()));
 
-        Picasso.get().invalidate(presenter.loadAvatar(user));
-        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+        Picasso.get().invalidate(presenter.loadAvatar(inputModeOn));
+        Picasso.get().load(presenter.loadAvatar(inputModeOn)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
 
         spinnerMaritalStatus.setOnItemSelectedListener(this);
@@ -196,8 +196,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
     public void viewMode() {
         wrapperForInput.setVisibility(View.GONE);
         wrapperForView.setVisibility(View.VISIBLE);
-        Picasso.get().invalidate(presenter.loadAvatar(user));
-        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+        Picasso.get().invalidate(presenter.loadAvatar(inputModeOn));
+        Picasso.get().load(presenter.loadAvatar(inputModeOn)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
         inputModeOn = false;
     }
@@ -219,8 +219,8 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         maritalStatus.setText(maritalStatus_view.getText().toString());
         foodPreferences.setText(foodPreferences_view.getText().toString());
 
-        Picasso.get().invalidate(presenter.loadAvatar(user));
-        Picasso.get().load(presenter.loadAvatar(user)).memoryPolicy(MemoryPolicy.NO_CACHE)
+        Picasso.get().invalidate(presenter.loadAvatar(inputModeOn));
+        Picasso.get().load(presenter.loadAvatar(inputModeOn)).memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
     }
 
