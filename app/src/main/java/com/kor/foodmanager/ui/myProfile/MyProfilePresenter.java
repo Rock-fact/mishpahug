@@ -64,21 +64,10 @@ public class MyProfilePresenter extends MvpPresenter<IMyProfileFragment> {
         return editPictureRepository.getPictureLincs();
     }
 
-//    public String loadAvatar(boolean inputModeOn) {
-//        if(inputModeOn){
-//            return editPictureRepository.getPictureLincs().get(0);
-//        } else {
-//            return editPictureRepository.getPictureLincsFromServer().get(0);
-//        }
-//    }
-
-        public String loadAvatar(UserDto user) {
-        if(user.getPictureLink()!=null & user.getPictureLink().size()>0){
-            return editPictureRepository.cropForAvatar(user.getPictureLink().get(0));
-        } else {
+    public String loadAvatar(boolean inputModeOn) {
             return editPictureRepository.getPictureLincs().get(0);
-        }
     }
+
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{
 

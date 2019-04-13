@@ -40,6 +40,9 @@
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://893573575281754:aYACgLcWNlBuKjxd5_McsRkf4pQ@newmishpahug" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

@@ -7,6 +7,8 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.pictureEditor.EditPictureRepository;
 import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.ui.MainActivity;
 
@@ -17,15 +19,17 @@ import javax.inject.Inject;
 import ru.terrakok.cicerone.Router;
 
 @InjectViewState
-public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
+public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements EditPictureRepository.MyUplosdPicListener {
     private String result;
     @Inject
     IEditPictureRepository editPictureRepository;
     @Inject
     Router router;
+//    private UserDto picUser;
 
     public EditPicturePresenter() {
         App.get().mainComponent().inject(this);
+        editPictureRepository.setListener(this);
     }
 
     public String loadImage(int position, Uri picUri) {
@@ -37,11 +41,11 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
                 //return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
-                return editPictureRepository.getPictureLincs().get(0);
+                return editPictureRepository.getPictureLincsFromServer().get(0);
 
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
                 //return editPictureRepository.cropForBanner(MainActivity.EVENT_BANNER_PICTURE);
-                return editPictureRepository.getPictureLincs().get(1);
+                return editPictureRepository.getPictureLincsFromServer().get(1);
             default:
                 return null;
         }
@@ -51,6 +55,22 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         new DeleteImgTask(name).execute();
         return result;
     }
+
+    @Override
+    public void onPicUploaded(int position) {
+        switch (position) {
+            case EditPictureFragment.AVATAR_EDIT_REQUEST:
+                getViewState()
+                        .loadAvatarPicture(editPictureRepository
+                                .cropForAvatar(editPictureRepository.getPictureLincs().get(0)));
+                break;
+            case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
+                getViewState().loadEvenerBannerPicture(getPicUrl(EditPictureFragment.EVENT_BANNER_EDIT_REQUEST));
+                break;
+        }
+        getViewState().hideProgressFrame();
+    }
+
 
     private class LoadImageTask extends AsyncTask<Void, Void, Void> {
         private int position;
@@ -64,18 +84,23 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> {
         }
 
         @Override
+        protected void onPreExecute() {
+            getViewState().showProgressFrame();
+        }
+
+        @Override
         protected Void doInBackground(Void... voids) {
             switch (position) {
                 case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, MainActivity.AVATAR_PICTURE);
-
+                    res = editPictureRepository
+                            .uploadPic(picUri, MainActivity.AVATAR_PICTURE, EditPictureFragment.AVATAR_EDIT_REQUEST);
                     Log.d("MY_TAG", "doInBackground: "+ res);
                     break;
                 case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                    res = editPictureRepository.uploadPic(picUri, MainActivity.EVENT_BANNER_PICTURE);
+                    res = editPictureRepository
+                            .uploadPic(picUri, MainActivity.EVENT_BANNER_PICTURE, EditPictureFragment.EVENT_BANNER_EDIT_REQUEST );
                     break;
             }
-
             return null;
         }
 

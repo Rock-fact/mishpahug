@@ -4,6 +4,7 @@ package com.kor.foodmanager.ui.editPicture;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +49,11 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     TextView avatarTxt;
     @BindView(R.id.event_banner_txt)
     TextView eventBannerTxt;
-    private RequestCreator rc;
+    @BindView(R.id.editTitle)
+    TextView title;
+    @BindView(R.id.progress_layout)
+    ConstraintLayout progressLayout;
+
 
     public EditPictureFragment() {
 
@@ -75,25 +80,25 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
         super.onDestroy();
     }
 
+    @Override
     public void loadImages() {
-        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
-            Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
-            Log.d("MY_LOADER", "loadImages: "+presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-        }
-        rc.error(R.drawable.logo).into(avatar);
+//        if (presenter.getPicUrl(AVATAR_EDIT_REQUEST) != null) {
+        loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+//        } else {
+//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+//       }
+        //rc.error(R.drawable.logo).into(avatar);
 
-        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
-            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
-            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
-        } else {
-            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
-        }
-        rc.error(R.drawable.logo).into(eventBanner);
+//        if (presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST) != null) {
+//            Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+//            rc = Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST))
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE).networkPolicy(NetworkPolicy.NO_CACHE);
+//        } else {
+//            rc = Picasso.get().load("http://i.imgur.com/DvpvklR.png");
+//        }
+//        rc.error(R.drawable.logo).into(eventBanner);
+            loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+//        }
     }
 
     @Override
@@ -130,48 +135,48 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
                 requestCode == EVENT_BANNER_EDIT_REQUEST) {
             Uri picUri = data.getData();
             if (picUri != null) {
-                //RequestCreator rc = Picasso.get().load(picUri);
                 presenter.loadImage(requestCode, picUri);
-                switch (requestCode) {
-                    case AVATAR_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(AVATAR_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
-                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
-                        //rc.transform(new CropCircleTransformation()).into(avatar);
-                        break;
-                    case EVENT_BANNER_EDIT_REQUEST:
-                        Picasso.get().load(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST)).memoryPolicy(MemoryPolicy.NO_CACHE)
-                                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(eventBanner);
-                        //rc.fit().into(eventBanner);
-                        break;
-                }
-
             }
         }
     }
 
     @Override
     public void showProgressFrame() {
+        title.setVisibility(View.GONE);
         eventBanner.setVisibility(View.GONE);
         avatar.setVisibility(View.GONE);
         avatarTxt.setVisibility(View.GONE);
         eventBannerTxt.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressFrame() {
+        title.setVisibility(View.VISIBLE);
         eventBanner.setVisibility(View.VISIBLE);
         avatar.setVisibility(View.VISIBLE);
         avatarTxt.setVisibility(View.VISIBLE);
         eventBannerTxt.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void loadAvatarPicture(String uri) {
-        Picasso.get().load(uri).error(R.drawable.logo).into(avatar);
+        //Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+        Picasso.get().load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.drawable.logo)
+                .into(avatar);
     }
 
     @Override
     public void loadEvenerBannerPicture(String uri) {
-        Picasso.get().load(uri).error(R.drawable.logo).fit().into(avatar);
+        //Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+        Picasso.get().load(uri)
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .error(R.drawable.logo)
+                .into(eventBanner);
     }
 }
