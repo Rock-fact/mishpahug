@@ -4,6 +4,7 @@ package com.kor.foodmanager.ui.editPicture;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,6 +49,10 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     TextView avatarTxt;
     @BindView(R.id.event_banner_txt)
     TextView eventBannerTxt;
+    @BindView(R.id.editTitle)
+    TextView title;
+    @BindView(R.id.progress_layout)
+    ConstraintLayout progressLayout;
 
 
     public EditPictureFragment() {
@@ -137,23 +142,27 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void showProgressFrame() {
+        title.setVisibility(View.GONE);
         eventBanner.setVisibility(View.GONE);
         avatar.setVisibility(View.GONE);
         avatarTxt.setVisibility(View.GONE);
         eventBannerTxt.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressFrame() {
+        title.setVisibility(View.VISIBLE);
         eventBanner.setVisibility(View.VISIBLE);
         avatar.setVisibility(View.VISIBLE);
         avatarTxt.setVisibility(View.VISIBLE);
         eventBannerTxt.setVisibility(View.VISIBLE);
+        progressLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void loadAvatarPicture(String uri) {
-        Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
+        //Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
         Picasso.get().load(uri)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
@@ -163,7 +172,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadEvenerBannerPicture(String uri) {
-        Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
+        //Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
         Picasso.get().load(uri)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)

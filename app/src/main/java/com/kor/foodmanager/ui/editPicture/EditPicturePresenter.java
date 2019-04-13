@@ -61,7 +61,8 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
                 getViewState()
-                        .loadAvatarPicture(getPicUrl(EditPictureFragment.AVATAR_EDIT_REQUEST));
+                        .loadAvatarPicture(editPictureRepository
+                                .cropForAvatar(editPictureRepository.getPictureLincs().get(0)));
                 break;
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
                 getViewState().loadEvenerBannerPicture(getPicUrl(EditPictureFragment.EVENT_BANNER_EDIT_REQUEST));

@@ -43,10 +43,11 @@ public class EditPictureRepository implements IEditPictureRepository{
     @Override
     public String uploadPic(Uri uri, String name, int position) {
         public_id = authRepository.getToken().substring(6);
+
         String res = MediaManager.get().upload(uri)
-                .option("public_id",public_id.concat(name))
                 .option("invalidate", true)
                 .option("overwrite", true)
+                .option("public_id",public_id.concat(name))
                 //.option("version", version)
                 .callback(new UploadCallback() {
                     @Override
@@ -87,9 +88,17 @@ public class EditPictureRepository implements IEditPictureRepository{
             public_id = authRepository.getToken().substring(6);
         }
         Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
-        return MediaManager.get().url()
-                //.version(version++)
-                .generate(public_id.concat(name));
+        Map options = new HashMap();
+        options.put("invalidate", true);
+        try {
+            MediaManager.get().getCloudinary().uploader().explicit(public_id.concat(name), options);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return MediaManager.get().url().generate(public_id.concat(name));
+//                .url()
+//                //.version(version++)
+//                .generate(public_id.concat(name));
     }
 
     @Override
@@ -108,10 +117,10 @@ public class EditPictureRepository implements IEditPictureRepository{
         if(public_id==null) {
             public_id = authRepository.getToken().substring(6);
         }
-//        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
-//        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
-        links.add(0, cropForAvatar(getPicUrl(MainActivity.AVATAR_PICTURE)));
-        links.add(1, cropForBanner(getPicUrl(MainActivity.EVENT_BANNER_PICTURE)));
+        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
+        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+//        links.add(0, cropForAvatar(getPicUrl(MainActivity.AVATAR_PICTURE)));
+//        links.add(1, cropForBanner(getPicUrl(MainActivity.EVENT_BANNER_PICTURE)));
 
 
         return links;
