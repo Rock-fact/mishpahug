@@ -10,5 +10,5 @@ public interface IEditPicture extends MvpView {
     void hideProgressFrame();
     void loadAvatarPicture(String uri);
     void loadEvenerBannerPicture(String uri);
-    public void loadImages();
+    void loadImages();
 }

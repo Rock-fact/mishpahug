@@ -13,6 +13,8 @@ import com.google.android.gms.common.stats.ConnectionTracker;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.ui.MainActivity;
+import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
+import com.kor.foodmanager.ui.editPicture.EditPicturePresenter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +25,9 @@ import java.util.Map;
 public class EditPictureRepository implements IEditPictureRepository{
     private IAuthRepository authRepository;
     private String public_id;
-    private long version;
+    private List<String> notLoadedUriList;
+   private long version;
+    private MyUplosdPicListener listener;
 
     public EditPictureRepository(Context context, IAuthRepository authRepository) {
         Map config = new HashMap();
@@ -32,59 +36,68 @@ public class EditPictureRepository implements IEditPictureRepository{
         config.put("api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
         MediaManager.init(context, config);
         this.authRepository = authRepository;
+        notLoadedUriList = new ArrayList<>();
+        notLoadedUriList.add(0, "none");
+        notLoadedUriList.add(1, "none");
+
         version=0;
     }
 
-    @Override
-    public String uploadPic(Uri uri, String name) {
-        public_id = authRepository.getToken().substring(6);
-        String res = MediaManager.get().upload(uri)
-                .option("public_id",public_id.concat(name))
-                .option("invalidate", true)
-                .option("overwrite", true)
-                .callback(new UploadCallback() {
-                    @Override
-                    public void onStart(String requestId) {
-
-                    }
-
-                    @Override
-                    public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        Log.d("MY_LOADER", "onSuccess version: "+resultData.get("version"));
-                        Log.d("MY_LOADER", "onSuccess data: "+resultData.toString());
-                    }
-
-                    @Override
-                    public void onError(String requestId, ErrorInfo error) {
-
-                    }
-
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {
-
-                    }
-                })
-                .dispatch();
-        Log.d("LOADER", "uploadPic: "+Uri.parse(res));
-
-        return res;
+    public void setListener(MyUplosdPicListener listener) {
+        this.listener = listener;
     }
 
     @Override
-    public String getPicUrl(String name) {
-        if(public_id==null) {
+    public String uploadPic(Uri uri, String name, int position) {
             public_id = authRepository.getToken().substring(6);
-        }
-        Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
-        return MediaManager.get().url()
-                .version(version++)
-                .generate(public_id.concat(name));
+            if(position==0){
+                notLoadedUriList.add(0, uri.toString());
+            } else {
+                notLoadedUriList.add(1, uri.toString());
+            }
+            String res = MediaManager.get().upload(uri)
+                    .option("invalidate", true)
+                    .option("overwrite", true)
+                    .option("public_id", public_id.concat(name))
+                    .callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
+
+                        }
+
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            if (listener != null) {
+                                listener.onPicUploaded(position);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+
+                        }
+
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+
+                        }
+                    })
+                    .dispatch();
+
+            return res;
+
     }
+
+    @Override
+    public List<String> getNotLoadedUriList() {
+       return notLoadedUriList;
+    }
+
 
     @Override
     public String destroyPic(String name) throws IOException {
@@ -92,7 +105,6 @@ public class EditPictureRepository implements IEditPictureRepository{
         Map options = new HashMap();
         options.put("invalidate", true);
         MediaManager.get().getCloudinary().uploader().destroy(public_id.concat(name), options);
-        //return MediaManager.get().upload(R.drawable.logo).option("public_id",public_id.concat(name)).dispatch();
         return name;
     }
 
@@ -100,10 +112,19 @@ public class EditPictureRepository implements IEditPictureRepository{
     public List<String> getPictureLincs() {
         List<String> links = new ArrayList<>();
         if(public_id==null) {
-            public_id = authRepository.getToken().substring(6);
+            if(authRepository.getToken()!=null) {
+                public_id = authRepository.getToken().substring(6);
+            } else {
+                public_id=null;
+            }
         }
-        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
-        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+        if(public_id!=null) {
+            links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
+            links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+        } else {
+            links.add("none");
+            links.add("none");
+        }
         return links;
     }
 
@@ -126,10 +147,6 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String cropForAvatar(String loadedImg) {
-//        if(public_id==null) {
-//            public_id = authRepository.getToken().substring(6);
-//        }
-
         return MediaManager.get().url()
                 .version(version++)
                 .transformation(new Transformation()
@@ -139,13 +156,15 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String cropForBanner(String loadedImg) {
-//        if(public_id==null) {
-//            public_id = authRepository.getToken().substring(6);
-//        }
         return MediaManager.get().url()
+                .version(version++)
                 .transformation(new Transformation().width(350).height(170)
                         .crop("scale").fetchFormat("png")).generate(loadedImg);
 
+    }
+
+    public interface MyUplosdPicListener{
+        void onPicUploaded(int position);
     }
 
 
