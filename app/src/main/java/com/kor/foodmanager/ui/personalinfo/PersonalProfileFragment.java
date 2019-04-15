@@ -132,7 +132,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Personal Info", false, true, false);
 
-
+        presenter.setPics();
         return view;
     }
 
@@ -162,6 +162,11 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void updateStaticFields(StaticfieldsDto staticFields) {
         this.staticFields = staticFields;
         updateSpinersValues();
+    }
+
+    @Override
+    public void setUserPics(List<String> notLoadedUriList) {
+        user.setPictureLink(notLoadedUriList);
     }
 
     private void updateSpinersValues() {

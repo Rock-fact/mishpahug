@@ -45,6 +45,12 @@ public class PersonalProfilePresenter extends MvpPresenter<IPersonalProfileFragm
         router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
     }
 
+    public void setPics() {
+        if(editPictureRepository.getNotLoadedUriList()!=null){
+            getViewState().setUserPics(editPictureRepository.getNotLoadedUriList());
+        }
+    }
+
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{
 
         private boolean successful;
