@@ -141,7 +141,6 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        presenter.updateStaticFields();
         View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
         Log.d("HI_TAG", "onCreateView: ");
         unbinder = ButterKnife.bind(this, view);
@@ -176,6 +175,9 @@ public static MyProfileFragment getNewInstance(List<String> picLincs) {
         });
 
         updateSpinersValues();
+
+        user.setPictureLink(presenter.getPictureLincs());
+        presenter.updateUserProfile(user);
 
         return view;
     }

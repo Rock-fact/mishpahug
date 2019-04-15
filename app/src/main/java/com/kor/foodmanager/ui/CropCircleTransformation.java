@@ -15,6 +15,8 @@ public class CropCircleTransformation implements Transformation {
 
         int width = (source.getWidth() - size) / 2;
         int height = (source.getHeight() - size) / 2;
+//        int width = 500;
+//        int height = 500;
 
         Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 

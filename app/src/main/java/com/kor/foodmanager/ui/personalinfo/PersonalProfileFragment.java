@@ -31,6 +31,9 @@ import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 
 import java.text.ParseException;
@@ -132,6 +135,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Personal Info", false, true, false);
 
+        presenter.setPics();
         return view;
     }
 
@@ -153,6 +157,14 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
 
         confession.setText(user.getConfession());
         gender.setText(user.getGender());
+        if(user.getPictureLink().size()>0) {
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        } else {
+            Picasso.get().load(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
         //TODO picture link
     }
 
@@ -165,6 +177,11 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void updateStaticFields(StaticfieldsDto staticFields) {
         this.staticFields = staticFields;
         updateSpinersValues();
+    }
+
+    @Override
+    public void setUserPics(List<String> notLoadedUriList) {
+        user.setPictureLink(notLoadedUriList);
     }
 
     private void updateSpinersValues() {
@@ -185,7 +202,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
 
     @OnClick(R.id.change_btn)
     public void onClickChangePicture() {
-        Toast.makeText(getActivity(), "GoToEditPicture", Toast.LENGTH_SHORT).show();
+        presenter.editPicture(user);
     }
 
     @OnClick(R.id.calendar_btn)

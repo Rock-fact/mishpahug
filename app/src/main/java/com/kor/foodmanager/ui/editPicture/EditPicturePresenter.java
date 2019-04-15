@@ -7,6 +7,7 @@ import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
+import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.UserDto;
 import com.kor.foodmanager.data.pictureEditor.EditPictureRepository;
 import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
@@ -25,7 +26,9 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
     IEditPictureRepository editPictureRepository;
     @Inject
     Router router;
-//    private UserDto picUser;
+    @Inject
+    IAuthRepository authRepository;
+
 
     public EditPicturePresenter() {
         App.get().mainComponent().inject(this);
@@ -33,18 +36,27 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
     }
 
     public String loadImage(int position, Uri picUri) {
-        new LoadImageTask(position, picUri).execute();
-        return result;
+        if(authRepository.getToken()!=null) {
+            new LoadImageTask(position, picUri).execute();
+            return result;
+        }
+        else {
+            getViewState().hideProgressFrame();
+            if(position==EditPictureFragment.AVATAR_EDIT_REQUEST) {
+                getViewState().loadAvatarPicture(picUri.toString());
+            } else {
+                getViewState().loadEvenerBannerPicture(picUri.toString());
+            }
+            return picUri.toString();
+        }
     }
 
     public String getPicUrl(int position) {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                //return editPictureRepository.cropForAvatar(MainActivity.AVATAR_PICTURE);
                 return editPictureRepository.getPictureLincsFromServer().get(0);
 
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                //return editPictureRepository.cropForBanner(MainActivity.EVENT_BANNER_PICTURE);
                 return editPictureRepository.getPictureLincsFromServer().get(1);
             default:
                 return null;
@@ -80,7 +92,6 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
         public LoadImageTask(int position, Uri picUri) {
             this.position = position;
             this.picUri = picUri;
-
         }
 
         @Override
