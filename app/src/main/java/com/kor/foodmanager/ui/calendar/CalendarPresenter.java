@@ -122,33 +122,33 @@ public class CalendarPresenter extends MvpPresenter<ICalendar> {
         int myEventsCount = 0;
         int mySubsCount = 0;
 
-        for (EventDto event: myEventsDto
-             ) {
-            if(event.getDate().equals(stringDate)){
-                myEventsCount++;
+        if(myEventsDto!=null&&subscribedEventsDto!=null){
+            for (EventDto event: myEventsDto
+            ) {
+                if(event.getDate().equals(stringDate)){
+                    myEventsCount++;
+                }
             }
+
+            for (EventDto event: subscribedEventsDto
+            ) {
+                if(event.getDate().equals(stringDate)){
+                    mySubsCount++;
+                }
+            }
+
+            if(myEventsCount!=0){
+                args.putString("MY_EVENTS","You have " + myEventsCount + " event today");
+            }
+            if(mySubsCount!=0){
+                args.putString("MY_SUBS","You subscribe " + mySubsCount + " event today");
+            }
+            CalendarDialog dialog = CalendarDialog.newInstance(args);
+            dialog.setCancelable(true);
+            getViewState().showCalendarDialog(dialog);
         }
 
-        for (EventDto event: subscribedEventsDto
-        ) {
-            if(event.getDate().equals(stringDate)){
-                mySubsCount++;
-            }
-        }
-
-        if(myEventsCount!=0){
-            args.putString("MY_EVENTS","You have " + myEventsCount + " event today");
-        }
-        if(mySubsCount!=0){
-            args.putString("MY_SUBS","You subscribe " + mySubsCount + " event today");
-        }
-        CalendarDialog dialog = CalendarDialog.newInstance(args);
-        dialog.setCancelable(true);
-        getViewState().showCalendarDialog(dialog);
     }
-
-
-
 
 
     private class GetEventsForCalendarTask extends AsyncTask<Void, Void, EventListDto> {
