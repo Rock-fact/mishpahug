@@ -32,6 +32,7 @@ import ru.terrakok.cicerone.Router;
 import static com.kor.foodmanager.ui.MainActivity.ADD_EVENT_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.CALENDAR_FRAGMENT;
 import static com.kor.foodmanager.ui.MainActivity.HIDE_PROGRESS;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.SHOW_PROGRESS;
 import static com.kor.foodmanager.ui.MainActivity.TAG;
 
@@ -118,6 +119,10 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         new GetStaticFieldsTask().execute();
     }
 
+    public void closeFragment() {
+        router.replaceScreen(MY_EVENT_LIST_SCREEN);
+    }
+
     private class AddEventTask extends AsyncTask<Void,Void,String> {
         private EventDto event;
         private Boolean isSuccess;
@@ -151,8 +156,8 @@ public class AddEventPresenter extends MvpPresenter<IAddEvent> {
         protected void onPostExecute(String s) {
             router.showSystemMessage(HIDE_PROGRESS);
             if(isSuccess){
-                router.showSystemMessage(s);
-            }else{
+                getViewState().showSuccess();
+                    }else{
                 router.showSystemMessage(s);
             }
         }

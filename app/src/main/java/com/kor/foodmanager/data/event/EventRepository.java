@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.model.ErrorDto;
+import com.kor.foodmanager.data.model.ErrorDtoUpdated;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.MessageDto;
 import com.kor.foodmanager.data.model.PlaceDetailsComponentDto;
@@ -19,6 +20,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.kor.foodmanager.ui.MainActivity.BACKEND_VERSION;
+import static com.kor.foodmanager.ui.MainActivity.OFFICIAL_BACKEND_VERSION;
 
 public class EventRepository implements IEventRepository {
     private Api api;
@@ -43,8 +47,13 @@ public class EventRepository implements IEventRepository {
             MessageDto msg = response.body();
             return msg;
         }else {
-            ErrorDto errorDto = gson.fromJson(response.errorBody().string(),ErrorDto.class);
-            throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            if(BACKEND_VERSION.equals(OFFICIAL_BACKEND_VERSION)){
+                ErrorDtoUpdated errorDto = gson.fromJson(response.errorBody().string(), ErrorDtoUpdated.class);
+                throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            }else {
+                ErrorDto errorDto = gson.fromJson(response.errorBody().string(), ErrorDto.class);
+                throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            }
         }
     }
 

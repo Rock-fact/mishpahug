@@ -74,6 +74,11 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements IMain, IToolbar, NavigationView.OnNavigationItemSelectedListener {
+    public static final String OFFICIAL_BACKEND_VERSION = "GRISHA";
+    public static final String DIMAS_BACKEND_VERSION = "DIMA";
+
+    public static final String BACKEND_VERSION = OFFICIAL_BACKEND_VERSION;
+
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
