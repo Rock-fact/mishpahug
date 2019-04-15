@@ -33,8 +33,11 @@ import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -135,7 +138,19 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void fillFields() {
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
-        dateOfBirth.setText(user.getDateOfBirth());
+
+        Date date= null;
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(user.getDateOfBirth());
+            SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
+            String dateStr = formDate.format(date);
+            dateOfBirth.setText(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            dateOfBirth.setText(user.getDateOfBirth());
+        }
+
+
         confession.setText(user.getConfession());
         gender.setText(user.getGender());
         //TODO picture link
@@ -175,18 +190,24 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
 
     @OnClick(R.id.calendar_btn)
     public void onClickCalendarBtn() {
-        final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR); // current year
-        int mMonth = c.get(Calendar.MONTH); // current month
-        int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+        final Calendar calendar = Calendar.getInstance();
+        int mYear = calendar.get(Calendar.YEAR); // current year
+        int mMonth = calendar.get(Calendar.MONTH); // current month
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH); // current day
 
         datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                dateOfBirth.setText("" + i + "-" + (i1 < 10 ? "0" + i1 : i1) + "-" + i2);
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat formDate = new SimpleDateFormat("yyyy-MM-dd");
+                Date dateTime = calendar.getTime();
+                String date = formDate.format(dateTime);
+                dateOfBirth.setText(date);
             }
-        }, mYear, mMonth, mDay);
-        datePickerDialog.show();
+        },mYear,mMonth,mDay);
+                datePickerDialog.show();
     }
 
     @OnClick(R.id.next_btn)

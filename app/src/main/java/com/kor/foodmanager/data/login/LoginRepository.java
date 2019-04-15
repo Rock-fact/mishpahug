@@ -22,6 +22,7 @@ public class LoginRepository implements ILoginRepository {
 
     @Override
     public UserDto login(String token) throws LoginException, IOException {
+        Log.d("Facebook", "login: "+token);
         Call<UserDto> call = api.login(token);
         Response<UserDto> response =call.execute();
         if(response.isSuccessful()){
@@ -35,6 +36,7 @@ public class LoginRepository implements ILoginRepository {
 
     @Override
     public StaticfieldsDto registration(String token) throws LoginException, IOException {
+        Log.d("Facebook", "registration: "+token);
         Call<StaticfieldsDto> call = api.registration(token);
         Response<StaticfieldsDto> response =call.execute();
         if(response.isSuccessful()){

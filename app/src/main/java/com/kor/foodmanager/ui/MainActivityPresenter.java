@@ -2,6 +2,7 @@ package com.kor.foodmanager.ui;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.facebook.login.LoginManager;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
@@ -89,6 +90,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
 
     public void logOut(){
         authRepository.clearToken();
+        LoginManager.getInstance().logOut();
         router.newRootScreen(LOGIN_SCREEN);
     }
 

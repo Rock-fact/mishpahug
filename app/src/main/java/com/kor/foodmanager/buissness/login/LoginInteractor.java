@@ -1,5 +1,7 @@
 package com.kor.foodmanager.buissness.login;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.kor.foodmanager.buissness.login.validator.EmailValidException;
@@ -12,10 +14,13 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import okhttp3.Credentials;
+import okio.ByteString;
 
 import static com.kor.foodmanager.ui.MainActivity.TAG;
+import static okhttp3.internal.Util.ISO_8859_1;
 
 public class LoginInteractor implements ILoginInteractor{
     private ILoginRepository loginRepository;
@@ -39,8 +44,9 @@ public class LoginInteractor implements ILoginInteractor{
     }
     @Override
     public void login(String token) throws LoginException, IOException {
-        UserDto userDto = loginRepository.login(token);
-        authRepository.saveToken(token);
+        String encoded=encodedToken(token);
+        UserDto userDto = loginRepository.login(encoded);
+        authRepository.saveToken(encoded);
         authRepository.saveUser(userDto);
     }
 
@@ -51,10 +57,17 @@ public class LoginInteractor implements ILoginInteractor{
         StaticfieldsDto staticfieldsDto = loginRepository.registration(token);
         authRepository.saveToken(token);
     }
+    public String encodedToken(String token){
+      String email=token.substring(1,15).toLowerCase()+"@mail.ru";
+      String password="qweqwe";
+      String encoded=email+":"+password;
+      return "Basic " +ByteString.encodeString(encoded, ISO_8859_1).base64();
+    }
     @Override
     public void registration(String token) throws LoginException, IOException {
-        StaticfieldsDto staticfieldsDto = loginRepository.registration(token);
-        authRepository.saveToken(token);
+        String encoded=encodedToken(token);
+        StaticfieldsDto staticfieldsDto = loginRepository.registration(encoded);
+        authRepository.saveToken(encoded);
     }
 
 
