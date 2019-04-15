@@ -82,9 +82,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
 
     @Override
     public void loadImages() {
-
         loadAvatarPicture(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
-
         loadEvenerBannerPicture(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
     }
 
@@ -118,11 +116,13 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK & requestCode == AVATAR_EDIT_REQUEST ||
-                requestCode == EVENT_BANNER_EDIT_REQUEST) {
-            Uri picUri = data.getData();
-            if (picUri != null) {
-                presenter.loadImage(requestCode, picUri);
+        if(resultCode==RESULT_OK) {
+            if (resultCode == RESULT_OK & requestCode == AVATAR_EDIT_REQUEST ||
+                    requestCode == EVENT_BANNER_EDIT_REQUEST) {
+                Uri picUri = data.getData();
+                if (picUri != null) {
+                    presenter.loadImage(requestCode, picUri);
+                }
             }
         }
     }
@@ -151,6 +151,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     public void loadAvatarPicture(String uri) {
         //Picasso.get().invalidate(presenter.getPicUrl(AVATAR_EDIT_REQUEST));
         Picasso.get().load(uri)
+                .transform(new CropCircleTransformation())
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .error(R.drawable.logo)
@@ -161,6 +162,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     public void loadEvenerBannerPicture(String uri) {
         //Picasso.get().invalidate(presenter.getPicUrl(EVENT_BANNER_EDIT_REQUEST));
         Picasso.get().load(uri)
+                .fit()
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .error(R.drawable.logo)

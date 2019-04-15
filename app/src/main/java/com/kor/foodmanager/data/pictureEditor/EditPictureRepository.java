@@ -42,63 +42,62 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String uploadPic(Uri uri, String name, int position) {
-        public_id = authRepository.getToken().substring(6);
+            public_id = authRepository.getToken().substring(6);
 
-        String res = MediaManager.get().upload(uri)
-                .option("invalidate", true)
-                .option("overwrite", true)
-                .option("public_id",public_id.concat(name))
-                //.option("version", version)
-                .callback(new UploadCallback() {
-                    @Override
-                    public void onStart(String requestId) {
+            String res = MediaManager.get().upload(uri)
+                    .option("invalidate", true)
+                    .option("overwrite", true)
+                    .option("public_id", public_id.concat(name))
+                    //.option("version", version)
+                    .callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
 
-                    }
-
-                    @Override
-                    public void onProgress(String requestId, long bytes, long totalBytes) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        if(listener!=null) {
-                            listener.onPicUploaded(position);
                         }
-                    }
 
-                    @Override
-                    public void onError(String requestId, ErrorInfo error) {
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            if (listener != null) {
+                                listener.onPicUploaded(position);
+                            }
+                        }
 
-                    }
-                })
-                .dispatch();
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
 
-        return res;
+                        }
+
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+
+                        }
+                    })
+                    .dispatch();
+
+            return res;
+
     }
 
     @Override
     public String getPicUrl(String name) {
-        if(public_id==null) {
-            public_id = authRepository.getToken().substring(6);
-        }
-        Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
-        Map options = new HashMap();
-        options.put("invalidate", true);
-        try {
-            MediaManager.get().getCloudinary().uploader().explicit(public_id.concat(name), options);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return MediaManager.get().url().generate(public_id.concat(name));
-//                .url()
-//                //.version(version++)
-//                .generate(public_id.concat(name));
+//        if(public_id==null) {
+//            public_id = authRepository.getToken().substring(6);
+//        }
+//        Log.d("MY_TAG", "getPicUrl public id: " + public_id.concat(name));
+//        Map options = new HashMap();
+//        options.put("invalidate", true);
+//        try {
+//            MediaManager.get().getCloudinary().uploader().explicit(public_id.concat(name), options);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return MediaManager.get().url().generate(public_id.concat(name));
+        return null;
     }
 
     @Override
@@ -115,14 +114,19 @@ public class EditPictureRepository implements IEditPictureRepository{
     public List<String> getPictureLincs() {
         List<String> links = new ArrayList<>();
         if(public_id==null) {
-            public_id = authRepository.getToken().substring(6);
+            if(authRepository.getToken()!=null) {
+                public_id = authRepository.getToken().substring(6);
+            } else {
+                public_id=null;
+            }
         }
-        links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
-        links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
-//        links.add(0, cropForAvatar(getPicUrl(MainActivity.AVATAR_PICTURE)));
-//        links.add(1, cropForBanner(getPicUrl(MainActivity.EVENT_BANNER_PICTURE)));
-
-
+        if(public_id!=null) {
+            links.add(0, cropForAvatar(public_id.concat(MainActivity.AVATAR_PICTURE)));
+            links.add(1, cropForBanner(public_id.concat(MainActivity.EVENT_BANNER_PICTURE)));
+        } else {
+            links.add("none");
+            links.add("none");
+        }
         return links;
     }
 
@@ -145,10 +149,6 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String cropForAvatar(String loadedImg) {
-//        if(public_id==null) {
-//            public_id = authRepository.getToken().substring(6);
-//        }
-
         return MediaManager.get().url()
                 .version(version++)
                 .transformation(new Transformation()
@@ -158,9 +158,6 @@ public class EditPictureRepository implements IEditPictureRepository{
 
     @Override
     public String cropForBanner(String loadedImg) {
-//        if(public_id==null) {
-//            public_id = authRepository.getToken().substring(6);
-//        }
         return MediaManager.get().url()
                 .version(version++)
                 .transformation(new Transformation().width(350).height(170)

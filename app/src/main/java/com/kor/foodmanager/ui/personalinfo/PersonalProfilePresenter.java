@@ -7,6 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
@@ -25,6 +26,8 @@ public class PersonalProfilePresenter extends MvpPresenter<IPersonalProfileFragm
 
     @Inject
     IUserDataRepository userDataRepository;
+    @Inject
+    IEditPictureRepository editPictureRepository;
 
     public PersonalProfilePresenter(){
         App.get().mainComponent().inject(this);
@@ -36,6 +39,10 @@ public class PersonalProfilePresenter extends MvpPresenter<IPersonalProfileFragm
 
     public void startContactInfo(UserDtoWithEmail user){
         router.navigateTo(MainActivity.CONTACTINFO_FRAGMENT_NEW, user);
+    }
+
+    public void editPicture(UserDto user) {
+        router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
     }
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{
