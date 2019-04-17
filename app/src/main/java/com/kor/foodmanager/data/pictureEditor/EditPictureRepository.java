@@ -30,16 +30,13 @@ public class EditPictureRepository implements IEditPictureRepository{
     private MyUplosdPicListener listener;
 
     public EditPictureRepository(Context context, IAuthRepository authRepository) {
-        Map config = new HashMap();
-        config.put("cloud_name", "newmishpahug");
-        config.put("api_key", "893573575281754");
-        config.put("api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
+        Map config = ObjectUtils.asMap("cloud_name", "newmishpahug",
+        "api_key", "893573575281754", "api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
         MediaManager.init(context, config);
         this.authRepository = authRepository;
         notLoadedUriList = new ArrayList<>();
         notLoadedUriList.add(0, "none");
         notLoadedUriList.add(1, "none");
-
         version=0;
     }
 
@@ -75,6 +72,8 @@ public class EditPictureRepository implements IEditPictureRepository{
                             if (listener != null) {
                                 listener.onPicUploaded(position);
                             }
+                            Log.d("BOOO", "onSuccess: "+resultData);
+
                         }
 
                         @Override
@@ -167,5 +166,6 @@ public class EditPictureRepository implements IEditPictureRepository{
         void onPicUploaded(int position);
     }
 
+    //TODO public id and non format
 
 }
