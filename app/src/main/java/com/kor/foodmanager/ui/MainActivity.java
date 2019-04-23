@@ -167,7 +167,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     String fullName = userDto.getFirstName() + " " + userDto.getLastName();
                     guestName.setText(fullName);
                     imageView = drawerView.findViewById(R.id.imageView);
-                    Picasso.get().load(presenter.loadAvatar()).error(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    Picasso.get().load(presenter.loadAvatar())
+                            .transform(new CropCircleTransformation())
+                            .error(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
                             .networkPolicy(NetworkPolicy.NO_CACHE).into(imageView);
                     Log.d(TAG, "ToolbarImg: "+presenter.loadAvatar());
                 }

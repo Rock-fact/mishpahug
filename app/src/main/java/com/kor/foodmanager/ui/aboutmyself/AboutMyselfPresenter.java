@@ -158,6 +158,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            user.setPictureLink(editPictureRepository.getNotLoadedUriList());
             Log.d("Registration", "onPreExecute: Pre");
         }
 
@@ -177,6 +178,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         @Override
         protected void onPostExecute(String s) {
             if (isSuccess) {
+                Log.d("PICS", "onPostExecute: "+user);
                 editPictureRepository
                         .uploadPic(Uri.parse(user.getPictureLink().get(0)), MainActivity.AVATAR_PICTURE, 1);
                 editPictureRepository
