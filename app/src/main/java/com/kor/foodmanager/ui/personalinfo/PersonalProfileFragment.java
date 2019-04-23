@@ -28,6 +28,7 @@ import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
@@ -105,6 +106,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
+        presenter.clearNonLoadedList();
         if (savedInstanceState != null) {
             userDtoWithEmail = (UserDtoWithEmail) savedInstanceState.getSerializable("user");
         }
@@ -144,7 +146,9 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         gender.setText(user.getGender());
         if(user.getPictureLink().size()>0) {
             Picasso.get().invalidate(user.getPictureLink().get(0));
-            Picasso.get().load(user.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
         } else {
             Picasso.get().load(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -167,6 +171,12 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     @Override
     public void setUserPics(List<String> notLoadedUriList) {
         user.setPictureLink(notLoadedUriList);
+        if(notLoadedUriList.size()>0) {
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
     }
 
     private void updateSpinersValues() {
@@ -240,6 +250,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
             user.setDateOfBirth(dateOfBirth.getText().toString());
             user.setGender(gender.getText().toString());
             user.setConfession(confession.getText().toString());
+            Log.d("PICS", "onClickNextBtn: "+user);
             presenter.startContactInfo(userDtoWithEmail);
         } else {
             new AlertDialog.Builder(getActivity())

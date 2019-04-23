@@ -7,6 +7,7 @@ import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.buissness.eventInfo.IGuestEventInfoInteractor;
 import com.kor.foodmanager.data.event.ServerException;
+import com.kor.foodmanager.ui.MainActivity;
 
 import java.io.IOException;
 
@@ -33,6 +34,10 @@ public class GuestEventInfoDonePresenter extends MvpPresenter<IGuestEventInfoDon
     public void voteForEvent(long eventId, double rate){
         this.rate = rate;
         new VoteForEventTask().execute(eventId);
+    }
+
+    public void participationList() {
+        router.navigateTo(MainActivity.PARTICIPATION_LIST_SCREEN);
     }
 
 

@@ -10,6 +10,6 @@ public interface IGuestEventInfoDone extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
     void hideVoteBtn();
-    void showVoteDialog(long eventId);
+//    void showVoteDialog(long eventId);
     void showSuccessDialog(String s);
 }

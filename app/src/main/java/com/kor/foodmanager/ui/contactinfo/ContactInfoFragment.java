@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,9 +23,13 @@ import com.kor.foodmanager.buissness.login.validator.EmailValidException;
 import com.kor.foodmanager.buissness.login.validator.PasswordValidException;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.login.LoginPresenter;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +52,8 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
     TextView editPicture;
     @BindView(R.id.email)
     TextInputEditText emailInput;
+    @BindView(R.id.avatar)
+    ImageView avatar;
     @BindView(R.id.phoneNumber)
     EditText phoneInput;
     @BindView(R.id.password)
@@ -89,14 +96,20 @@ public class ContactInfoFragment extends MvpAppCompatFragment implements IContac
 
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Contact Info", false, true, false);
-
+        if(userDtoWithEmail.getUser().getPictureLink().size()>0){
+            Picasso.get().invalidate(userDtoWithEmail.getUser().getPictureLink().get(0));
+            Picasso.get().load(userDtoWithEmail.getUser().getPictureLink().get(0))
+                    .transform(new CropCircleTransformation()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
         return view;
     }
 
 
     @OnClick(R.id.editPictures)
     public void onClickEditPicture() {
-        Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
+        presenter.editPic();
+        //Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.next_btn)

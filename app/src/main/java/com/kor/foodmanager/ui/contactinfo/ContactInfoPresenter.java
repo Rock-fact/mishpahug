@@ -36,4 +36,8 @@ public class ContactInfoPresenter extends MvpPresenter<IContactInfoFragment> {
     public void validate(String email) throws EmailValidException, PasswordValidException {
         interactor.validate(email);
     }
+
+    public void editPic() {
+        router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
+    }
 }

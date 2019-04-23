@@ -117,7 +117,7 @@ public class EditPictureFragment extends MvpAppCompatFragment implements IEditPi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK) {
-            if (resultCode == RESULT_OK & requestCode == AVATAR_EDIT_REQUEST ||
+            if (requestCode == AVATAR_EDIT_REQUEST ||
                     requestCode == EVENT_BANNER_EDIT_REQUEST) {
                 Uri picUri = data.getData();
                 if (picUri != null) {

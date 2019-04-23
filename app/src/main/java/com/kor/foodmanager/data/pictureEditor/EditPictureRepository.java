@@ -26,7 +26,7 @@ public class EditPictureRepository implements IEditPictureRepository{
     private IAuthRepository authRepository;
     private String public_id;
     private List<String> notLoadedUriList;
-   private long version;
+    private long version;
     private MyUplosdPicListener listener;
 
     public EditPictureRepository(Context context, IAuthRepository authRepository) {
@@ -34,9 +34,11 @@ public class EditPictureRepository implements IEditPictureRepository{
         "api_key", "893573575281754", "api_secret", "aYACgLcWNlBuKjxd5_McsRkf4pQ");
         MediaManager.init(context, config);
         this.authRepository = authRepository;
-        notLoadedUriList = new ArrayList<>();
-        notLoadedUriList.add(0, "none");
-        notLoadedUriList.add(1, "none");
+        if(notLoadedUriList==null) {
+            notLoadedUriList = new ArrayList<>();
+            notLoadedUriList.add(0, "none");
+            notLoadedUriList.add(1, "none");
+        }
         version=0;
     }
 
@@ -45,13 +47,29 @@ public class EditPictureRepository implements IEditPictureRepository{
     }
 
     @Override
+    public void saveLinks(Uri picUri, int position) {
+        Log.d("PICS", "position: "+position);
+        if(position==1){
+            notLoadedUriList.remove(0);
+            notLoadedUriList.add(0, picUri.toString());
+        } else {
+            notLoadedUriList.remove(1);
+            notLoadedUriList.add(1, picUri.toString());
+        }
+    }
+
+    @Override
+    public void clearNonLoadedList() {
+        notLoadedUriList.clear();
+        notLoadedUriList.add(0, "none");
+        notLoadedUriList.add(1, "none");
+    }
+
+
+    @Override
     public String uploadPic(Uri uri, String name, int position) {
             public_id = authRepository.getToken().substring(6);
-            if(position==0){
-                notLoadedUriList.add(0, uri.toString());
-            } else {
-                notLoadedUriList.add(1, uri.toString());
-            }
+            saveLinks(uri, position);
             String res = MediaManager.get().upload(uri)
                     .option("invalidate", true)
                     .option("overwrite", true)

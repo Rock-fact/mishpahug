@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -130,8 +131,8 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
         isVoted = true;
     }
 
-    @Override
-    public void showVoteDialog(long eventId) {
+    @OnClick(R.id.vote_btn)
+    public void showVoteDialog() {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.vote_dialog, null);
         RatingBar ratingBar = view.findViewById(R.id.ratingBar);
@@ -141,7 +142,7 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
                 .setMessage("Vote for event")
                 .setView(view)
                 .setPositiveButton("Ok", (dialog, which) ->
-                        presenter.voteForEvent(eventId, ratingBar.getRating()))
+                        presenter.voteForEvent(event.getEventId(), ratingBar.getRating()))
                 .create()
                 .show();
     }
@@ -149,7 +150,12 @@ public class GuestEventInfoDoneFragment extends MvpAppCompatFragment implements 
     @Override
     public void showSuccessDialog(String s) {
         new AlertDialog.Builder(getActivity()).setMessage(s)
-                .setPositiveButton("ok", null)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        presenter.participationList();
+                    }
+                })
                 .create()
                 .show();
     }

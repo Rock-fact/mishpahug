@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +27,14 @@ import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.login.LoginPresenter;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -55,6 +60,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
     @BindView(R.id.editPictures)
     TextView editPicture;
+    @BindView(R.id.avatar)
+    ImageView avatar;
     @BindView(R.id.marital)
     EditText marital;
     @BindView(R.id.food)
@@ -119,6 +126,13 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         spinnerMarital.setOnItemSelectedListener(this);
         spinnerLanguages.setOnItemSelectedListener(this);
 
+        if(user.getPictureLink().size()>0){
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
+
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("About myself", false, true, false);
 
@@ -162,7 +176,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
     @OnClick(R.id.editPictures)
     public void onClickEditPicture() {
-        Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
+        presenter.editPic();
+        //Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.save_btn)
