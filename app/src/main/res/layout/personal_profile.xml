@@ -158,10 +158,12 @@
         app:layout_constraintTop_toTopOf="@+id/gender"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
+        style="@style/BaseSpinner"
         />
 
     <Spinner
         android:id="@+id/spinnerConfession"
+        style="@style/BaseSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#FFFFFF"

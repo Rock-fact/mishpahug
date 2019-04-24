@@ -134,7 +134,6 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
         @Override
         protected void onPostExecute(String s) {
-            getViewState().hideProgressFrame();
             if (isSuccess) {
                 Log.d("Registration", "Registration is "+isSuccess);
                 new UpdateUserProfileTask(user, isFacebook).execute();

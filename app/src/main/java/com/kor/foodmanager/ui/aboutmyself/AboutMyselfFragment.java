@@ -157,16 +157,16 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         staticFields.getMaritalStatus().add(0, "");
         staticFields.getLanguages().add(0,"");
 
-        ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getMaritalStatus());
-        maritalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getMaritalStatus());
+        maritalAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerMarital.setAdapter(maritalAdapter);
 
-        ArrayAdapter<String> foodPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
-        foodPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> foodPreferenceAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getFoodPreferences());
+        foodPreferenceAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerFood.setAdapter(foodPreferenceAdapter);
 
-        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getLanguages());
-        languagesPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getLanguages());
+        languagesPreferenceAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerLanguages.setAdapter(languagesPreferenceAdapter);
 
         spinnerMarital.setSelection(0);
