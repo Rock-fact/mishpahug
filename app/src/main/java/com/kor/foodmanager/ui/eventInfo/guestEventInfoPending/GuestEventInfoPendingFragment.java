@@ -91,7 +91,7 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
             ownerPhone.setText(event.getOwner().getPhoneNumber());
             if(event.getOwner().getPictureLink()!=null) {
                 Picasso.get().load(event.getOwner().getPictureLink().get(1))
-                        .error(R.drawable.logo).into(eventImg); //TODO get 1 img
+                        .error(R.drawable.logo).fit().into(eventImg); //TODO get 1 img
                 //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }

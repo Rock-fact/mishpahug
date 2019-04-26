@@ -87,6 +87,7 @@ public class MyEventInfoInProgressPresenter extends MvpPresenter<IMyEventInfoInP
         @Override
         protected void onPostExecute(InvitationStatusDto invitationStatusDto) {
             getViewState().hideProgressFrame();
+            getViewState().changeButton();
             if (invitationStatusDto == null) {
                 router.showSystemMessage(res);
             }

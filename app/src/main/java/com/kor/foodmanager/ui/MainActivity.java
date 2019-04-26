@@ -1,5 +1,6 @@
 package com.kor.foodmanager.ui;
 
+import android.app.DatePickerDialog;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -169,7 +170,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     imageView = drawerView.findViewById(R.id.imageView);
                     Picasso.get().load(presenter.loadAvatar())
                             .transform(new CropCircleTransformation())
-                            .error(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
+                            .error(R.drawable.logo)
+                            .placeholder(R.drawable.logo)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .networkPolicy(NetworkPolicy.NO_CACHE).into(imageView);
                     Log.d(TAG, "ToolbarImg: "+presenter.loadAvatar());
                 }

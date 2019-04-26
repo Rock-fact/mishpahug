@@ -1,6 +1,5 @@
 package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,14 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
-
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -90,13 +86,8 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
         iToolbar.setTitleToolbarEnable(event.getTitle(), false,true,false);
         date.setText(event.getDate());
         eventDescription.setText(event.getDescription());
-
-
         return view;
     }
-
-
-
 
     @Override
     public void onDestroy() {
@@ -125,6 +116,12 @@ public class MyEventInfoInProgressFragment extends MvpAppCompatFragment implemen
     public void hideProgressFrame() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void changeButton() {
+        adapter.notifyDataSetChanged();
+        //TODO
     }
 
 }

@@ -37,7 +37,7 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         View view = inflater.inflate(R.layout.fragment_participation_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Participation list",false, false, true);
+        iToolbar.setTitleToolbarEnable("Participation list",false, true, true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = presenter.getAdapter();
