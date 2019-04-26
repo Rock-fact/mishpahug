@@ -1,13 +1,9 @@
 package com.kor.foodmanager.ui.eventList;
 
 
-import android.annotation.SuppressLint;
+
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
-import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +25,9 @@ import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.ui.IToolbar;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
-
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -149,6 +142,7 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
         //dialog.setTitle(R.string.date_from_title);
         TextView title = new TextView(getActivity());
         title.setText(R.string.date_from_title);
+        title.setTextSize(24);
         title.setBackgroundResource(R.color.colorPrimaryDark);
         dialog.setCustomTitle(title);
         dialog.show();
@@ -173,11 +167,12 @@ public class FiltersFragment extends MvpAppCompatFragment implements IFilters, A
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
-        //dialog.setTitle("Select date to");
-        TextView title = new TextView(getActivity());
-        title.setText("Select date to");
-        title.setBackgroundResource(R.color.colorPrimaryDark);
-        dialog.setCustomTitle(title);
+        dialog.setTitle("Select date to");
+//        TextView title = new TextView(getActivity());
+//        title.setText("Select date to");
+//        title.setTextSize(24);
+//        title.setBackgroundResource(R.color.colorPrimaryDark);
+//        dialog.setCustomTitle(title);
         dialog.show();
     }
 

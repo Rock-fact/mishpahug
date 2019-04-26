@@ -14,13 +14,10 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.ui.IToolbar;
 
-import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

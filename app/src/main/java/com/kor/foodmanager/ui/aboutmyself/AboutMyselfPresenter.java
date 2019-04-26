@@ -169,6 +169,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
                         .uploadPic(Uri.parse(user.getPictureLink().get(0)), MainActivity.AVATAR_PICTURE, 1);
                 editPictureRepository
                         .uploadPic(Uri.parse(user.getPictureLink().get(1)), MainActivity.EVENT_BANNER_PICTURE, 2);
+                editPictureRepository.clearNonLoadedList();
                 return "Done";
             } catch (Exception e) {
                 e.printStackTrace();

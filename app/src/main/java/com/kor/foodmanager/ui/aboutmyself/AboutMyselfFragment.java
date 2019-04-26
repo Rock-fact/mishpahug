@@ -1,7 +1,7 @@
 package com.kor.foodmanager.ui.aboutmyself;
 
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
