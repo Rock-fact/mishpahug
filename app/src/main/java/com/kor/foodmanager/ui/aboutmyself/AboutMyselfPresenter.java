@@ -165,6 +165,10 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             try {
                 user = userDataRepository.updateUserProfile(user);
+                editPictureRepository
+                        .uploadPic(Uri.parse(user.getPictureLink().get(0)), MainActivity.AVATAR_PICTURE, 1);
+                editPictureRepository
+                        .uploadPic(Uri.parse(user.getPictureLink().get(1)), MainActivity.EVENT_BANNER_PICTURE, 2);
                 return "Done";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,10 +182,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected void onPostExecute(String s) {
             if (isSuccess) {
                 Log.d("PICS", "onPostExecute: "+user);
-                editPictureRepository
-                        .uploadPic(Uri.parse(user.getPictureLink().get(0)), MainActivity.AVATAR_PICTURE, 1);
-                editPictureRepository
-                        .uploadPic(Uri.parse(user.getPictureLink().get(1)), MainActivity.EVENT_BANNER_PICTURE, 2);
+
                 Log.d("Registration", "Update is"+isSuccess);
 
                 if (!isFacebook) new LoginTask(email, password).execute();
