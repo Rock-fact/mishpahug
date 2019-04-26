@@ -124,6 +124,8 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
 
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Event list", true,false,false);
+        swipeRefresh.setProgressBackgroundColorSchemeColor(0);
+        swipeRefresh.setProgressViewEndTarget(false, 0);
         return view;
     }
 
