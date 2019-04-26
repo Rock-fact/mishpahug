@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,10 @@ public class MyEventInfoPendingAdapter extends RecyclerView.Adapter<MyEventInfoP
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         UserDto subscriber = listOfParticipants.get(i);
         myViewHolder.fullName.setText(subscriber.getFullName());
+        Picasso.get().invalidate(subscriber.getPictureLink().get(0));
+        Picasso.get().load(subscriber.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .transform(new CropCircleTransformation())
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(myViewHolder.pictureOfSubscriber);
          //TODO load image
     }
 
