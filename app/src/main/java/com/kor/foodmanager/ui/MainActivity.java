@@ -1,5 +1,6 @@
 package com.kor.foodmanager.ui;
 
+import android.app.DatePickerDialog;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -74,6 +75,11 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements IMain, IToolbar, NavigationView.OnNavigationItemSelectedListener {
+    public static final String OFFICIAL_BACKEND_VERSION = "GRISHA";
+    public static final String DIMAS_BACKEND_VERSION = "DIMA";
+
+    public static final String BACKEND_VERSION = OFFICIAL_BACKEND_VERSION;
+
     public static final String LOGIN_SCREEN = "LOGIN_SCREEN";
     public static final String ADD_EVENT_SCREEN = "ADD_EVENT_SCREEN";
     public static final String EVENT_LIST_SCREEN = "EVENT_LIST_SCREEN";
@@ -162,7 +168,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMain, IToolba
                     String fullName = userDto.getFirstName() + " " + userDto.getLastName();
                     guestName.setText(fullName);
                     imageView = drawerView.findViewById(R.id.imageView);
-                    Picasso.get().load(presenter.loadAvatar()).error(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    Picasso.get().load(presenter.loadAvatar())
+                            .transform(new CropCircleTransformation())
+                            .error(R.drawable.logo)
+                            .placeholder(R.drawable.logo)
+                            .memoryPolicy(MemoryPolicy.NO_CACHE)
                             .networkPolicy(NetworkPolicy.NO_CACHE).into(imageView);
                     Log.d(TAG, "ToolbarImg: "+presenter.loadAvatar());
                 }

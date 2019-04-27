@@ -1,12 +1,13 @@
 package com.kor.foodmanager.ui.personalinfo;
 
-import android.app.AlertDialog;
+
 import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
@@ -108,6 +110,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         staticFields = new StaticfieldsDto();
+        presenter.clearNonLoadedList();
         if (savedInstanceState != null) {
             userDtoWithEmail = (UserDtoWithEmail) savedInstanceState.getSerializable("user");
         }
@@ -159,7 +162,9 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
         gender.setText(user.getGender());
         if(user.getPictureLink().size()>0) {
             Picasso.get().invalidate(user.getPictureLink().get(0));
-            Picasso.get().load(user.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
         } else {
             Picasso.get().load(R.drawable.logo).memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -182,18 +187,24 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
     @Override
     public void setUserPics(List<String> notLoadedUriList) {
         user.setPictureLink(notLoadedUriList);
+        if(notLoadedUriList.size()>0) {
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
     }
 
     private void updateSpinersValues() {
         staticFields.getConfession().add(0, "");
         staticFields.getGender().add(0, "");
 
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getGender());
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getGender());
+        genderAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerGender.setAdapter(genderAdapter);
 
-        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getConfession());
-        confessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> confessionAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getConfession());
+        confessionAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerConfession.setAdapter(confessionAdapter);
 
         spinnerGender.setSelection(0);
@@ -261,6 +272,7 @@ public class PersonalProfileFragment extends MvpAppCompatFragment implements IPe
             user.setDateOfBirth(dateOfBirth.getText().toString());
             user.setGender(gender.getText().toString());
             user.setConfession(confession.getText().toString());
+            Log.d("PICS", "onClickNextBtn: "+user);
             presenter.startContactInfo(userDtoWithEmail);
         } else {
             new AlertDialog.Builder(getActivity())

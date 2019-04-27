@@ -1,5 +1,7 @@
 package com.kor.foodmanager.ui.eventInfo.myEventInfoInProgress;
 
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +43,21 @@ public class MyEventInfoInProgressAdapter extends RecyclerView.Adapter<MyEventIn
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         UserDto subscriber = listOfParticipants.get(i);
         myViewHolder.fullName.setText(subscriber.getFullName());
+        Picasso.get().invalidate(subscriber.getPictureLink().get(0));
+        Picasso.get().load(subscriber.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                .transform(new CropCircleTransformation())
+                .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(myViewHolder.pictureOfSubscriber);
         Log.d("MY_TAG", "onBindViewHolder: "+"amounOfParticipants="+listOfParticipants.size()+"adapter position="+i);
         Log.d("MY_TAG", "onBindViewHolder: "+listOfParticipants.get(i).getInvited());
-        if (listOfParticipants.get(i).getInvited()==null || !listOfParticipants.get(i).getInvited()){
+//        if (listOfParticipants.get(i).getInvited()==null || !listOfParticipants.get(i).getInvited()){
+        if(subscriber.getInvited()==null || !subscriber.getInvited()){
             Log.d("MY_TAG", "onBindViewHolder: Yes!!!!!!!!!!");
-            myViewHolder.inviteBtn.setText("-");
+            myViewHolder.inviteBtn.setText("+");
             myViewHolder.inviteBtn.setEnabled(true);
         } else {
-            myViewHolder.inviteBtn.setText("+");
+            myViewHolder.inviteBtn.setText("invited");
+            myViewHolder.inviteBtn.setTextSize(18);
+            myViewHolder.inviteBtn.setTextColor(Color.WHITE);
             myViewHolder.inviteBtn.setEnabled(false);
         }
          //TODO load image
@@ -73,6 +87,8 @@ public class MyEventInfoInProgressAdapter extends RecyclerView.Adapter<MyEventIn
         listOfParticipants.clear();
         notifyDataSetChanged();
     }
+
+
 
     public List<UserDto> getListOfParticipants() {
         return listOfParticipants;

@@ -19,8 +19,11 @@ import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.GuestEventInfoInprogressPresenter;
 import com.kor.foodmanager.ui.eventInfo.guestEventInfoInprogress.IGuestEventInfoInprogress;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -90,6 +93,10 @@ public class UserInfo extends MvpAppCompatFragment {
             fullName.setText(user.getFullName());
             confession.setText(user.getConfession());
             gender.setText(user.getGender());
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0)).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .transform(new CropCircleTransformation())
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(userImage);
             if (isPending) {
                 telephoneNumber.setText(user.getPhoneNumber());
             } else {
@@ -97,15 +104,10 @@ public class UserInfo extends MvpAppCompatFragment {
             }
             maritalStatus.setText(user.getMaritalStatus());
             foodPreferences.setText(inLine(user.getFoodPreferences()));
+            allergy.setVisibility(View.GONE);
             //TODO allergy
 
             ratingBar.setRating(new Float(user.getRate()));
-
-
-            if (user.getPictureLink() != null) {
-//                Picasso.get().load(user.getPictureLink().get(0)).into(userImage);
-                Picasso.get().load("https://i.imgur.com/vaZKZcz.jpg").into(userImage); //TODO get 1 img
-            }
         }
         return view;
     }

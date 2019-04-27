@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/raleway</item>
+        <item name="colorBackgroundFloating">@color/colorPrimary</item>
+        <item name="android:alertDialogStyle">@style/CustomDialogTheme</item>
     </style>
 
 
@@ -38,6 +40,20 @@
 
     <style name="CalendarTextAppearance" parent="TextAppearance.MaterialCalendarWidget.Date">
         <item name="android:textColor">@color/mcv_text_date_dark</item>
+    </style>
+
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:bottomBright">@color/colorPrimary</item>
+        <item name="android:bottomDark">@color/colorPrimary</item>
+        <item name="android:bottomMedium">@color/colorPrimary</item>
+        <item name="android:centerBright">@color/colorPrimary</item>
+        <item name="android:centerDark">@color/colorPrimary</item>
+        <item name="android:centerMedium">@color/colorPrimary</item>
+        <item name="android:fullBright">@color/colorPrimary</item>
+        <item name="android:fullDark">@color/colorPrimary</item>
+        <item name="android:topBright">@color/colorPrimary</item>
+        <item name="android:topDark">@color/colorPrimary</item>
+        <item name="android:fontFamily">@font/raleway</item>
     </style>
 
 </resources>

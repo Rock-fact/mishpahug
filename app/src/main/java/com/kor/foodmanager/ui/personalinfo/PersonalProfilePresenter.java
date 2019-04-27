@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.personalinfo;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -47,8 +48,13 @@ public class PersonalProfilePresenter extends MvpPresenter<IPersonalProfileFragm
 
     public void setPics() {
         if(editPictureRepository.getNotLoadedUriList()!=null){
+            Log.d("PICS", "setPics: "+ editPictureRepository.getNotLoadedUriList());
             getViewState().setUserPics(editPictureRepository.getNotLoadedUriList());
         }
+    }
+
+    public void clearNonLoadedList() {
+        editPictureRepository.clearNonLoadedList();
     }
 
     private class GetStaticFieldsTask extends AsyncTask<Void, Void, String>{

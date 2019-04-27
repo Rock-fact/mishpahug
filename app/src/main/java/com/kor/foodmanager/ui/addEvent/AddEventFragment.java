@@ -1,10 +1,12 @@
 package com.kor.foodmanager.ui.addEvent;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +73,7 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
     SupportPlaceAutocompleteFragment autocompleteFragment;
     private static final String COUNTRY_CODE = "IL";
 
-    Calendar dateAndTime;
+    Calendar dateAndTime = Calendar.getInstance();
     Object data;
     private IToolbar iToolbar;
     private int duration = 0;
@@ -226,5 +228,18 @@ public class AddEventFragment extends MvpAppCompatFragment implements IAddEvent,
 
             }
         });
+    }
+
+    @Override
+    public void showSuccess() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Event was created!")
+                .setTitle("Success!")
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    presenter.closeFragment();
+                })
+                .setCancelable(false)
+                .create()
+                .show();
     }
 }

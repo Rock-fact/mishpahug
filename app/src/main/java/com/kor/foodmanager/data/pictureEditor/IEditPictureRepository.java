@@ -14,4 +14,6 @@ public interface IEditPictureRepository {
     String cropForAvatar (String loadedImg);
     String cropForBanner (String loadedImg);
     void setListener(EditPictureRepository.MyUplosdPicListener listener);
+    void saveLinks(Uri picUri, int position);
+    void clearNonLoadedList();
 }

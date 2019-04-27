@@ -9,4 +9,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface IMyEventInfoInProgress extends MvpView {
     void showProgressFrame();
     void hideProgressFrame();
+
+    void changeButton();
 }

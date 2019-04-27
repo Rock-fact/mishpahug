@@ -58,6 +58,7 @@
 
     <Spinner
         android:id="@+id/spinnerMarital"
+        style="@style/BaseSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#FFFFFF"
@@ -88,6 +89,7 @@
 
     <Spinner
         android:id="@+id/spinnerFood"
+        style="@style/BaseSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#FFFFFF"
@@ -118,6 +120,7 @@
 
     <Spinner
         android:id="@+id/spinnerLanguages"
+        style="@style/BaseSpinner"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="#FFFFFF"

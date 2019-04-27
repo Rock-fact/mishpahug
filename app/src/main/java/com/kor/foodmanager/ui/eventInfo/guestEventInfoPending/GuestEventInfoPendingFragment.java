@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +91,7 @@ public class GuestEventInfoPendingFragment extends MvpAppCompatFragment implemen
             ownerPhone.setText(event.getOwner().getPhoneNumber());
             if(event.getOwner().getPictureLink()!=null) {
                 Picasso.get().load(event.getOwner().getPictureLink().get(1))
-                        .error(R.drawable.logo).into(eventImg); //TODO get 1 img
+                        .error(R.drawable.logo).fit().into(eventImg); //TODO get 1 img
                 //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }

@@ -1,7 +1,7 @@
 package com.kor.foodmanager.ui.eventList;
 
 
-import android.os.Binder;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
-import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
 import com.kor.foodmanager.ui.IToolbar;
 
@@ -125,6 +124,8 @@ public class EventListFragment extends MvpAppCompatFragment implements EventList
 
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("Event list", true,false,false);
+        swipeRefresh.setProgressBackgroundColorSchemeColor(0);
+        swipeRefresh.setProgressViewEndTarget(false, 0);
         return view;
     }
 

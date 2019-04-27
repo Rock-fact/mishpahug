@@ -2,11 +2,8 @@ package com.kor.foodmanager.ui.participationList;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +37,7 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         View view = inflater.inflate(R.layout.fragment_participation_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Participation list",false, false, true);
+        iToolbar.setTitleToolbarEnable("Participation list",false, true, true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = presenter.getAdapter();

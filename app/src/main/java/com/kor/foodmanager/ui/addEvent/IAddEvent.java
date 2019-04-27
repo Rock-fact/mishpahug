@@ -9,4 +9,5 @@ import java.util.List;
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface IAddEvent extends MvpView {
     void setHolidaySpinner(List<String> holiday);
+    void showSuccess();
 }

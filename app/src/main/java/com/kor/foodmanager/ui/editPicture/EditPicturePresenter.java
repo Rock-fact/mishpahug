@@ -41,6 +41,7 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
             return result;
         }
         else {
+            editPictureRepository.saveLinks(picUri, position);
             getViewState().hideProgressFrame();
             if(position==EditPictureFragment.AVATAR_EDIT_REQUEST) {
                 getViewState().loadAvatarPicture(picUri.toString());
@@ -54,10 +55,17 @@ public class EditPicturePresenter extends MvpPresenter<IEditPicture> implements 
     public String getPicUrl(int position) {
         switch (position) {
             case EditPictureFragment.AVATAR_EDIT_REQUEST:
-                return editPictureRepository.getPictureLincsFromServer().get(0);
-
+                if(authRepository.getToken()!=null) {
+                    return editPictureRepository.getPictureLincsFromServer().get(0);
+                } else {
+                    return editPictureRepository.getNotLoadedUriList().get(0);
+                }
             case EditPictureFragment.EVENT_BANNER_EDIT_REQUEST:
-                return editPictureRepository.getPictureLincsFromServer().get(1);
+                if(authRepository.getToken()!=null) {
+                    return editPictureRepository.getPictureLincsFromServer().get(1);
+                } else {
+                    return editPictureRepository.getNotLoadedUriList().get(1);
+                }
             default:
                 return null;
         }

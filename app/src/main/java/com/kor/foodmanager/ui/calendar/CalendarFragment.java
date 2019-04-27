@@ -1,6 +1,7 @@
 package com.kor.foodmanager.ui.calendar;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     private Boolean isMonth1Decorated = false;
     private Boolean isMonth2Decorated = false;
     private Boolean isMonth3Decorated = false;
+    private CalendarDialog calendarDialog;
 
     public static CalendarFragment getDatePicker(OnDateSelectedListener pickerListener){
         CalendarFragment fragment = new CalendarFragment();
@@ -131,6 +133,15 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(calendarDialog!=null&&calendarDialog.getShowsDialog()){
+            // TODO: 10.04.2019 maybe useless 
+            calendarDialog.dismiss(); 
+        }
+    }
+
+    @Override
     public void decorateCalendar(HebcalDto hebcalDto){
         Collection<CalendarDay> isrHolidays = new HashSet<>();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -173,7 +184,8 @@ public class CalendarFragment extends MvpAppCompatFragment implements ICalendar 
 
     @Override
     public void showCalendarDialog(CalendarDialog dialog) {
-        dialog.show(getChildFragmentManager(),"DIALOG");
+        calendarDialog = dialog;
+        calendarDialog.show(getChildFragmentManager(),"DIALOG");
     }
 
     @Override

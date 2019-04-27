@@ -1,7 +1,7 @@
 package com.kor.foodmanager.ui.aboutmyself;
 
 
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +27,14 @@ import com.facebook.AccessToken;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.ui.CropCircleTransformation;
 import com.kor.foodmanager.ui.IToolbar;
 import com.kor.foodmanager.ui.contactinfo.UserDtoWithEmail;
 import com.kor.foodmanager.ui.login.LoginPresenter;
 import com.kor.foodmanager.ui.userInfo.UserInfo;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -55,6 +60,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
     @BindView(R.id.editPictures)
     TextView editPicture;
+    @BindView(R.id.avatar)
+    ImageView avatar;
     @BindView(R.id.marital)
     EditText marital;
     @BindView(R.id.food)
@@ -119,6 +126,13 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         spinnerMarital.setOnItemSelectedListener(this);
         spinnerLanguages.setOnItemSelectedListener(this);
 
+        if(user.getPictureLink().size()>0){
+            Picasso.get().invalidate(user.getPictureLink().get(0));
+            Picasso.get().load(user.getPictureLink().get(0))
+                    .transform(new CropCircleTransformation()).memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE).error(R.drawable.logo).into(avatar);
+        }
+
         iToolbar = (IToolbar) getActivity();
         iToolbar.setTitleToolbarEnable("About myself", false, true, false);
 
@@ -143,16 +157,16 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
         staticFields.getMaritalStatus().add(0, "");
         staticFields.getLanguages().add(0,"");
 
-        ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getMaritalStatus());
-        maritalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> maritalAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getMaritalStatus());
+        maritalAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerMarital.setAdapter(maritalAdapter);
 
-        ArrayAdapter<String> foodPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getFoodPreferences());
-        foodPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> foodPreferenceAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getFoodPreferences());
+        foodPreferenceAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerFood.setAdapter(foodPreferenceAdapter);
 
-        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, staticFields.getLanguages());
-        languagesPreferenceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> languagesPreferenceAdapter = new ArrayAdapter<>(getContext(), R.layout.my_spinner_dropdown_item, staticFields.getLanguages());
+        languagesPreferenceAdapter.setDropDownViewResource(R.layout.my_spinner_dropdown_item);
         spinnerLanguages.setAdapter(languagesPreferenceAdapter);
 
         spinnerMarital.setSelection(0);
@@ -162,7 +176,8 @@ public class AboutMyselfFragment extends MvpAppCompatFragment implements IAboutM
 
     @OnClick(R.id.editPictures)
     public void onClickEditPicture() {
-        Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
+        presenter.editPic();
+        //Toast.makeText(getActivity(), "Go to edit picture", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.save_btn)

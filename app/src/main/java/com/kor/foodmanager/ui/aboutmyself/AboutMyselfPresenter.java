@@ -1,5 +1,6 @@
 package com.kor.foodmanager.ui.aboutmyself;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,8 +12,10 @@ import com.kor.foodmanager.buissness.login.ILoginInteractor;
 import com.kor.foodmanager.data.login.LoginException;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.ui.MainActivity;
+import com.kor.foodmanager.ui.editPicture.EditPictureFragment;
 
 import java.io.IOException;
 
@@ -27,6 +30,9 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
     @Inject
     Router router;
+
+    @Inject
+    IEditPictureRepository editPictureRepository;
 
     @Inject
     IUserDataRepository userDataRepository;
@@ -47,11 +53,16 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         this.user=user;
         this.email=email;
         this.password=password;
+
         new RegistrationTask(email, password, isFacebook).execute();
     }
 
     public void updateStaticFields() {
         new GetStaticFieldsTask().execute();
+    }
+
+    public void editPic() {
+        router.navigateTo(MainActivity.EDIT_PIC_FRAGMENT_SCREEN);
     }
 
 
@@ -123,7 +134,6 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
 
         @Override
         protected void onPostExecute(String s) {
-            getViewState().hideProgressFrame();
             if (isSuccess) {
                 Log.d("Registration", "Registration is "+isSuccess);
                 new UpdateUserProfileTask(user, isFacebook).execute();
@@ -147,6 +157,7 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            user.setPictureLink(editPictureRepository.getNotLoadedUriList());
             Log.d("Registration", "onPreExecute: Pre");
         }
 
@@ -154,6 +165,11 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         protected String doInBackground(Void... voids) {
             try {
                 user = userDataRepository.updateUserProfile(user);
+                editPictureRepository
+                        .uploadPic(Uri.parse(user.getPictureLink().get(0)), MainActivity.AVATAR_PICTURE, 1);
+                editPictureRepository
+                        .uploadPic(Uri.parse(user.getPictureLink().get(1)), MainActivity.EVENT_BANNER_PICTURE, 2);
+                editPictureRepository.clearNonLoadedList();
                 return "Done";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -166,6 +182,8 @@ public class AboutMyselfPresenter extends MvpPresenter<IAboutMyselfFragment> {
         @Override
         protected void onPostExecute(String s) {
             if (isSuccess) {
+                Log.d("PICS", "onPostExecute: "+user);
+
                 Log.d("Registration", "Update is"+isSuccess);
 
                 if (!isFacebook) new LoginTask(email, password).execute();
