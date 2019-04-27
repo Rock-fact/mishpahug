@@ -147,7 +147,7 @@ Illud consulatu est ea, modo perfecto et mea"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/background_gradient"
-        android:text="Join to event"
+        android:text="Unsubscribe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
