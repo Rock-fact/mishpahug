@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.addEvent.AddEventFragment"
-    android:background="@drawable/background_gradient">
+    android:background="@drawable/background_gradient"
+    tools:context=".ui.addEvent.AddEventFragment">
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -61,31 +61,30 @@
                 android:textColor="@color/colorBeige" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputAddressLayout"
+        <Spinner
+            android:id="@+id/holiday_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:orientation="vertical"
-            android:textColorHint="@color/colorBeige"
+            android:dropDownWidth="wrap_content"
+            android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputTitleLayout">
+            app:layout_constraintTop_toBottomOf="@+id/inputTitleLayout" />
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/inputAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:ems="10"
-                android:hint="Type address"
-                android:inputType="textPostalAddress"
-                android:textColor="@color/colorBeige" />
-        </android.support.design.widget.TextInputLayout>
+        <FrameLayout
+            android:id="@+id/autocomplete_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/holiday_spinner">
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textDate"
@@ -94,14 +93,12 @@
             android:layout_marginStart="27dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="27dp"
-            android:hint="Choose date"
+            android:text="Choose date"
             android:textColor="@color/colorBeige"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputAddressLayout">
-
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/autocomplete_layout"></TextView>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputDescriptionLayout"
@@ -146,6 +143,67 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <FrameLayout
+        android:id="@+id/pickerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC32265F"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/dialog"
+            android:padding="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:text="Choose duration of your event"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <NumberPicker
+                android:id="@+id/duration_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"></NumberPicker>
+
+            <Button
+                android:id="@+id/confirm_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/colorPrimary"
+                android:text="confirm"
+                android:textColor="@color/colorBeige"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/duration_picker" />
+        </android.support.constraint.ConstraintLayout>
+    </FrameLayout>
 
     <FrameLayout
         android:id="@+id/progressFrame"

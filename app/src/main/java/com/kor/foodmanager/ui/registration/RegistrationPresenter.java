@@ -102,7 +102,7 @@ public class RegistrationPresenter extends MvpPresenter<IRegistrationFragment> {
         @Override
         protected void onPostExecute(String s) {
             if(successful){
-                router.navigateTo(EVENT_LIST_SCREEN);
+                router.newRootScreen(EVENT_LIST_SCREEN);
             }else{
                 router.showSystemMessage(s);
             }

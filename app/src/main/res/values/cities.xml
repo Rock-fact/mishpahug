@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><string-array name="cities">
+    <item>--select city--</item>
+    <item>Afula</item>
+    <item>Akko</item>
+    <item>Arad</item>
+    <item>Ashdod</item>
+    <item>Ashqelon</item>
+    <item>Bat Yam</item>
+    <item>Beersheba</item>
+    <item>Bet Shean</item>
+    <item>Bet Shearim</item>
+    <item>Bnei Brak</item>
+    <item>Caesarea</item>
+    <item>Dimona</item>
+    <item>Dor</item>
+    <item>Elat</item>
+    <item>En Gedi</item>
+    <item>Givatayim</item>
+    <item>Hadera</item>
+    <item>Haifa</item>
+    <item>Herzliyya</item>
+    <item>Holon</item>
+    <item>Jerusalem</item>
+    <item>Karmiel</item>
+    <item>Kefar Sava</item>
+    <item>Lod</item>
+    <item>Meron</item>
+    <item>Nahariyya</item>
+    <item>Nazareth</item>
+    <item>Netanya</item>
+    <item>Petah Tiqwa</item>
+    <item>Qiryat Shemona</item>
+    <item>Ramat Gan</item>
+    <item>Ramla</item>
+    <item>Rehovot</item>
+    <item>Rishon Leziyyon</item>
+    <item>Sedom</item>
+    <item>Tel Aviv–Yafo</item>
+    <item>Tiberias</item>
+    <item>Zefat</item>
+</string-array></resources>

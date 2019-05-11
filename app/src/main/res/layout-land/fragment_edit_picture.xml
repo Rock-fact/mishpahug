@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.editPicture.EditPictureFragment"
+    android:background="@drawable/background_gradient">
+
+
+    <TextView
+        android:id="@+id/editTitle"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Tap on pic
+for change"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/avatar_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/event_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle"
+        tools:src="@tools:sample/avatars[0]" />
+
+    <ImageView
+        android:id="@+id/event_img"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avatar_img"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle"
+        tools:src="@tools:sample/avatars[0]" />
+
+    <TextView
+        android:id="@+id/event_banner_txt"
+        style="@style/PlainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Event banner"
+        app:layout_constraintEnd_toEndOf="@+id/event_img"
+        app:layout_constraintStart_toStartOf="@+id/event_img"
+        app:layout_constraintTop_toBottomOf="@+id/event_img" />
+
+    <TextView
+        android:id="@+id/avatar_txt"
+        style="@style/PlainText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Avatar"
+        app:layout_constraintEnd_toEndOf="@+id/avatar_img"
+        app:layout_constraintStart_toStartOf="@+id/avatar_img"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_img" />
+</android.support.constraint.ConstraintLayout>

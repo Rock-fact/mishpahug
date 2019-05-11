@@ -1,15 +1,17 @@
 package com.kor.foodmanager.data.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDto {
+public class UserDto implements Serializable {
     private String firstName, lastName, fullName, gender, maritalStatus, confession, phoneNumber, description;
     private String dateOfBirth;
     private List<String> pictureLink, foodPreferences, languages;
     private double rate;
     private int numberOfVoters;
     private long userId;
+    private Boolean invited;
 
 
     public UserDto() {
@@ -34,6 +36,14 @@ public class UserDto {
         this.rate = rate;
         this.numberOfVoters = numberOfVoters;
         this.userId = userId;
+    }
+
+    public Boolean getInvited() {
+        return invited;
+    }
+
+    public void setInvited(Boolean isInvited) {
+        this.invited = isInvited;
     }
 
     public long getUserId() {
@@ -154,5 +164,21 @@ public class UserDto {
 
     public void setNumberOfVoters(int numberOfVoters) {
         this.numberOfVoters = numberOfVoters;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
+                ", maritalStatus='" + maritalStatus + '\'' +
+                ", confession='" + confession + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", description='" + description + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", pictureLink=" + pictureLink +
+                ", foodPreferences=" + foodPreferences +
+                '}';
     }
 }

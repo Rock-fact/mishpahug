@@ -1,6 +1,6 @@
 package com.kor.foodmanager.data.model;
 
-class LocationDto {
+public class LocationDto {
     private Double lat, lng, radius;
 
     public LocationDto() {
@@ -28,5 +28,20 @@ class LocationDto {
 
     public void setRadius(Double radius) {
         this.radius = radius;
+    }
+
+    public LocationDto(Double lat, Double lng, Double radius) {
+        this.lat = lat;
+        this.lng = lng;
+        this.radius = radius;
+    }
+
+    @Override
+    public String toString() {
+        return "LocationDto{" +
+                "lat=" + lat +
+                ", lng=" + lng +
+                ", radius=" + radius +
+                '}';
     }
 }

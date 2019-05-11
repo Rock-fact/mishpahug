@@ -1,8 +1,9 @@
 package com.kor.foodmanager.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class NotificationDto {
+public class NotificationDto implements Serializable {
     private Long eventId, notificationId;
     private String title, message, type;
     private Boolean isRead;

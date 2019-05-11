@@ -1,6 +1,8 @@
 package com.kor.foodmanager.data.userData;
 
 
+import android.util.Log;
+
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.StaticfieldsDto;
 import com.kor.foodmanager.data.model.UserDto;
@@ -37,7 +39,9 @@ public class UserDataRepository implements IUserDataRepository {
        String token = authRepository.getToken();
        Call<UserDto> call = api.updateUserProfile(token,user);
        Response<UserDto> response = call.execute();
+        Log.d("Registration", "updateUserProfile: "+response.isSuccessful());
        if (response.isSuccessful()){
+           authRepository.saveUser(user);
            return response.body();
        }else{
            String error = response.errorBody().string();

@@ -6,6 +6,8 @@ import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.participationList.IParticipationListRepository;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ParticipationListInteractor implements IParticipationListInteractor{
@@ -19,6 +21,8 @@ public class ParticipationListInteractor implements IParticipationListInteractor
 
     @Override
     public List<EventDto> getParticipationList() throws IOException, ServerException {
-        return participationListRepository.loadParticipationList(authRepository.getToken());
+        List <EventDto> sortedList = participationListRepository.loadParticipationList(authRepository.getToken());
+        Collections.sort(sortedList, new EventComparator());
+        return sortedList;
     }
 }

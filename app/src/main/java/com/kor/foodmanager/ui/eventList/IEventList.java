@@ -10,7 +10,11 @@ import java.util.List;
 @StateStrategyType(value = AddToEndSingleStrategy.class)
 public interface IEventList extends MvpView {
     void showProgressFrame();
+
     void hideProgressFrame();
 
+    void swipeRefresh();
+    void isLastPage(boolean isLast);
+    void isLoading();
 
 }

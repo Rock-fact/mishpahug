@@ -1,7 +1,9 @@
 package com.kor.foodmanager.ui.eventInfo.guestEventInfo;
 
 
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.kor.foodmanager.R;
 import com.kor.foodmanager.data.model.EventDto;
+import com.kor.foodmanager.ui.IToolbar;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -30,7 +33,6 @@ public class GuestEventInfoFragment extends MvpAppCompatFragment implements IGue
 @BindView(R.id.event_img) ImageView eventImg;
 @BindView(R.id.short_info) ConstraintLayout shortInfo;
 @BindView(R.id.family_name) TextView familyname;
-@BindView(R.id.event_title) TextView eventTitle;
 @BindView(R.id.event_date) TextView eventDate;
 @BindView(R.id.event_address) TextView eventAddress;
 @BindView(R.id.ratingBar) RatingBar ratingBar;
@@ -39,6 +41,7 @@ public class GuestEventInfoFragment extends MvpAppCompatFragment implements IGue
 @BindView(R.id.progressBar) ProgressBar progressBar;
 private Unbinder unbinder;
 private EventDto event;
+private IToolbar iToolbar;
 
 
     public GuestEventInfoFragment() {
@@ -50,6 +53,19 @@ private EventDto event;
         guestEventInfoFragment.event = event;
         return guestEventInfoFragment;
     }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            event = (EventDto)savedInstanceState.getSerializable("event");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("event",event);
+    }
 
 
 
@@ -60,15 +76,19 @@ private EventDto event;
         unbinder = ButterKnife.bind(this,view);
         joinBtn.setOnClickListener(this);
         if(event!=null){
-            eventTitle.setText(event.getTitle());
-            familyname.setText(event.getOwner().getLastName());
+            iToolbar=(IToolbar) getActivity();
+            iToolbar.setTitleToolbarEnable(event.getTitle(),false,true,false);
+            familyname.setText(event.getOwner().getFullName());
             eventDate.setText(event.getDate());
             eventAddress.setText(event.getAddress().getCity());
             ratingBar.setRating(new Float(event.getOwner().getRate())); //TODO
             eventDescription.setText(event.getDescription());
-            if(event.getOwner().getPictureLink()!=null) {
-                Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(0));
-                //Picasso.get().load(event.getOwner().getPictureLink().get(0)).into(eventImg); //TODO get 1 img
+            if(event.getOwner().getPictureLink()!=null && event.getOwner().getPictureLink().size()>=2) {
+                Log.d("MY_TAG", "Img link: " + event.getOwner().getPictureLink().get(1));
+                Picasso.get().load(event.getOwner().getPictureLink().get(1))
+                        .error(R.drawable.logo).fit().into(eventImg); //TODO get 1 img
+                //Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
+            }else {
                 Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(eventImg);
             }
         }
@@ -110,6 +130,14 @@ private EventDto event;
     @Override
     public void hideJoinBtn() {
         joinBtn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showSuccessDialog(String s) {
+        new AlertDialog.Builder(getActivity()).setMessage(s)
+                .setPositiveButton("ok", null)
+                .create()
+                .show();
     }
 
     @Override

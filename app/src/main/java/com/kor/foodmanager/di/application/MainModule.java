@@ -5,9 +5,12 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.data.pictureEditor.EditPictureRepository;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.data.userData.IUserDataRepository;
 import com.kor.foodmanager.data.userData.UserDataRepository;
+import com.kor.foodmanager.ui.editPicture.IEditPicture;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,9 +26,14 @@ import ru.terrakok.cicerone.Cicerone;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.BACKEND_VERSION;
+import static com.kor.foodmanager.ui.MainActivity.DIMAS_BACKEND_VERSION;
+
 @Module
 public class MainModule {
-    private static final String BASE_URL = "https://mishpahug-java221-team-a.herokuapp.com";
+    private static final String DIMAS_URL = "https://mishpah.herokuapp.com/";
+    private static final String OFFICIAL_URL = "https://mishpahug-java221-team-a.herokuapp.com/";
+
     private Context context;
     private Cicerone<Router> cicerone;
     private Gson gson;
@@ -61,6 +69,12 @@ public class MainModule {
 
     @Provides @Singleton
     Api provideApi(OkHttpClient client){
+        String BASE_URL;
+        if(BACKEND_VERSION==DIMAS_BACKEND_VERSION){
+            BASE_URL=DIMAS_URL;
+        }else {
+            BASE_URL=OFFICIAL_URL;
+        }
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl(BASE_URL)
@@ -83,5 +97,10 @@ public class MainModule {
     @Provides @Singleton
     IUserDataRepository provideUserDataRepository(IAuthRepository authRepository, Api api){
         return new UserDataRepository(api, authRepository);
+    }
+
+    @Provides @Singleton
+    IEditPictureRepository provideEditPictureRepository(Context context, IAuthRepository authRepository){
+        return new EditPictureRepository(context, authRepository);
     }
 }

@@ -4,6 +4,10 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.kor.foodmanager.App;
 import com.kor.foodmanager.data.auth.IAuthRepository;
+import com.kor.foodmanager.data.pictureEditor.IEditPictureRepository;
+import com.kor.foodmanager.ui.editPicture.IEditPicture;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -11,8 +15,11 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 
+import static com.kor.foodmanager.ui.MainActivity.CALENDAR_FRAGMENT;
 import static com.kor.foodmanager.ui.MainActivity.EVENT_LIST_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.LOGIN_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_EVENT_LIST_SCREEN;
+import static com.kor.foodmanager.ui.MainActivity.MY_PROFILE_FRAGMENT_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.NOTIFICATIONS_SCREEN;
 import static com.kor.foodmanager.ui.MainActivity.PARTICIPATION_LIST_SCREEN;
 
@@ -21,25 +28,31 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     @Inject Router router;
     @Inject NavigatorHolder navigatorHolder;
     @Inject IAuthRepository authRepository;
+    @Inject IEditPictureRepository editPictureRepository;
+    private Boolean isStarted = false;
 
     public MainActivityPresenter(){
         App.get().mainComponent().inject(this);
     }
 
     public void startWork() {
-        if(authRepository.getToken()==null){
-            showLoginScreen();
-        }else {
-            showEventListScreen();
+        if(isStarted == false){
+            if(authRepository.getToken()==null){
+                isStarted = true;
+                showLoginScreen();
+            }else {
+                isStarted = true;
+                showEventListScreen();
+            }
         }
     }
 
     public void showLoginScreen(){
-        router.navigateTo(LOGIN_SCREEN);
+        router.newRootScreen(LOGIN_SCREEN);
     }
 
     public void showEventListScreen(){
-        router.navigateTo(EVENT_LIST_SCREEN);
+        router.newRootScreen(EVENT_LIST_SCREEN);
     }
 
     public void setNavigator(Navigator navigator) {
@@ -59,7 +72,7 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void calendar(){
-        router.showSystemMessage("calendar screen");
+        router.navigateTo(CALENDAR_FRAGMENT);
     }
 
     public void participation(){
@@ -67,11 +80,11 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
     }
 
     public void myProfile(){
-        router.showSystemMessage("profile screen");
+        router.navigateTo(MY_PROFILE_FRAGMENT_SCREEN,authRepository.getUser());
     }
 
     public void myEventList(){
-        router.showSystemMessage("my event list");
+        router.navigateTo(MY_EVENT_LIST_SCREEN);
     }
 
     public void logOut(){
@@ -79,4 +92,16 @@ public class MainActivityPresenter extends MvpPresenter<IMain> {
         router.newRootScreen(LOGIN_SCREEN);
     }
 
+    public String loadAvatar() {
+        if(authRepository.getToken()!=null) {
+            List<String> tmp = authRepository.getUser().getPictureLink();
+            if(tmp!=null&&tmp.size()>0){
+                return tmp.get(0);
+            } else {
+                return "error";
+            }
+        } else {
+            return "error";
+        }
+    }
 }

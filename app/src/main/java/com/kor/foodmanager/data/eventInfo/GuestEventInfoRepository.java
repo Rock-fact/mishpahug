@@ -38,4 +38,44 @@ public class GuestEventInfoRepository implements IGuestEventInfoRepository{
             }
         }
     }
+
+    @Override
+    public String unsubscribeFromEvent(String token, long eventId) throws IOException, ServerException {
+        Call<MessageDto> call = api.unsubscribeFromEvent(token, eventId);
+        Response<MessageDto> response = call.execute();
+        if (response.isSuccessful()){
+            return response.body().getMessage();
+        } else {
+            if (response.code()==409){
+                return "It's not possible to unsubscribe";
+            } else if (response.code()==401){
+                return "Authorization needed";
+            } else {
+                ErrorDto errorDto = gson.fromJson(response.errorBody().string(), ErrorDto.class);
+                throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public String voteForEvent(String token, long eventId, double rate) throws IOException, ServerException {
+        Call<MessageDto> call = api.voteForEvent(token, eventId, rate);
+        Response<MessageDto> response = call.execute();
+        if (response.isSuccessful()){
+            //return response.body().getMessage();
+            return "Vote is accepted!";
+        } else {
+            if (response.code()==409){
+                return "You have already voted for the event or can't vote for the event!";
+            } else if (response.code()==401){
+                return "Authorization needed";
+            } else {
+                ErrorDto errorDto = gson.fromJson(response.errorBody().string(), ErrorDto.class);
+                throw new ServerException(errorDto.getCode()+ ": "+errorDto.getMessage());
+            }
+        }
+
+    }
+
+
 }

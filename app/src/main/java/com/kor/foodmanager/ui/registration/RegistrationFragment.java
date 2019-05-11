@@ -18,6 +18,7 @@ import android.widget.Button;
 
 import android.widget.EditText;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -37,19 +38,16 @@ public class RegistrationFragment extends MvpAppCompatFragment implements IRegis
     private TextView nameTxt, changeName;
     private EditText emailInput, phoneInput, passwordInput;
     private Button saveBtn;
-
+    private ImageView avatar;
 
     @Override
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user = new UserDto();
     }
 
     @Nullable
-
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.registration_fragment, container, false);
@@ -64,6 +62,8 @@ public class RegistrationFragment extends MvpAppCompatFragment implements IRegis
 
         saveBtn = view.findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(this);
+
+        avatar = view.findViewById(R.id.imageView);
 
 
         return view;

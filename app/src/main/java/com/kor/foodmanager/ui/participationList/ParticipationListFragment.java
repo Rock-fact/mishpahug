@@ -2,7 +2,6 @@ package com.kor.foodmanager.ui.participationList;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +25,7 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
     @BindView(R.id.progressBar) ProgressBar progressBar;
     private Unbinder unbinder;
     private ParticipationListAdapter adapter;
-
+    private IToolbar iToolbar;
 
     public ParticipationListFragment() {
 
@@ -37,14 +36,16 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_participation_list, container, false);
         unbinder = ButterKnife.bind(this, view);
-        IToolbar iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Participation list",true);
-
+        iToolbar = (IToolbar) getActivity();
+        iToolbar.setTitleToolbarEnable("Participation list",false, true, true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = presenter.getAdapter();
         adapter.setListener(this);
         recyclerView.setAdapter(adapter);
+
+//        ItemTouchHelper helper = new ItemTouchHelper(new MyTouchCallBack());
+//        helper.attachToRecyclerView(recyclerView);
         return view;
     }
 
@@ -76,4 +77,24 @@ public class ParticipationListFragment extends MvpAppCompatFragment implements I
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
+
+//    class MyTouchCallBack extends ItemTouchHelper.Callback{
+//
+//        @Override
+//        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+//            return makeMovementFlags(0, ItemTouchHelper.END | ItemTouchHelper.START);
+//        }
+//
+//        @Override
+//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+//            return false;
+//        }
+//
+//        @Override
+//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+//            presenter.loadParticipationList();
+//        }
+//    }
+
+
 }

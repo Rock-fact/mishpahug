@@ -39,17 +39,34 @@ public class NotificationInfoFragment extends MvpAppCompatFragment implements IN
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            notification=(NotificationDto) savedInstanceState.getSerializable("notification");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("notification",notification);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification_info, container, false);
         unbinder = ButterKnife.bind(this, view);
-        title.setText(notification.getTitle());
-        message.setText(notification.getMessage());
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-        date.setText(formatDate.format(notification.getDate()));
-        presenter.startWork(notification.getNotificationId());
-        iToolbar = (IToolbar) getActivity();
-        iToolbar.setTitleToolbarEnable("Notification Info",true);
+        if(notification!=null){
+            title.setText(notification.getTitle());
+            message.setText(notification.getMessage());
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+            date.setText(formatDate.format(notification.getDate()));
+            presenter.startWork(notification.getNotificationId());
+            iToolbar = (IToolbar) getActivity();
+            iToolbar.setTitleToolbarEnable("Notification Info",false,true,false);
+        }
+
         return view;
     }
 

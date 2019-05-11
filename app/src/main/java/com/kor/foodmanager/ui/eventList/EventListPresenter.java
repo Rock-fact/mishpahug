@@ -14,6 +14,8 @@ import com.kor.foodmanager.data.auth.AuthRepository;
 import com.kor.foodmanager.data.auth.IAuthRepository;
 import com.kor.foodmanager.data.model.EventDto;
 import com.kor.foodmanager.data.model.EventListDto;
+import com.kor.foodmanager.data.model.EventsInProgressRequestDto;
+import com.kor.foodmanager.data.model.FiltersDto;
 import com.kor.foodmanager.data.provider.web.Api;
 import com.kor.foodmanager.di.application.MainModule;
 import com.kor.foodmanager.ui.MainActivity;
@@ -35,6 +37,8 @@ public class EventListPresenter extends MvpPresenter<IEventList> {
     @Inject Api api;
     @Inject IAuthRepository authRepository;
 
+    EventsInProgressRequestDto listFilters;
+
 private EventListAdapter adapter;
 
     public EventListPresenter() {
@@ -42,8 +46,12 @@ private EventListAdapter adapter;
         adapter = new EventListAdapter();
     }
 
-    public void loadEventList(){
-        new LoadingList().execute();
+    public void loadEventList(int currentPage, int totalPage){
+        new LoadingList(currentPage,totalPage).execute();
+    }
+
+    public void loadEventList(EventsInProgressRequestDto filters,int currentPage, int totalPage){
+        new LoadingList(filters,currentPage,totalPage).execute();
     }
 
     public EventListAdapter getAdapter(){
@@ -53,7 +61,16 @@ private EventListAdapter adapter;
     public void addEvent() {router.navigateTo(MainActivity.ADD_EVENT_SCREEN);}
     public void eventInfo(int position){
         EventDto tmp = adapter.getEvents().get(position);
-        router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp);}
+        router.navigateTo(MainActivity.EVENT_INFO_SCREEN, tmp); }
+
+        public void filters(){
+        if(listFilters!=null){
+            Log.d("MY_TAG", "listFilters!=null "+listFilters.toString());
+            router.navigateTo(MainActivity.FILTERS_SCREEN, listFilters);
+        } else {
+            router.navigateTo(MainActivity.FILTERS_SCREEN);
+        }
+        }
 
     @Override
     public void onDestroy() {
@@ -66,20 +83,37 @@ private EventListAdapter adapter;
         private List<EventDto> tmp = new ArrayList<>();
         IAuthRepository tmpRepository = authRepository;
         Call<EventListDto> call;
+        EventsInProgressRequestDto filters;
+        int currentPage;
+        int totalPage;
 
+        public LoadingList(int currentPage,int totalPage) {
+            this.currentPage=currentPage;
+            this.totalPage=totalPage;
+        }
+
+        public LoadingList(EventsInProgressRequestDto filters,int currentPage,int totalPage) {
+            this.filters = filters;
+            this.currentPage=currentPage;
+            this.totalPage=totalPage;
+        }
 
         @Override
         protected void onPreExecute() {
-            getViewState().showProgressFrame();
+           if (currentPage==0)getViewState().showProgressFrame();
         }
 
         @Override
         protected List<EventDto> doInBackground(Void... voids) {
             try {
                 if (tmpRepository.getToken()!=null){
-                    call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), 0, 10);
+                    if(filters==null) {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), currentPage, totalPage);
+                    } else {
+                        call = api.getLoginedListOfEventsInProgress(tmpRepository.getToken(), currentPage, totalPage, filters); //TODO
+                    }
                 } else {
-                    call = api.getListOfEventsInProgress(0, 10);
+                    call = api.getListOfEventsInProgress(currentPage, totalPage);
                 }
                 retrofit2.Response<EventListDto> response = call.execute();
                 if(response.isSuccessful()){
@@ -97,14 +131,23 @@ private EventListAdapter adapter;
 
         @Override
         protected void onPostExecute(List<EventDto> list) {
-           getViewState().hideProgressFrame();
+          if (currentPage==0)getViewState().hideProgressFrame();
+           if(filters!=null){
+               listFilters=filters;
+           }
+            Log.d("VOVA", "onPostExecute: listsize"+list.size());
             if (list!=null) {
-                adapter.removeAll();
-                for(int i=0; i<list.size(); i++){
-                        adapter.addEvent(list.get(i));
-
-                }
-
+                if (currentPage != EventListFragment.PAGE_START) adapter.removeLoading();
+                else
+                    {
+                        adapter.clear();
+                        getViewState().isLastPage(false);
+                    }
+                adapter.addAll(list);
+                getViewState().swipeRefresh();
+                if (!(list.size() < totalPage)) adapter.addLoading();
+                else getViewState().isLastPage(true);
+                getViewState().isLoading();
             }
         }
     }
