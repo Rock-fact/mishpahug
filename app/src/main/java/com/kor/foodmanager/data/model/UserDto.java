@@ -11,7 +11,7 @@ public class UserDto implements Serializable {
     private double rate;
     private int numberOfVoters;
     private long userId;
-    private Boolean invited;
+    private Boolean isInvited;
 
 
     public UserDto() {
@@ -39,11 +39,11 @@ public class UserDto implements Serializable {
     }
 
     public Boolean getInvited() {
-        return invited;
+        return isInvited;
     }
 
     public void setInvited(Boolean isInvited) {
-        this.invited = isInvited;
+        this.isInvited = isInvited;
     }
 
     public long getUserId() {
