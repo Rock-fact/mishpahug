@@ -75,8 +75,8 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
 
 public class MainActivity extends MvpAppCompatActivity implements IMain, IToolbar, NavigationView.OnNavigationItemSelectedListener {
-    public static final String OFFICIAL_BACKEND_VERSION = "GRISHA";
-    public static final String DIMAS_BACKEND_VERSION = "DIMA";
+    public static final String OFFICIAL_BACKEND_VERSION = "1";
+    public static final String DIMAS_BACKEND_VERSION = "2";
 
     public static final String BACKEND_VERSION = DIMAS_BACKEND_VERSION;
 
